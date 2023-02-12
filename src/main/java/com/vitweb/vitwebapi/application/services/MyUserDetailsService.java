@@ -32,7 +32,7 @@ public class MyUserDetailsService implements UserDetailsService {
           String.format(DevMessageConstant.User.ERR_NOT_FOUND_BY_ID, email));
     }
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-    user.get().getRoles().forEach(item -> grantedAuthorities.add(new SimpleGrantedAuthority(item.getName().toString())));
+    grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().toString()));
 
     return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(),
         grantedAuthorities);

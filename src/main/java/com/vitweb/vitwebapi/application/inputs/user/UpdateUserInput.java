@@ -30,4 +30,5 @@ public class UpdateUserInput {
   private String grade;
 
   private String faculty;
+
 }

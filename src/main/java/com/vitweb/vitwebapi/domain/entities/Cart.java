@@ -7,27 +7,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-@Table(name = TableNameConstant.TBL_CATEGORY)
-public class Category extends AbstractAuditingEntity {
+@NoArgsConstructor
+@Table(name = TableNameConstant.TBL_CART)
+public class Cart extends AbstractAuditingEntity {
 
-  @Nationalized
-  private String name;
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-  private String slug;
-
-  private String description;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cart")
   @JsonIgnore
-  private List<Product> products;
+  private List<CartDetail> cartDetails;
+
 }

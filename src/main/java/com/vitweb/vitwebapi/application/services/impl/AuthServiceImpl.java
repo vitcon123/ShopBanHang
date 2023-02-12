@@ -100,8 +100,8 @@ public class AuthServiceImpl implements IAuthService {
     User user = modelMapper.map(createUserInput, User.class);
     user.setPassword(passwordEncoder.encode(createUserInput.getPassword()));
 
-    Role role = roleRepository.findByName(RoleConstant.ROLE_STUDENT);
-    user.setRoles(List.of(role));
+    Role role = roleRepository.findByName(RoleConstant.ROLE_USER);
+    user.setRole(role);
     user.setAuthProvider(AuthenticationProvider.LOCAL);
 
     userRepository.save(user);

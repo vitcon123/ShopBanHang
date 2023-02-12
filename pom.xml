@@ -8,11 +8,11 @@
 		<version>2.7.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.vitweb</groupId>
-	<artifactId>vitwebapi</artifactId>
+	<groupId>com.hoa</groupId>
+	<artifactId>shop-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>vitwebapi</name>
-	<description>Demo project for Spring Boot</description>
+	<name>shop-server</name>
+	<description>Shop Server</description>
 	<properties>
 		<java.version>11</java.version>
 		<netty-socketio.version>1.7.19</netty-socketio.version>
