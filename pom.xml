@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<netty-socketio.version>1.7.19</netty-socketio.version>
+		<start-class>com.hoa.shopbanhang.ShopBanHangApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
