@@ -1,6 +1,5 @@
 package com.vitweb.vitwebapi.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.sql.Timestamp;
 
 @Entity
 @Setter
@@ -17,14 +16,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = TableNameConstant.TBL_ROLE)
-public class Role extends AbstractAuditingEntity {
+public class Statistic extends AbstractAuditingEntity {
 
-  private String name;
+  private Timestamp time = getCreatedDate();
 
-  private String description;
+  private Integer ageOfUser;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
-  @JsonIgnore
-  private List<User> user;
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "product_id")
+  private Product product;
 
 }

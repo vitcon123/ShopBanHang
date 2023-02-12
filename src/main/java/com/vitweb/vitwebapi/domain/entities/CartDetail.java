@@ -1,6 +1,5 @@
 package com.vitweb.vitwebapi.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -9,22 +8,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_ROLE)
-public class Role extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_CART_DETAIL)
+public class CartDetail extends AbstractAuditingEntity {
 
-  private String name;
+  private Long amount;
 
-  private String description;
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "cart_id")
+  private Cart cart;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
-  @JsonIgnore
-  private List<User> user;
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "product_id")
+  private Product product;
 
 }

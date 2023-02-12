@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = TableNameConstant.TBL_USER)
@@ -39,36 +38,33 @@ public class User extends AbstractAuditingEntity {
 
   private Double coin = 0.0;
 
-  private Double money = 0.0;
-
-  @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-  @JoinTable(name = "user_roles",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "role_id"))
-  @JsonIgnore
-  private List<Role> roles;
-
-  // list courses
-  @JoinTable(name = "user_notification",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "notification_id"),
-      foreignKey = @ForeignKey(name = "FK_USER_NOTIFICATION"))
-  @JsonIgnore
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Notification> notifications;
-
   @Enumerated(EnumType.STRING)
   private AuthenticationProvider authProvider;
 
   private Boolean status = Boolean.FALSE;
 
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "role_id")
+  private Role role;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+  @JsonIgnore
+  private List<Order> orders;
+
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "users")
+  @JsonIgnore
+  private List<Notification> notifications;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+  @JsonIgnore
+  private List<Statistic> statistics;
 
   public User(String email, String password, String fullName,
-              List<Role> roles, AuthenticationProvider authProvider, Boolean status) {
+              Role role, AuthenticationProvider authProvider, Boolean status) {
     this.email = email;
     this.password = password;
     this.fullName = fullName;
-    this.roles = roles;
+    this.role = role;
     this.authProvider = authProvider;
     this.status = status;
   }
