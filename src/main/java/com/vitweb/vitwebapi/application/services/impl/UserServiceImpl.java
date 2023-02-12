@@ -35,23 +35,6 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public List<User> getFollowing(Long id) {
-    Optional<User> oldUser = userRepository.findById(id);
-    checkUserExists(oldUser);
-
-    return userRepository.getFollowingById(id);
-  }
-
-  @Override
-  public List<User> getFollowers(Long id) {
-    Optional<User> oldUser = userRepository.findById(id);
-    checkUserExists(oldUser);
-
-    return userRepository.getFollowersById(id);
-  }
-
-
-  @Override
   public User getUserById(Long id) {
     Optional<User> user = userRepository.findById(id);
     checkUserExists(user);
@@ -64,13 +47,6 @@ public class UserServiceImpl implements IUserService {
     checkUserExists(user);
     modelMapper.map(updateUserInput, user.get());
     return userRepository.save(user.get());
-  }
-
-  @Override
-  public User getUserByIdName(String idName) {
-    Optional<User> oldUser = userRepository.findByIdName(idName);
-    checkUserExists(oldUser);
-    return oldUser.get();
   }
 
   @Override
@@ -88,38 +64,6 @@ public class UserServiceImpl implements IUserService {
     checkUserExists(user);
     userRepository.deleteById(id);
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  @Override
-  public RequestResponse follow(Long idFollow) {
-    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
-    checkUserExists(oldUser);
-
-    Optional<User> userFollow = userRepository.findById(idFollow);
-    checkUserExists(userFollow);
-
-    List<User> follows = oldUser.get().getFollowings();
-    follows.add(userFollow.get());
-
-    oldUser.get().setFollowings(follows);
-    userRepository.save(oldUser.get());
-    return new RequestResponse(CommonConstant.TRUE, "Follow successfully !");
-  }
-
-  @Override
-  public RequestResponse unfollow(Long idFollow) {
-    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
-    checkUserExists(oldUser);
-
-    Optional<User> userFollow = userRepository.findById(idFollow);
-    checkUserExists(userFollow);
-
-    List<User> follows = oldUser.get().getFollowings();
-    follows.remove(userFollow.get());
-
-    oldUser.get().setFollowings(follows);
-    userRepository.save(oldUser.get());
-    return new RequestResponse(CommonConstant.TRUE, "Unfollow successfully !");
   }
 
   private void checkUserExists(Optional<User> user) {
