@@ -18,16 +18,16 @@ public class OpenApiConfig {
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2).select()
-        .apis(RequestHandlerSelectors.basePackage("com.vitweb.vitwebapi.adapter.web.v1.controller"))
+        .apis(RequestHandlerSelectors.basePackage("com.hoa.shopbanhang.adapter.web.v1.controller"))
         .paths(PathSelectors.regex("/.*"))
         .build()
         .apiInfo(apiEndPointsInfo());
   }
 
   private ApiInfo apiEndPointsInfo() {
-    return new ApiInfoBuilder().title("Vit web server")
-        .description("Vit web server REST API")
-        .contact(new Contact("Viet", "...", "nguyenvanviet18032002@gmail.com"))
+    return new ApiInfoBuilder().title("ShopBanHang server")
+        .description("ShopBanHang server REST API")
+        .contact(new Contact("Hoa", "...", "hoa@gmail.com"))
         .license("Apache 2.0")
         .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
         .version("1.0.0")

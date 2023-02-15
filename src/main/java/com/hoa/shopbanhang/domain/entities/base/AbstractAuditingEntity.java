@@ -29,10 +29,10 @@ public abstract class AbstractAuditingEntity {
   private Boolean deleteFlag = Boolean.FALSE;
 
   @Column(name = "created_by")
-  private Long createdBy = 1L; //để tạm thời. Sau đọc từ jwt ra
+  private String createdBy;
 
   @Column(name = "last_modified_by")
-  private Long lastModifiedBy = 1L; //để tạm thời. Sau đọc từ jwt ra
+  private String lastModifiedBy;
 
   @CreationTimestamp
   @Column(name = "created_date")

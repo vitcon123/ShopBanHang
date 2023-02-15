@@ -14,4 +14,5 @@ public class CreateProductInput {
   private String name;
 
   private String description;
+
 }
