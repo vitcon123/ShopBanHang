@@ -18,9 +18,7 @@ import javax.persistence.*;
 @Table(name = TableNameConstant.TBL_MEDIA)
 public class Media extends AbstractAuditingEntity {
 
-  private String link;
-
-  private MediaType mediaType;
+  private String path;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id")

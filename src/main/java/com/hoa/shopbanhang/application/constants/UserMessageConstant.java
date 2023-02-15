@@ -27,4 +27,9 @@ public class UserMessageConstant {
   public static final class Category {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.category_id";
   }
+
+  public static final class Media {
+    public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.media_id";
+  }
+
 }
