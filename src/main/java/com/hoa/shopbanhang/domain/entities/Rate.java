@@ -15,12 +15,12 @@ import java.sql.Timestamp;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_STATISTIC)
-public class Statistic extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_RATE)
+public class Rate extends AbstractAuditingEntity {
 
-  private Timestamp time = getCreatedDate();
+  private Integer star;
 
-  private Integer ageOfUser;
+  private String review;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")

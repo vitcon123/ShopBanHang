@@ -43,6 +43,10 @@ public class Product extends AbstractAuditingEntity {
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
   @JsonIgnore
+  private List<Rate> rates;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+  @JsonIgnore
   private List<Statistic> statistics;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
