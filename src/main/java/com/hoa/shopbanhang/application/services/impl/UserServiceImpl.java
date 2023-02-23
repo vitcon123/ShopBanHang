@@ -2,6 +2,7 @@ package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
+import com.hoa.shopbanhang.application.constants.DevMessageConstant;
 import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.inputs.user.ChangeAvatarInput;
 import com.hoa.shopbanhang.application.inputs.user.UpdateUserInput;
@@ -36,14 +37,14 @@ public class UserServiceImpl implements IUserService {
   @Override
   public User getUserById(Long id) {
     Optional<User> user = userRepository.findById(id);
-    checkUserExists(user);
+    UserServiceImpl.checkUserExists(user, id);
     return user.get();
   }
 
   @Override
   public User updateUser(UpdateUserInput updateUserInput) {
     Optional<User> user = userRepository.findById(updateUserInput.getId());
-    checkUserExists(user);
+    UserServiceImpl.checkUserExists(user, updateUserInput.getId());
     modelMapper.map(updateUserInput, user.get());
     return userRepository.save(user.get());
   }
@@ -51,7 +52,7 @@ public class UserServiceImpl implements IUserService {
   @Override
   public RequestResponse changeAvatar(ChangeAvatarInput changeAvatarInput) {
     Optional<User> oldUser = userRepository.findById(changeAvatarInput.getId());
-    checkUserExists(oldUser);
+    UserServiceImpl.checkUserExists(oldUser, changeAvatarInput.getId());
     setAvatarUser(oldUser.get(), changeAvatarInput.getFile());
     userRepository.save(oldUser.get());
     return new RequestResponse(CommonConstant.TRUE, "Change avatar successfully !");
@@ -60,14 +61,16 @@ public class UserServiceImpl implements IUserService {
   @Override
   public RequestResponse deleteById(Long id) {
     Optional<User> user = userRepository.findById(id);
-    checkUserExists(user);
+    UserServiceImpl.checkUserExists(user, id);
     userRepository.deleteById(id);
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkUserExists(Optional<User> user) {
+  public static void checkUserExists(Optional<User> user, Long id) {
     if(user.isEmpty()) {
-      throw new VsException(UserMessageConstant.User.ERR_NOT_FOUND_BY_ID);
+      throw new VsException(UserMessageConstant.User.ERR_NOT_FOUND_BY_ID,
+          String.format(DevMessageConstant.User.ERR_NOT_FOUND_BY_ID, id),
+          new String[]{id.toString()});
     }
   }
 
