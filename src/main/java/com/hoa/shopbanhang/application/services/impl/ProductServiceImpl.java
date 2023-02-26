@@ -2,10 +2,13 @@ package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
+import com.hoa.shopbanhang.application.constants.DevMessageConstant;
+import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
 import com.hoa.shopbanhang.application.services.IProductService;
+import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -64,7 +67,11 @@ public class ProductServiceImpl implements IProductService {
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkProductExists(Optional<Product> Product, Long id) {
-
+  public static void checkProductExists(Optional<Product> product, Long id) {
+    if(product.isEmpty()) {
+      throw new VsException(UserMessageConstant.Product.ERR_NOT_FOUND_BY_ID,
+          String.format(DevMessageConstant.Product.ERR_NOT_FOUND_BY_ID, id),
+          new String[]{id.toString()});
+    }
   }
 }

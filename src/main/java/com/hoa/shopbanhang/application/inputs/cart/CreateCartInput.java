@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateCartInput {
 
-  private String name;
+  private Long idUser;
 
-  private String description;
 }
