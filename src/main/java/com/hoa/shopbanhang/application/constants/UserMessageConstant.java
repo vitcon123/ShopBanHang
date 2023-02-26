@@ -24,6 +24,14 @@ public class UserMessageConstant {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.role_id";
   }
 
+  public static final class Cart {
+    public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.cart_id";
+  }
+
+  public static final class CartDetail {
+    public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.cart_detail_id";
+  }
+
   public static final class Category {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.category_id";
   }
@@ -34,6 +42,10 @@ public class UserMessageConstant {
 
   public static final class Notification {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.notification_id";
+  }
+
+  public static final class Product {
+    public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.product_id";
   }
 
 }

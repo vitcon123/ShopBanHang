@@ -9,13 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface ICartDetailService {
-  List<CartDetail> getAll();
+  List<CartDetail> getAllCartDetailInCart(Long idCart);
+  void addProductToCartById(Long idCart, Long idProduct, Long amount);
+  void editCartDetailById(Long idCartDetail, Long amount);
+  void deleteCartDetailById(Long idCartDetail);
+  void deleteAllCartDetailInCart(Long idCart);
 
-  CartDetail getCartDetailById(Long id);
-
-  CartDetail createCartDetail(CreateCartDetailInput createCartDetailInput);
-
-  CartDetail updateCartDetail(UpdateCartDetailInput updateCartDetailInput);
-
-  RequestResponse deleteById(Long id);
 }

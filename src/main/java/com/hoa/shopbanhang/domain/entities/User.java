@@ -47,6 +47,10 @@ public class User extends AbstractAuditingEntity {
   @JoinColumn(name = "role_id")
   private Role role;
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @JsonIgnore
+  private Cart cart;
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore
   private List<Order> orders;

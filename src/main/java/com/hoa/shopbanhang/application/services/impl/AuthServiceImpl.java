@@ -9,10 +9,12 @@ import com.hoa.shopbanhang.application.constants.AuthenticationProvider;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.RoleConstant;
 import com.hoa.shopbanhang.application.events.SignUpEvent;
+import com.hoa.shopbanhang.application.inputs.cart.CreateCartInput;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
 import com.hoa.shopbanhang.application.repositories.IRoleRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IAuthService;
+import com.hoa.shopbanhang.application.services.ICartService;
 import com.hoa.shopbanhang.application.services.ITokenService;
 import com.hoa.shopbanhang.application.utils.JwtUtil;
 import com.hoa.shopbanhang.application.utils.SendMailUtil;
@@ -50,17 +52,19 @@ public class AuthServiceImpl implements IAuthService {
   private final JwtUtil jwtUtil;
   private final ModelMapper modelMapper;
   private final ITokenService tokenService;
+  private final ICartService cartService;
   private final PasswordEncoder passwordEncoder;
   private final IRoleRepository roleRepository;
   private final AuthenticationManager authenticationManager;
   private final ApplicationEventPublisher publisher;
 
 
-  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, ITokenService tokenService, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, AuthenticationManager authenticationManager, ApplicationEventPublisher publisher) {
+  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, ITokenService tokenService, ICartService cartService, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, AuthenticationManager authenticationManager, ApplicationEventPublisher publisher) {
     this.userRepository = userRepository;
     this.jwtUtil = jwtUtil;
     this.modelMapper = modelMapper;
     this.tokenService = tokenService;
+    this.cartService = cartService;
     this.passwordEncoder = passwordEncoder;
     this.roleRepository = roleRepository;
     this.authenticationManager = authenticationManager;
@@ -103,7 +107,9 @@ public class AuthServiceImpl implements IAuthService {
     user.setRole(role);
     user.setAuthProvider(AuthenticationProvider.LOCAL);
 
-    userRepository.save(user);
+    Long id = userRepository.save(user).getId();
+    cartService.createCart(id);
+
     publisher.publishEvent(new SignUpEvent(
         user,
         applicationUrl(request)
