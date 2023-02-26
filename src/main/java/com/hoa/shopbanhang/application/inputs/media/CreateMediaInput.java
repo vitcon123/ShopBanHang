@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -11,7 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateMediaInput {
 
-  private String name;
-
-  private String description;
+  private MultipartFile multipartFile;
 }

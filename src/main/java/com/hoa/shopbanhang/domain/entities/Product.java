@@ -21,6 +21,8 @@ public class Product extends AbstractAuditingEntity {
 
   private String name;
 
+  private String slug;
+
   private Double price;
 
   private Long quantity;

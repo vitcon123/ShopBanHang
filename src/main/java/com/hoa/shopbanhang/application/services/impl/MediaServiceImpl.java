@@ -15,22 +15,22 @@ import java.util.Optional;
 
 @Service
 public class MediaServiceImpl implements IMediaService {
-  private final IMediaRepository categoryRepository;
+  private final IMediaRepository mediaRepository;
   private final ModelMapper modelMapper;
 
-  public MediaServiceImpl(IMediaRepository categoryRepository, ModelMapper modelMapper) {
-    this.categoryRepository = categoryRepository;
+  public MediaServiceImpl(IMediaRepository mediaRepository, ModelMapper modelMapper) {
+    this.mediaRepository = mediaRepository;
     this.modelMapper = modelMapper;
   }
 
   @Override
   public List<Media> getAll() {
-    return categoryRepository.findAll();
+    return mediaRepository.findAll();
   }
 
   @Override
   public Media getMediaById(Long id) {
-    Optional<Media> oldMedia = categoryRepository.findById(id);
+    Optional<Media> oldMedia = mediaRepository.findById(id);
     checkMediaExists(oldMedia, id);
 
     return oldMedia.get();
@@ -40,24 +40,24 @@ public class MediaServiceImpl implements IMediaService {
   public Media createMedia(CreateMediaInput createMediaInput) {
     Media newMedia = modelMapper.map(createMediaInput, Media.class);
 
-    return categoryRepository.save(newMedia);
+    return mediaRepository.save(newMedia);
   }
 
   @Override
   public Media updateMedia(UpdateMediaInput updateMediaInput) {
-    Optional<Media> oldMedia = categoryRepository.findById(updateMediaInput.getId());
+    Optional<Media> oldMedia = mediaRepository.findById(updateMediaInput.getId());
     checkMediaExists(oldMedia, updateMediaInput.getId());
 
-    return categoryRepository.save(oldMedia.get());
+    return mediaRepository.save(oldMedia.get());
   }
 
   @Override
   public RequestResponse deleteById(Long id) {
-    Optional<Media> oldMedia = categoryRepository.findById(id);
+    Optional<Media> oldMedia = mediaRepository.findById(id);
     checkMediaExists(oldMedia, id);
 
     oldMedia.get().setDeleteFlag(true);
-    categoryRepository.save(oldMedia.get());
+    mediaRepository.save(oldMedia.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
