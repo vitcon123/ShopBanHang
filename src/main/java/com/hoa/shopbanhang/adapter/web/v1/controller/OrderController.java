@@ -26,22 +26,37 @@ public class OrderController {
   }
 
   @GetMapping(UrlConstant.Order.GET)
-  public ResponseEntity<?> getOrderById(@PathVariable("id") Long id) {
-    return VsResponseUtil.ok(orderService.getOrderById(id));
+  public ResponseEntity<?> getOrderById(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.getOrderById(idOrder));
   }
 
   @PostMapping(UrlConstant.Order.CREATE)
-  public ResponseEntity<?> createOrder(@ModelAttribute CreateOrderInput createOrderInput) {
+  public ResponseEntity<?> createOrder(@RequestBody CreateOrderInput createOrderInput) {
     return VsResponseUtil.ok(orderService.createOrder(createOrderInput));
   }
 
-  @PatchMapping(UrlConstant.Order.UPDATE)
-  public ResponseEntity<?> updateOrder(@Valid @ModelAttribute UpdateOrderInput updateOrderInput) {
-    return VsResponseUtil.ok(orderService.updateOrder(updateOrderInput));
+  @PatchMapping(UrlConstant.Order.ORDER_PLACED)
+  public ResponseEntity<?> setOrderOrderPlaced(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.setOrderOrderPlaced(idOrder));
+  }
+
+  @PatchMapping(UrlConstant.Order.PREPARING_TO_SHIP)
+  public ResponseEntity<?> setOrderPreparingToShip(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.setOrderPreparingToShip(idOrder));
+  }
+
+  @PatchMapping(UrlConstant.Order.IN_TRANSIT)
+  public ResponseEntity<?> setOrderInTransit(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.setOrderInTransit(idOrder));
+  }
+
+  @PatchMapping(UrlConstant.Order.DELIVERED)
+  public ResponseEntity<?> setOrderDelivered(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.setOrderDelivered(idOrder));
   }
 
   @DeleteMapping(UrlConstant.Order.DELETE)
-  public ResponseEntity<?> deleteOrder(@PathVariable("id") Long id) {
-    return VsResponseUtil.ok(orderService.deleteById(id));
+  public ResponseEntity<?> deleteOrder(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.deleteById(idOrder));
   }
 }

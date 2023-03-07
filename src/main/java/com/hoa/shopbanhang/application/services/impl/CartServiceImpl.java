@@ -1,16 +1,17 @@
 package com.hoa.shopbanhang.application.services.impl;
 
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.CartDetailOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.DevMessageConstant;
 import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.repositories.ICartRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
-import com.hoa.shopbanhang.application.services.ICartDetailService;
+import com.hoa.shopbanhang.application.services.IItemDetailService;
 import com.hoa.shopbanhang.application.services.ICartService;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Cart;
-import com.hoa.shopbanhang.domain.entities.CartDetail;
+import com.hoa.shopbanhang.domain.entities.ItemDetail;
 import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,13 @@ import java.util.Optional;
 @Service
 public class CartServiceImpl implements ICartService {
   private final ICartRepository cartRepository;
-  private final ICartDetailService cartDetailService;
+  private final IItemDetailService itemDetailService;
   private final IUserRepository userRepository;
   private final ModelMapper modelMapper;
 
-  public CartServiceImpl(ICartRepository cartRepository, ICartDetailService cartDetailService, IUserRepository userRepository, ModelMapper modelMapper) {
+  public CartServiceImpl(ICartRepository cartRepository, IItemDetailService itemDetailService, IUserRepository userRepository, ModelMapper modelMapper) {
     this.cartRepository = cartRepository;
-    this.cartDetailService = cartDetailService;
+    this.itemDetailService = itemDetailService;
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
   }
@@ -38,20 +39,22 @@ public class CartServiceImpl implements ICartService {
   }
 
   @Override
-  public Cart getCartById(Long id) {
+  public CartDetailOutput getCartById(Long id) {
     Optional<Cart> oldCart = cartRepository.findById(id);
     checkCartExists(oldCart, id);
 
-    return oldCart.get();
+    CartDetailOutput output = new CartDetailOutput(oldCart.get(), oldCart.get().getItemDetails());
+    return output;
   }
 
   @Override
-  public List<CartDetail> getCartByIdUser(Long idUser) {
+  public CartDetailOutput getCartByIdUser(Long idUser) {
     Cart cart = cartRepository.findCartByUser(idUser);
     if (cart == null) {
       throw new VsException(UserMessageConstant.Cart.ERR_NOT_FOUND_BY_ID);
     }
-    return cartDetailService.getAllCartDetailInCart(cart.getId());
+    CartDetailOutput output = new CartDetailOutput(cart, cart.getItemDetails());
+    return output;
   }
 
   @Override
