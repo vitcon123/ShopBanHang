@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -16,11 +15,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CreateMediaInput {
 
+  private Long idProduct;
+
   @NotNull(message = UserMessageConstant.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private MultipartFile file;
 
   private String createdBy = SecurityUtil.getCurrentUserLogin();
 
   private String lastModifiedBy = SecurityUtil.getCurrentUserLogin();
-
 }

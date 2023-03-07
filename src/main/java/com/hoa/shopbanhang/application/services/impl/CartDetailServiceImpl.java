@@ -44,7 +44,7 @@ public class CartDetailServiceImpl implements ICartDetailService {
     CartServiceImpl.checkCartExists(cart, idCart);
 
     Optional<Product> product = productRepository.findById(idProduct);
-    ProductServiceImpl.checkProductExists(product, idProduct);
+    checkProductExists(product, idProduct);
 
     List<CartDetail> productAdded = cart.get().getCartDetails();
 
@@ -97,4 +97,11 @@ public class CartDetailServiceImpl implements ICartDetailService {
     }
   }
 
+  private void checkProductExists(Optional<Product> product, Long id) {
+    if(product.isEmpty()) {
+      throw new VsException(UserMessageConstant.Category.ERR_NOT_FOUND_BY_ID,
+          String.format(DevMessageConstant.Category.ERR_NOT_FOUND_BY_ID, id),
+          new String[]{id.toString()});
+    }
+  }
 }
