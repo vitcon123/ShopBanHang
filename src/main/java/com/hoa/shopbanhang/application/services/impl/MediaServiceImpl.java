@@ -58,14 +58,12 @@ public class MediaServiceImpl implements IMediaService {
     UUID name = UUID.randomUUID();
     Optional<Product> oldProduct = productRepository.findById(createMediaInput.getIdProduct());
     checkProductExists(oldProduct, createMediaInput.getIdProduct());
-
     String fileName = FileUtil.saveFile(name.toString(), CommonConstant.MEDIAS, createMediaInput.getFile());
     String path = UrlUtil.applicationUrl(request) + CommonConstant.URL_MEDIA + fileName;
 
     Media newMedia = modelMapper.map(createMediaInput, Media.class);
     newMedia.setPath(path);
     newMedia.setProduct(oldProduct.get());
-
     return mediaRepository.save(newMedia);
   }
 

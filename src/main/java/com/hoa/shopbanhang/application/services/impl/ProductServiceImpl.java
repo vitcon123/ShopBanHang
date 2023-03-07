@@ -4,7 +4,6 @@ import com.github.slugify.Slugify;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.DevMessageConstant;
-import com.hoa.shopbanhang.application.constants.MediaType;
 import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
@@ -15,7 +14,6 @@ import com.hoa.shopbanhang.application.services.IMediaService;
 import com.hoa.shopbanhang.application.services.IProductService;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Category;
-import com.hoa.shopbanhang.domain.entities.Media;
 import com.hoa.shopbanhang.domain.entities.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
