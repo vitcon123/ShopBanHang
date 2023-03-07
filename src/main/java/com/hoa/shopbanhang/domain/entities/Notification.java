@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +23,7 @@ public class Notification extends AbstractAuditingEntity {
 
   private String path;
 
-  private Integer type;
+//  private Integer type;
 
   private Boolean isRead = Boolean.FALSE;
 
@@ -35,6 +34,6 @@ public class Notification extends AbstractAuditingEntity {
       inverseJoinColumns = @JoinColumn(name = "account_id",
           referencedColumnName = "id"))
   @JsonIgnore
-  private Set<User> users = new HashSet<>();
+  private List<User> users;
 
 }

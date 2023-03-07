@@ -86,10 +86,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers(COMMON_LIST_URLS).permitAll()
+        .anyRequest().permitAll();
+//        .antMatchers(COMMON_LIST_URLS).permitAll()
 //        .antMatchers(STUDENT_LIST_URLS).hasAnyAuthority("ROLE_STUDENT")
 //        .antMatchers(ADMIN_LIST_URLS).hasAnyAuthority("ROLE_ADMIN")
-        .anyRequest().authenticated();
+//        .anyRequest().authenticated();
 //        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
     http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
   }

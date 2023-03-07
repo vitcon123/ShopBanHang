@@ -24,6 +24,9 @@ public class CommonConstant {
   public static final String SORT_TYPE_ASC = "ASC";
   public static final String SORT_TYPE_DESC = "DESC";
 
+  public static final String MEDIAS = "static/media";
+  public static final String URL_MEDIA = "/media/";
+
   //Pattern
   public static final Pattern PATTERN_IMAGE = Pattern.compile("([^\\s]+(\\.(?i)(jpe?g|gif|png))$)");
   public static final Pattern PATTERN_VIDEO = Pattern.compile("([^\\s]+(\\.(?i)(mp4))$)");

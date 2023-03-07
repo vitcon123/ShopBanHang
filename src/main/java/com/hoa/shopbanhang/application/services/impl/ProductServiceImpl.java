@@ -21,6 +21,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +54,7 @@ public class ProductServiceImpl implements IProductService {
     return oldProduct.get();
   }
 
+  @Transactional
   @Override
   public Product createProduct(CreateProductInput createProductInput) {
     Optional<Category> oldCategory = categoryRepository.findById(createProductInput.getIdCategory());
@@ -61,18 +65,23 @@ public class ProductServiceImpl implements IProductService {
     String slug = slugify.slugify(createProductInput.getName());
     newProduct.setSlug(slug);
     newProduct.setCategory(oldCategory.get());
+    Long idProduct = productRepository.save(newProduct).getId();
 
-
-
-    return productRepository.save(newProduct);
+    setMediasProduct(createProductInput.getMultipartFiles(), idProduct);
+    return newProduct;
   }
 
-  private List<Media> createMediaForProduct(List<MultipartFile> multipartFiles) {
+  private void setMediasProduct(List<MultipartFile> multipartFiles, Long idProduct) {
     multipartFiles.forEach(multipartFile -> {
-//      mediaService.createMedia()
+      CreateMediaInput createMediaInput = new CreateMediaInput();
+      createMediaInput.setFile(multipartFile);
+      createMediaInput.setIdProduct(idProduct);
+      try {
+        mediaService.createMedia(createMediaInput);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     });
-
-    return null;
   }
 
   @Override
@@ -81,6 +90,9 @@ public class ProductServiceImpl implements IProductService {
     checkProductExists(oldProduct, updateProductInput.getId());
 
     modelMapper.map(updateProductInput, oldProduct.get());
+    Slugify slugify = new Slugify();
+    String slug = slugify.slugify(updateProductInput.getName());
+    oldProduct.get().setSlug(slug);
 
     return productRepository.save(oldProduct.get());
   }

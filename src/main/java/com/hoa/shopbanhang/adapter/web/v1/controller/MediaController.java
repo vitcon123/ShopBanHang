@@ -4,12 +4,11 @@ import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
-import com.hoa.shopbanhang.application.inputs.media.UpdateMediaInput;
 import com.hoa.shopbanhang.application.services.IMediaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.io.IOException;
 
 @RestApiV1
 public class MediaController {
@@ -32,12 +31,11 @@ public class MediaController {
 
   @PostMapping(UrlConstant.Media.CREATE)
   public ResponseEntity<?> createMedia(@ModelAttribute CreateMediaInput createMediaInput) {
-    return VsResponseUtil.ok(mediaService.createMedia(createMediaInput));
-  }
-
-  @PatchMapping(UrlConstant.Media.UPDATE)
-  public ResponseEntity<?> updateMedia(@Valid @ModelAttribute UpdateMediaInput updateMediaInput) {
-    return VsResponseUtil.ok(mediaService.updateMedia(updateMediaInput));
+    try {
+      return VsResponseUtil.ok(mediaService.createMedia(createMediaInput));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @DeleteMapping(UrlConstant.Media.DELETE)

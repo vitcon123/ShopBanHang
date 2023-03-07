@@ -143,16 +143,20 @@ public class UrlConstant {
   }
 
   public static class Notification {
+    private static final String PREFIX = "/notifications";
+    public static final String GET = PREFIX + "/{id}";
+    public static final String GET_BY_ACCOUNT = PREFIX + "/account/{idAccount}";
+    public static final String LIST = PREFIX;
+    public static final String SEND = PREFIX + "/send";
+    public static final String CREATE = PREFIX;
+    public static final String UPDATE = PREFIX;
+    public static final String READ = PREFIX + "/{id}";
+    public static final String READ_ALL = PREFIX + "/read/{idAccount}";
+    public static final String DELETE = PREFIX + "/{id}";
+
     private Notification() {
     }
 
-    private static final String PREFIX = "/notifications";
-    public static final String LIST = PREFIX;
-    public static final String CREATE = PREFIX;
-    public static final String GET = PREFIX + "/{id}";
-    public static final String UPDATE = PREFIX;
-    public static final String READ = PREFIX + "/{id}";
-    public static final String DELETE = PREFIX + "/{id}";
   }
 
   public static class Timer {

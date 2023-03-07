@@ -57,6 +57,10 @@ public class User extends AbstractAuditingEntity {
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore
+  private List<Rate> rates;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+  @JsonIgnore
   private List<Statistic> statistics;
 
   public User(String email, String password, String fullName,

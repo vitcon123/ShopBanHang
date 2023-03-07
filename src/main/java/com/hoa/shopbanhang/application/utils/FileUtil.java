@@ -25,14 +25,15 @@ public class FileUtil {
     }
     String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
     String fileType = fileName.substring(fileName.lastIndexOf("."));
+    String newFile = newFileName + fileType;
     Path filePath;
     try (InputStream inputStream = multipartFile.getInputStream()) {
-      filePath = path.resolve(newFileName + fileType);
+      filePath = path.resolve(newFile);
       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException ioe) {
-      throw new IOException("Could not save file: " + fileName, ioe);
+      throw new IOException("Could not save file: " + fileName);
     }
-    return filePath.toString();
+    return newFile;
   }
 
   @SneakyThrows
