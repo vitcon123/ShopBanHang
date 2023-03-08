@@ -2,8 +2,7 @@ package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.DevMessageConstant;
-import com.hoa.shopbanhang.application.constants.UserMessageConstant;
+import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.inputs.notification.CreateNotificationInput;
 import com.hoa.shopbanhang.application.inputs.notification.SendNotificationInput;
 import com.hoa.shopbanhang.application.inputs.notification.UpdateNotificationInput;
@@ -36,7 +35,7 @@ public class NotificationServiceImpl implements INotificationService {
   @Override
   public Notification findNotificationById(Long id) {
     Optional<Notification> notification = notificationRepository.findById(id);
-    checkNotificationExists(notification, id);
+    checkNotificationExists(notification);
     return notification.get();
   }
 
@@ -64,7 +63,7 @@ public class NotificationServiceImpl implements INotificationService {
   @Override
   public RequestResponse sendNotification(SendNotificationInput input) {
     Optional<Notification> notification = notificationRepository.findById(input.getNotificationId());
-    checkNotificationExists(notification, input.getNotificationId());
+    checkNotificationExists(notification);
     List<User> users = notification.get().getUsers();
     Optional<User> user;
     for (Long i : input.getAccountId()) {
@@ -82,7 +81,7 @@ public class NotificationServiceImpl implements INotificationService {
   @Override
   public RequestResponse updateNotification(UpdateNotificationInput input) {
     Optional<Notification> notification = notificationRepository.findById(input.getId());
-    checkNotificationExists(notification, input.getId());
+    checkNotificationExists(notification);
     modelMapper.map(input, notification.get());
     notificationRepository.save(notification.get());
 
@@ -115,11 +114,9 @@ public class NotificationServiceImpl implements INotificationService {
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkNotificationExists(Optional<Notification> notification, Long id) {
+  private void checkNotificationExists(Optional<Notification> notification) {
     if (notification.isEmpty()) {
-      throw new VsException(UserMessageConstant.Notification.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Notification.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
+      throw new VsException(MessageConstant.NOTIFICATION_NOT_EXISTS);
     }
   }
 

@@ -51,5 +51,4 @@ public class UserMessageConstant {
   public static final class Order {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.order_id";
   }
-
 }

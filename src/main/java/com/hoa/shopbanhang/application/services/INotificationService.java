@@ -5,7 +5,6 @@ import com.hoa.shopbanhang.application.inputs.notification.CreateNotificationInp
 import com.hoa.shopbanhang.application.inputs.notification.SendNotificationInput;
 import com.hoa.shopbanhang.application.inputs.notification.UpdateNotificationInput;
 import com.hoa.shopbanhang.domain.entities.Notification;
-
 import java.util.List;
 
 public interface INotificationService {
