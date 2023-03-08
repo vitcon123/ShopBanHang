@@ -1,12 +1,20 @@
 package com.hoa.shopbanhang.application.services.impl;
 
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.OrderDetailOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
+import com.hoa.shopbanhang.application.constants.DeliveryStatus;
+import com.hoa.shopbanhang.application.constants.MessageConstant;
+import com.hoa.shopbanhang.application.constants.PaymentMethod;
 import com.hoa.shopbanhang.application.inputs.order.CreateOrderInput;
-import com.hoa.shopbanhang.application.inputs.order.UpdateOrderInput;
+import com.hoa.shopbanhang.application.repositories.IItemDetailRepository;
 import com.hoa.shopbanhang.application.repositories.IOrderRepository;
+import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IOrderService;
+import com.hoa.shopbanhang.configs.exceptions.VsException;
+import com.hoa.shopbanhang.domain.entities.ItemDetail;
 import com.hoa.shopbanhang.domain.entities.Order;
+import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,56 +23,124 @@ import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
-  private final IOrderRepository categoryRepository;
+  private final IOrderRepository orderRepository;
+  private final IItemDetailRepository itemDetailRepository;
+  private final IUserRepository userRepository;
   private final ModelMapper modelMapper;
 
-  public OrderServiceImpl(IOrderRepository categoryRepository, ModelMapper modelMapper) {
-    this.categoryRepository = categoryRepository;
+  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, ModelMapper modelMapper) {
+    this.orderRepository = orderRepository;
+    this.itemDetailRepository = itemDetailRepository;
+    this.userRepository = userRepository;
     this.modelMapper = modelMapper;
   }
 
   @Override
   public List<Order> getAll() {
-    return categoryRepository.findAll();
+    return orderRepository.findAll();
   }
 
   @Override
-  public Order getOrderById(Long id) {
-    Optional<Order> oldOrder = categoryRepository.findById(id);
-    checkOrderExists(oldOrder, id);
+  public OrderDetailOutput getOrderById(Long idOrder) {
+    Optional<Order> order = orderRepository.findById(idOrder);
+    checkOrderExists(order);
 
-    return oldOrder.get();
+    OrderDetailOutput output = new OrderDetailOutput(order.get(), order.get().getItemDetails());
+    return output;
   }
 
   @Override
-  public Order createOrder(CreateOrderInput createOrderInput) {
-    Order newOrder = modelMapper.map(createOrderInput, Order.class);
+  public List<Order> getOrderByUser(Long idUser) {
+    Optional<User> user = userRepository.findById(idUser);
+    UserServiceImpl.checkUserExists(user, idUser);
+    return user.get().getOrders();
+  }
 
-    return categoryRepository.save(newOrder);
+
+  @Override
+  public OrderDetailOutput createOrder(CreateOrderInput createOrderInput) {
+    Optional<User> user = userRepository.findById(createOrderInput.getIdUser());
+    UserServiceImpl.checkUserExists(user, createOrderInput.getIdUser());
+    Order order = modelMapper.map(createOrderInput, Order.class);
+    order.setUser(user.get());
+    order.setDeliveryStatus(DeliveryStatus.ORDER_PLACED);
+    for (PaymentMethod paymentMethod : PaymentMethod.values()) {
+      if(createOrderInput.getPaymentMethod().equals(paymentMethod)) {
+        order.setPaymentMethod(paymentMethod);
+      }
+    }
+    order.setDeliveredDate(createOrderInput.getDeliveredDate());
+    Order newOrder = orderRepository.save(order);
+
+    if(createOrderInput.getIdItemDetails() != null) {
+      for (Long idItemDetail : createOrderInput.getIdItemDetails()) {
+        Optional<ItemDetail> itemDetail = itemDetailRepository.findById(idItemDetail);
+        ItemDetailServiceImpl.checkItemDetailExists(itemDetail);
+        itemDetail.get().setOrder(newOrder);
+        itemDetail.get().setCart(null);
+        itemDetailRepository.save(itemDetail.get());
+      }
+    }
+
+    OrderDetailOutput output = new OrderDetailOutput(newOrder, itemDetailRepository.getAllByOrder(newOrder));
+
+    return output;
   }
 
   @Override
-  public Order updateOrder(UpdateOrderInput updateOrderInput) {
-    Optional<Order> oldOrder = categoryRepository.findById(updateOrderInput.getId());
-    checkOrderExists(oldOrder, updateOrderInput.getId());
-
-    modelMapper.map(updateOrderInput, oldOrder.get());
-
-    return categoryRepository.save(oldOrder.get());
-  }
-
-  @Override
-  public RequestResponse deleteById(Long id) {
-    Optional<Order> oldOrder = categoryRepository.findById(id);
-    checkOrderExists(oldOrder, id);
-
-    oldOrder.get().setDeleteFlag(true);
-    categoryRepository.save(oldOrder.get());
+  public RequestResponse setOrderOrderPlaced(Long idOrder) {
+    Optional<Order> order = orderRepository.findById(idOrder);
+    checkOrderExists(order);
+    order.get().setDeliveryStatus(DeliveryStatus.ORDER_PLACED);
+    orderRepository.save(order.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkOrderExists(Optional<Order> Order, Long id) {
+  @Override
+  public RequestResponse setOrderPreparingToShip(Long idOrder) {
+    Optional<Order> order = orderRepository.findById(idOrder);
+    checkOrderExists(order);
+    order.get().setDeliveryStatus(DeliveryStatus.PREPARING_TO_SHIP);
+    orderRepository.save(order.get());
 
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
+  public RequestResponse setOrderInTransit(Long idOrder) {
+    Optional<Order> order = orderRepository.findById(idOrder);
+    checkOrderExists(order);
+    order.get().setDeliveryStatus(DeliveryStatus.IN_TRANSIT);
+    orderRepository.save(order.get());
+
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
+  public RequestResponse setOrderDelivered(Long idOrder) {
+    Optional<Order> order = orderRepository.findById(idOrder);
+    checkOrderExists(order);
+    order.get().setDeliveryStatus(DeliveryStatus.DELIVERED);
+    orderRepository.save(order.get());
+
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
+  public RequestResponse deleteById(Long id) {
+    Optional<Order> oldOrder = orderRepository.findById(id);
+    checkOrderExists(oldOrder);
+
+    oldOrder.get().setDeleteFlag(true);
+    orderRepository.save(oldOrder.get());
+
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  private void checkOrderExists(Optional<Order> order) {
+    if (order.isEmpty()) {
+      throw new VsException(MessageConstant.ORDER_NOT_EXISTS);
+    }
   }
 }

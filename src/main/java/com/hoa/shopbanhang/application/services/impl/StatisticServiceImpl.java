@@ -15,56 +15,56 @@ import java.util.Optional;
 
 @Service
 public class StatisticServiceImpl implements IStatisticService {
-  private final IStatisticRepository categoryRepository;
+  private final IStatisticRepository statisticRepository;
   private final ModelMapper modelMapper;
 
-  public StatisticServiceImpl(IStatisticRepository categoryRepository, ModelMapper modelMapper) {
-    this.categoryRepository = categoryRepository;
+  public StatisticServiceImpl(IStatisticRepository statisticRepository, ModelMapper modelMapper) {
+    this.statisticRepository = statisticRepository;
     this.modelMapper = modelMapper;
   }
 
   @Override
   public List<Statistic> getAll() {
-    return categoryRepository.findAll();
+    return statisticRepository.findAll();
   }
 
   @Override
   public Statistic getStatisticById(Long id) {
-    Optional<Statistic> oldStatistic = categoryRepository.findById(id);
-    checkStatisticExists(oldStatistic, id);
+    Optional<Statistic> statistic = statisticRepository.findById(id);
+    checkStatisticExists(statistic);
 
-    return oldStatistic.get();
+    return statistic.get();
   }
 
   @Override
   public Statistic createStatistic(CreateStatisticInput createStatisticInput) {
-    Statistic newStatistic = modelMapper.map(createStatisticInput, Statistic.class);
+    Statistic statistic = modelMapper.map(createStatisticInput, Statistic.class);
 
-    return categoryRepository.save(newStatistic);
+    return statisticRepository.save(statistic);
   }
 
   @Override
   public Statistic updateStatistic(UpdateStatisticInput updateStatisticInput) {
-    Optional<Statistic> oldStatistic = categoryRepository.findById(updateStatisticInput.getId());
-    checkStatisticExists(oldStatistic, updateStatisticInput.getId());
+    Optional<Statistic> statistic = statisticRepository.findById(updateStatisticInput.getId());
+    checkStatisticExists(statistic);
 
-    modelMapper.map(updateStatisticInput, oldStatistic.get());
+    modelMapper.map(updateStatisticInput, statistic.get());
 
-    return categoryRepository.save(oldStatistic.get());
+    return statisticRepository.save(statistic.get());
   }
 
   @Override
   public RequestResponse deleteById(Long id) {
-    Optional<Statistic> oldStatistic = categoryRepository.findById(id);
-    checkStatisticExists(oldStatistic, id);
+    Optional<Statistic> statistic = statisticRepository.findById(id);
+    checkStatisticExists(statistic);
 
-    oldStatistic.get().setDeleteFlag(true);
-    categoryRepository.save(oldStatistic.get());
+    statistic.get().setDeleteFlag(true);
+    statisticRepository.save(statistic.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkStatisticExists(Optional<Statistic> Statistic, Long id) {
+  private void checkStatisticExists(Optional<Statistic> Statistic) {
 
   }
 }

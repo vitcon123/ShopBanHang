@@ -2,8 +2,7 @@ package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.DevMessageConstant;
-import com.hoa.shopbanhang.application.constants.UserMessageConstant;
+import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
 import com.hoa.shopbanhang.application.repositories.IMediaRepository;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
@@ -31,7 +30,8 @@ public class MediaServiceImpl implements IMediaService {
   private final ModelMapper modelMapper;
   private final HttpServletRequest request;
 
-  public MediaServiceImpl(IProductRepository productRepository, IMediaRepository mediaRepository, ModelMapper modelMapper,
+  public MediaServiceImpl(IProductRepository productRepository, IMediaRepository mediaRepository,
+                          ModelMapper modelMapper,
                           HttpServletRequest request) {
     this.productRepository = productRepository;
     this.mediaRepository = mediaRepository;
@@ -46,51 +46,42 @@ public class MediaServiceImpl implements IMediaService {
 
   @Override
   public Media getMediaById(Long id) {
-    Optional<Media> oldMedia = mediaRepository.findById(id);
-    checkMediaExists(oldMedia, id);
+    Optional<Media> media = mediaRepository.findById(id);
+    checkMediaExists(media);
 
-    return oldMedia.get();
+    return media.get();
   }
 
   @Transactional
   @Override
   public Media createMedia(CreateMediaInput createMediaInput) throws IOException {
     UUID name = UUID.randomUUID();
-    Optional<Product> oldProduct = productRepository.findById(createMediaInput.getIdProduct());
-    checkProductExists(oldProduct, createMediaInput.getIdProduct());
+    Optional<Product> product = productRepository.findById(createMediaInput.getIdProduct());
+    ProductServiceImpl.checkProductExists(product);
     String fileName = FileUtil.saveFile(name.toString(), CommonConstant.MEDIAS, createMediaInput.getFile());
     String path = UrlUtil.applicationUrl(request) + CommonConstant.URL_MEDIA + fileName;
 
-    Media newMedia = modelMapper.map(createMediaInput, Media.class);
-    newMedia.setPath(path);
-    newMedia.setProduct(oldProduct.get());
-    return mediaRepository.save(newMedia);
+    Media media = modelMapper.map(createMediaInput, Media.class);
+    media.setPath(path);
+    media.setProduct(product.get());
+    return mediaRepository.save(media);
   }
 
   @Override
   public RequestResponse deleteById(Long id) {
-    Optional<Media> oldMedia = mediaRepository.findById(id);
-    checkMediaExists(oldMedia, id);
+    Optional<Media> media = mediaRepository.findById(id);
+    checkMediaExists(media);
 
-    oldMedia.get().setDeleteFlag(true);
-    mediaRepository.save(oldMedia.get());
+    media.get().setDeleteFlag(true);
+    mediaRepository.save(media.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkMediaExists(Optional<Media> media, Long id) {
-    if(media.isEmpty()) {
-      throw new VsException(UserMessageConstant.Media.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Media.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
+  private void checkMediaExists(Optional<Media> media) {
+    if (media.isEmpty()) {
+      throw new VsException(MessageConstant.MEDIA_NOT_EXISTS);
     }
   }
 
-  private void checkProductExists(Optional<Product> product, Long id) {
-    if(product.isEmpty()) {
-      throw new VsException(UserMessageConstant.Category.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Category.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
-    }
-  }
 }

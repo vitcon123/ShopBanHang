@@ -3,7 +3,7 @@ package com.hoa.shopbanhang.adapter.web.v1.controller;
 import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
-import com.hoa.shopbanhang.application.services.ICartDetailService;
+import com.hoa.shopbanhang.application.services.IItemDetailService;
 import com.hoa.shopbanhang.application.services.ICartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
   private final ICartService cartService;
-  private final ICartDetailService cartDetailService;
+  private final IItemDetailService itemDetailService;
 
-  public CartController(ICartService cartService, ICartDetailService cartDetailService) {
+  public CartController(ICartService cartService, IItemDetailService itemDetailService) {
     this.cartService = cartService;
-    this.cartDetailService = cartDetailService;
+    this.itemDetailService = itemDetailService;
   }
 
   @GetMapping(UrlConstant.Cart.LIST)
@@ -48,27 +48,27 @@ public class CartController {
   public ResponseEntity<?> addProductToCartById(@PathVariable(name = "idCart") Long idCart,
                                          @PathVariable(name = "idProduct") Long idProduct,
                                          @RequestParam(name = "amount") Long amount) {
-    cartDetailService.addProductToCartById(idCart, idProduct, amount);
+    itemDetailService.addProductToCartById(idCart, idProduct, amount);
     return VsResponseUtil.ok("Add Successfully");
   }
 
   @PatchMapping(UrlConstant.Cart.EDIT_AMOUNT_OF_CART_DETAIL)
-  public ResponseEntity<?> editCartDetailById(@PathVariable(name = "idCartDetail") Long idCartDetail,
+  public ResponseEntity<?> editItemDetailById(@PathVariable(name = "idItemDetail") Long idItemDetail,
                                                   @RequestParam(name = "amount") Long amount) {
-    cartDetailService.editCartDetailById(idCartDetail, amount);
-    return VsResponseUtil.ok("Edit Amount of CartDetail " + idCartDetail + "successfully");
+    itemDetailService.editItemDetailById(idItemDetail, amount);
+    return VsResponseUtil.ok("Edit Amount of ItemDetail " + idItemDetail + "successfully");
   }
 
 
   @DeleteMapping(UrlConstant.Cart.DELETE_CART_DETAIL)
-  public ResponseEntity<?> deleteCartDetailById(@PathVariable(name = "idCartDetail") Long idCartDetail){
-    cartDetailService.deleteCartDetailById(idCartDetail);
-    return VsResponseUtil.ok("Delete cart detail " + idCartDetail + " successfully");
+  public ResponseEntity<?> deleteItemDetailById(@PathVariable(name = "idItemDetail") Long idItemDetail){
+    itemDetailService.deleteItemDetailById(idItemDetail);
+    return VsResponseUtil.ok("Delete cart detail " + idItemDetail + " successfully");
   }
 
   @DeleteMapping(UrlConstant.Cart.DELETE_ALL_CART_DETAIL)
-  public ResponseEntity<?> deleteAllCartDetailInCart(@PathVariable("idCart") Long idCart) {
-    cartDetailService.deleteAllCartDetailInCart(idCart);
+  public ResponseEntity<?> deleteAllItemDetailInCart(@PathVariable("idCart") Long idCart) {
+    itemDetailService.deleteAllItemDetailInCart(idCart);
     return VsResponseUtil.ok("Delete all cart detail of cart " + idCart + " successfully");
   }
 

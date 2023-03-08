@@ -3,8 +3,7 @@ package com.hoa.shopbanhang.application.services.impl;
 import com.github.slugify.Slugify;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.DevMessageConstant;
-import com.hoa.shopbanhang.application.constants.UserMessageConstant;
+import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
@@ -31,11 +30,18 @@ public class ProductServiceImpl implements IProductService {
   private final IMediaService mediaService;
   private final ModelMapper modelMapper;
 
-  public ProductServiceImpl(IProductRepository productRepository, ICategoryRepository categoryRepository, IMediaService mediaService, ModelMapper modelMapper) {
+  public ProductServiceImpl(IProductRepository productRepository, ICategoryRepository categoryRepository,
+                            IMediaService mediaService, ModelMapper modelMapper) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.mediaService = mediaService;
     this.modelMapper = modelMapper;
+  }
+
+  public static void checkProductExists(Optional<Product> product) {
+    if (product.isEmpty()) {
+      throw new VsException(MessageConstant.PRODUCT_NOT_EXISTS);
+    }
   }
 
   @Override
@@ -45,23 +51,23 @@ public class ProductServiceImpl implements IProductService {
 
   @Override
   public Product getProductById(Long id) {
-    Optional<Product> oldProduct = productRepository.findById(id);
-    checkProductExists(oldProduct, id);
+    Optional<Product> product = productRepository.findById(id);
+    checkProductExists(product);
 
-    return oldProduct.get();
+    return product.get();
   }
 
   @Transactional
   @Override
   public Product createProduct(CreateProductInput createProductInput) {
-    Optional<Category> oldCategory = categoryRepository.findById(createProductInput.getIdCategory());
-    checkCategoryExists(oldCategory, createProductInput.getIdCategory());
+    Optional<Category> category = categoryRepository.findById(createProductInput.getIdCategory());
+    CategoryServiceImpl.checkCategoryExists(category);
 
     Product newProduct = modelMapper.map(createProductInput, Product.class);
     Slugify slugify = new Slugify();
     String slug = slugify.slugify(createProductInput.getName());
     newProduct.setSlug(slug);
-    newProduct.setCategory(oldCategory.get());
+    newProduct.setCategory(category.get());
     Long idProduct = productRepository.save(newProduct).getId();
 
     setMediasProduct(createProductInput.getMultipartFiles(), idProduct);
@@ -83,21 +89,21 @@ public class ProductServiceImpl implements IProductService {
 
   @Override
   public Product updateProduct(UpdateProductInput updateProductInput) {
-    Optional<Product> oldProduct = productRepository.findById(updateProductInput.getId());
-    checkProductExists(oldProduct, updateProductInput.getId());
+    Optional<Product> product = productRepository.findById(updateProductInput.getId());
+    checkProductExists(product);
 
-    modelMapper.map(updateProductInput, oldProduct.get());
+    modelMapper.map(updateProductInput, product.get());
     Slugify slugify = new Slugify();
     String slug = slugify.slugify(updateProductInput.getName());
-    oldProduct.get().setSlug(slug);
+    product.get().setSlug(slug);
 
-    return productRepository.save(oldProduct.get());
+    return productRepository.save(product.get());
   }
 
   @Override
   public RequestResponse deleteById(Long id) {
     Optional<Product> oldProduct = productRepository.findById(id);
-    checkProductExists(oldProduct, id);
+    checkProductExists(oldProduct);
 
     oldProduct.get().setDeleteFlag(true);
     productRepository.save(oldProduct.get());
@@ -105,19 +111,4 @@ public class ProductServiceImpl implements IProductService {
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkProductExists(Optional<Product> product, Long id) {
-    if(product.isEmpty()) {
-      throw new VsException(UserMessageConstant.Category.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Category.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
-    }
-  }
-
-  private void checkCategoryExists(Optional<Category> category, Long id) {
-    if(category.isEmpty()) {
-      throw new VsException(UserMessageConstant.Category.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Category.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
-    }
-  }
 }

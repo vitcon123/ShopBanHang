@@ -26,7 +26,7 @@ public class Order extends AbstractAuditingEntity {
 
   private Timestamp orderedDate = getCreatedDate();
 
-  private Timestamp deliveredDate;
+  private String deliveredDate;
 
   private PaymentMethod paymentMethod;
 
@@ -34,8 +34,8 @@ public class Order extends AbstractAuditingEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
   @JsonIgnore
-  private List<OrderDetail> orderDetails;
+  private List<ItemDetail> itemDetails;
 
 }

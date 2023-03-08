@@ -25,7 +25,7 @@ public class Product extends AbstractAuditingEntity {
 
   private Double price;
 
-  private Long quantity;
+  private Long stock;
 
   private String description;
 
@@ -37,11 +37,7 @@ public class Product extends AbstractAuditingEntity {
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
   @JsonIgnore
-  private List<CartDetail> cartDetails;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
-  @JsonIgnore
-  private List<OrderDetail> orderDetails;
+  private List<ItemDetail> itemDetails;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
   @JsonIgnore

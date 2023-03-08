@@ -9,7 +9,6 @@ import com.hoa.shopbanhang.application.constants.AuthenticationProvider;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.RoleConstant;
 import com.hoa.shopbanhang.application.events.SignUpEvent;
-import com.hoa.shopbanhang.application.inputs.cart.CreateCartInput;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
 import com.hoa.shopbanhang.application.repositories.IRoleRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
@@ -42,12 +41,6 @@ import java.util.Optional;
 @Service
 public class AuthServiceImpl implements IAuthService {
 
-  @Value("${jwt.secret_key}")
-  private String SECRET_KEY;
-
-  @Value("${jwt.time_token_expiration}")
-  private Integer TIME_TOKEN_EXPIRATION;
-
   private final IUserRepository userRepository;
   private final JwtUtil jwtUtil;
   private final ModelMapper modelMapper;
@@ -57,9 +50,16 @@ public class AuthServiceImpl implements IAuthService {
   private final IRoleRepository roleRepository;
   private final AuthenticationManager authenticationManager;
   private final ApplicationEventPublisher publisher;
+  @Value("${jwt.secret_key}")
+  private String SECRET_KEY;
+  @Value("${jwt.time_token_expiration}")
+  private Integer TIME_TOKEN_EXPIRATION;
 
 
-  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, ITokenService tokenService, ICartService cartService, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, AuthenticationManager authenticationManager, ApplicationEventPublisher publisher) {
+  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper,
+                         ITokenService tokenService, ICartService cartService, PasswordEncoder passwordEncoder,
+                         IRoleRepository roleRepository, AuthenticationManager authenticationManager,
+                         ApplicationEventPublisher publisher) {
     this.userRepository = userRepository;
     this.jwtUtil = jwtUtil;
     this.modelMapper = modelMapper;
@@ -77,7 +77,7 @@ public class AuthServiceImpl implements IAuthService {
     checkUserExists(oldUser);
 
     // check user authentication
-    if(!oldUser.get().getStatus()) {
+    if (!oldUser.get().getStatus()) {
       throw new VsException("User unconfirmed account!");
     }
 
@@ -89,14 +89,15 @@ public class AuthServiceImpl implements IAuthService {
       throw new VsException("Incorrect username or password");
     }
 
-    return new AuthenticationResponse(jwtUtil.generateToken(oldUser.get(), CommonConstant.FALSE), CommonConstant.BEARER_TOKEN,
+    return new AuthenticationResponse(jwtUtil.generateToken(oldUser.get(), CommonConstant.FALSE),
+        CommonConstant.BEARER_TOKEN,
         jwtUtil.generateToken(oldUser.get(), CommonConstant.TRUE));
   }
 
   @Override
   public User signUp(CreateUserInput createUserInput, HttpServletRequest request) {
     Optional<User> oldUser = userRepository.findByEmail(createUserInput.getEmail());
-    if(oldUser.isPresent()) {
+    if (oldUser.isPresent()) {
       throw new VsException("Email has already exists");
     }
 
@@ -145,7 +146,8 @@ public class AuthServiceImpl implements IAuthService {
 
     String sixNum = RandomStringUtils.randomNumeric(6);
     tokenService.createTokenVerify(sixNum, user.get(), 60);
-    SendMailUtil.sendMailSimple(user.get().getEmail(), "Mã khôi phục mật khẩu: " + sixNum, "Yêu cầu khôi phục mật khẩu Vit Web");
+    SendMailUtil.sendMailSimple(user.get().getEmail(), "Mã khôi phục mật khẩu: " + sixNum, "Yêu cầu khôi phục mật " +
+        "khẩu Vit Web");
     return new RequestResponse(CommonConstant.TRUE, "");
   }
 
@@ -165,7 +167,7 @@ public class AuthServiceImpl implements IAuthService {
     checkUserExists(user);
 
     String oldPasswordInput = passwordEncoder.encode(request.getOldPassword());
-    if(!user.get().getPassword().equals(oldPasswordInput)) {
+    if (!user.get().getPassword().equals(oldPasswordInput)) {
       throw new VsException("The current password entered is incorrect");
     }
 
@@ -184,7 +186,7 @@ public class AuthServiceImpl implements IAuthService {
   }
 
   private void checkUserExists(Optional<User> user) {
-    if(user.isEmpty()) {
+    if (user.isEmpty()) {
       throw new VsException("User not found");
     }
   }
