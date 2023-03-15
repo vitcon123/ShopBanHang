@@ -32,12 +32,6 @@ public class CartServiceImpl implements ICartService {
     this.modelMapper = modelMapper;
   }
 
-  public static void checkCartExists(Optional<Cart> cart) {
-    if (cart.isEmpty()) {
-      throw new VsException(MessageConstant.CART_NOT_EXISTS);
-    }
-  }
-
   @Override
   public List<Cart> getAll() {
     return cartRepository.findAll();
@@ -80,5 +74,11 @@ public class CartServiceImpl implements ICartService {
     cartRepository.save(cart.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  public static void checkCartExists(Optional<Cart> cart) {
+    if (cart.isEmpty()) {
+      throw new VsException(MessageConstant.CART_NOT_EXISTS);
+    }
   }
 }

@@ -1,0 +1,19 @@
+package com.hoa.shopbanhang.application.inputs.rate;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdateRateInput {
+
+  private Long id;
+
+  private Integer star;
+
+  private String review;
+}

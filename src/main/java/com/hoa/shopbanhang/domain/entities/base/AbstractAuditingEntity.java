@@ -1,4 +1,4 @@
-package com.shop.shopbanhang.domain.entities.base;
+package com.hoa.shopbanhang.domain.entities.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
