@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoa.shopbanhang.application.constants.DeliveryStatus;
 import com.hoa.shopbanhang.application.constants.PaymentMethod;
 import com.hoa.shopbanhang.application.constants.TableNameConstant;
-import com.shop.shopbanhang.domain.entities.base.AbstractAuditingEntity;
+import com.hoa.shopbanhang.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

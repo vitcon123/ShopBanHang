@@ -77,9 +77,7 @@ public class CartServiceImpl implements ICartService {
 
   public static void checkCartExists(Optional<Cart> cart, Long id) {
     if(cart.isEmpty()) {
-      throw new VsException(UserMessageConstant.Cart.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Cart.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
+      throw new VsException(DevMessageConstant.Cart.ERR_NOT_FOUND_BY_ID);
     }
   }
 }

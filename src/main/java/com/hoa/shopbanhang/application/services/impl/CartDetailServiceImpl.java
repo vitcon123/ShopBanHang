@@ -69,7 +69,7 @@ public class CartDetailServiceImpl implements ICartDetailService {
   @Override
   public void editCartDetailById(Long idCartDetail, Long amount) {
     Optional<CartDetail> cartDetail = cartDetailRepository.findById(idCartDetail);
-    checkCartDetailExists(cartDetail, idCartDetail);
+    checkCartDetailExists(cartDetail);
 
     cartDetail.get().setAmount(amount);
     cartDetailRepository.save(cartDetail.get());
@@ -78,7 +78,7 @@ public class CartDetailServiceImpl implements ICartDetailService {
   @Override
   public void deleteCartDetailById(Long idCartDetail) {
     Optional<CartDetail> cartDetail = cartDetailRepository.findById(idCartDetail);
-    checkCartDetailExists(cartDetail, idCartDetail);
+    checkCartDetailExists(cartDetail);
     cartDetailRepository.delete(cartDetail.get());
   }
 
@@ -89,11 +89,9 @@ public class CartDetailServiceImpl implements ICartDetailService {
     cartDetailRepository.deleteAllByCart(cart.get());
   }
 
-  private void checkCartDetailExists(Optional<CartDetail> cartDetail, Long id) {
+  private void checkCartDetailExists(Optional<CartDetail> cartDetail) {
     if(cartDetail.isEmpty()) {
-      throw new VsException(UserMessageConstant.Cart.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Cart.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
+      throw new VsException(DevMessageConstant.Cart.ERR_NOT_FOUND_BY_ID);
     }
   }
 
