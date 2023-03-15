@@ -28,7 +28,7 @@ public class UserMessageConstant {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.cart_id";
   }
 
-  public static final class CartDetail {
+  public static final class ItemDetail {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.cart_detail_id";
   }
 
@@ -48,4 +48,7 @@ public class UserMessageConstant {
     public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.product_id";
   }
 
+  public static final class Order {
+    public static final String ERR_NOT_FOUND_BY_ID = "invalid.not.found.order_id";
+  }
 }

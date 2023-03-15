@@ -3,8 +3,7 @@ package com.hoa.shopbanhang.application.services.impl;
 import com.github.slugify.Slugify;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.DevMessageConstant;
-import com.hoa.shopbanhang.application.constants.UserMessageConstant;
+import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.inputs.category.CreateCategoryInput;
 import com.hoa.shopbanhang.application.inputs.category.UpdateCategoryInput;
 import com.hoa.shopbanhang.application.repositories.ICategoryRepository;
@@ -35,50 +34,48 @@ public class CategoryServiceImpl implements ICategoryService {
   @Override
   public Category getCategoryById(Long id) {
     Optional<Category> oldCategory = categoryRepository.findById(id);
-    checkCategoryExists(oldCategory, id);
+    checkCategoryExists(oldCategory);
 
     return oldCategory.get();
   }
 
   @Override
   public Category createCategory(CreateCategoryInput createCategoryInput) {
-    Category newCategory = modelMapper.map(createCategoryInput, Category.class);
+    Category category = modelMapper.map(createCategoryInput, Category.class);
     Slugify slugify = new Slugify();
     String slug = slugify.slugify(createCategoryInput.getName());
-    newCategory.setSlug(slug);
+    category.setSlug(slug);
 
-    return categoryRepository.save(newCategory);
+    return categoryRepository.save(category);
   }
 
   @Override
   public Category updateCategory(UpdateCategoryInput updateCategoryInput) {
-    Optional<Category> oldCategory = categoryRepository.findById(updateCategoryInput.getId());
-    checkCategoryExists(oldCategory, updateCategoryInput.getId());
+    Optional<Category> category = categoryRepository.findById(updateCategoryInput.getId());
+    checkCategoryExists(category);
 
-    modelMapper.map(updateCategoryInput, oldCategory.get());
+    modelMapper.map(updateCategoryInput, category.get());
     Slugify slugify = new Slugify();
     String slug = slugify.slugify(updateCategoryInput.getName());
-    oldCategory.get().setSlug(slug);
+    category.get().setSlug(slug);
 
-    return categoryRepository.save(oldCategory.get());
+    return categoryRepository.save(category.get());
   }
 
   @Override
   public RequestResponse deleteById(Long id) {
-    Optional<Category> oldCategory = categoryRepository.findById(id);
-    checkCategoryExists(oldCategory, id);
+    Optional<Category> category = categoryRepository.findById(id);
+    checkCategoryExists(category);
 
-    oldCategory.get().setDeleteFlag(true);
-    categoryRepository.save(oldCategory.get());
+    category.get().setDeleteFlag(true);
+    categoryRepository.save(category.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkCategoryExists(Optional<Category> Category, Long id) {
-    if(Category.isEmpty()) {
-      throw new VsException(UserMessageConstant.Category.ERR_NOT_FOUND_BY_ID,
-          String.format(DevMessageConstant.Category.ERR_NOT_FOUND_BY_ID, id),
-          new String[]{id.toString()});
+  public static void checkCategoryExists(Optional<Category> Category) {
+    if (Category.isEmpty()) {
+      throw new VsException(MessageConstant.CATEGORY_NOT_EXISTS);
     }
   }
 }

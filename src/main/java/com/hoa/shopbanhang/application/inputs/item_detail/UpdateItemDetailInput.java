@@ -1,4 +1,4 @@
-package com.hoa.shopbanhang.application.inputs.cart_detail;
+package com.hoa.shopbanhang.application.inputs.item_detail;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCartDetailInput {
+public class UpdateItemDetailInput {
+
+  private Long id;
 
   private String name;
 

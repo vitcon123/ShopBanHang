@@ -14,12 +14,14 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_ORDER_DETAIL)
-public class OrderDetail extends AbstractAuditingEntity {
-
-  private Double price;
+@Table(name = TableNameConstant.TBL_ITEM_DETAIL)
+public class ItemDetail extends AbstractAuditingEntity {
 
   private Long amount;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "cart_id")
+  private Cart cart;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "order_id")
@@ -28,6 +30,5 @@ public class OrderDetail extends AbstractAuditingEntity {
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id")
   private Product product;
-
 
 }
