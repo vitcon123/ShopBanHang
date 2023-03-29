@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProductInput {
+public class SearchProductInput {
 
   private Long idCategory;
 
@@ -22,10 +19,5 @@ public class CreateProductInput {
 
   private Integer stock;
 
-  private String description;
-
   private String brand;
-
-  private List<MultipartFile> multipartFiles;
-
 }

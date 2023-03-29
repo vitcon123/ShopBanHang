@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoa.shopbanhang.application.constants.TableNameConstant;
 import com.hoa.shopbanhang.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class Media extends AbstractAuditingEntity {
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id")
+  @JsonIgnore
   private Product product;
 
 }

@@ -6,6 +6,7 @@ import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
+import com.hoa.shopbanhang.application.inputs.product.SearchProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.repositories.ICategoryRepository;
@@ -81,6 +82,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     return product.get();
+  }
+
+  @Override
+  public List<Product> findProducts(SearchProductInput searchProductInput) {
+    return productRepository.searchProducts(searchProductInput);
   }
 
   @Transactional

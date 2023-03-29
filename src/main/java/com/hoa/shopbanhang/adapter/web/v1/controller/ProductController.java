@@ -4,6 +4,7 @@ import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
+import com.hoa.shopbanhang.application.inputs.product.SearchProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.services.IProductService;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +31,18 @@ public class ProductController {
     return VsResponseUtil.ok(productService.getProductById(id));
   }
 
+  @GetMapping(UrlConstant.Product.SEARCH)
+  public ResponseEntity<?> findProducts(@RequestBody SearchProductInput searchProductInput) {
+    return VsResponseUtil.ok(productService.findProducts(searchProductInput));
+  }
+
   @PostMapping(UrlConstant.Product.CREATE)
   public ResponseEntity<?> createProduct(@ModelAttribute CreateProductInput createProductInput) {
     return VsResponseUtil.ok(productService.createProduct(createProductInput));
   }
 
   @PatchMapping(UrlConstant.Product.UPDATE)
-  public ResponseEntity<?> updateProduct(@Valid @ModelAttribute UpdateProductInput updateProductInput) {
+  public ResponseEntity<?> updateProduct(@ModelAttribute UpdateProductInput updateProductInput) {
     return VsResponseUtil.ok(productService.updateProduct(updateProductInput));
   }
 

@@ -25,7 +25,7 @@ public class Product extends AbstractAuditingEntity {
 
   private Double price;
 
-  private Long stock;
+  private Integer stock;
 
   private String description;
 
@@ -48,7 +48,6 @@ public class Product extends AbstractAuditingEntity {
   private List<Statistic> statistics;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
-  @JsonIgnore
-  private List<Media> media;
+  private List<Media> medias;
 
 }
