@@ -3,6 +3,7 @@ package com.hoa.shopbanhang.application.services;
 import com.hoa.shopbanhang.application.constants.DevMessageConstant;
 import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
+import com.hoa.shopbanhang.application.services.impl.UserServiceImpl;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,10 +28,8 @@ public class MyUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     Optional<User> user = userRepository.findByEmail(email);
-    if (user.isEmpty()) {
-      throw new VsException(UserMessageConstant.ERR_EXCEPTION_GENERAL,
-          String.format(DevMessageConstant.User.ERR_NOT_FOUND_BY_ID, email));
-    }
+    UserServiceImpl.checkUserExists(user);
+
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
     grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().toString()));
 

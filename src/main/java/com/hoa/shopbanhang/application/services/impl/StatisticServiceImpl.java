@@ -1,12 +1,19 @@
 package com.hoa.shopbanhang.application.services.impl;
 
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.AdminStatisticOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
+import com.hoa.shopbanhang.application.constants.MessageConstant;
+import com.hoa.shopbanhang.application.inputs.statistic.AdminStatisticInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
-import com.hoa.shopbanhang.application.inputs.statistic.UpdateStatisticInput;
+import com.hoa.shopbanhang.application.repositories.IProductRepository;
 import com.hoa.shopbanhang.application.repositories.IStatisticRepository;
+import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IStatisticService;
+import com.hoa.shopbanhang.configs.exceptions.VsException;
+import com.hoa.shopbanhang.domain.entities.Product;
 import com.hoa.shopbanhang.domain.entities.Statistic;
+import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +23,20 @@ import java.util.Optional;
 @Service
 public class StatisticServiceImpl implements IStatisticService {
   private final IStatisticRepository statisticRepository;
-  private final ModelMapper modelMapper;
+  private final IUserRepository userRepository;
+  private final IProductRepository productRepository;
 
-  public StatisticServiceImpl(IStatisticRepository statisticRepository, ModelMapper modelMapper) {
+  public StatisticServiceImpl(IStatisticRepository statisticRepository, IUserRepository userRepository,
+                              IProductRepository productRepository) {
     this.statisticRepository = statisticRepository;
-    this.modelMapper = modelMapper;
+    this.userRepository = userRepository;
+    this.productRepository = productRepository;
   }
 
   @Override
-  public List<Statistic> getAll() {
-    return statisticRepository.findAll();
+  public List<AdminStatisticOutput> getAll(AdminStatisticInput input) {
+    List<AdminStatisticOutput> adminStatisticOutputs = statisticRepository.adminStatistic(input);
+    return adminStatisticOutputs;
   }
 
   @Override
@@ -38,19 +49,14 @@ public class StatisticServiceImpl implements IStatisticService {
 
   @Override
   public Statistic createStatistic(CreateStatisticInput createStatisticInput) {
-    Statistic statistic = modelMapper.map(createStatisticInput, Statistic.class);
+    Statistic statistic = new Statistic();
+    statistic.setAgeOfUser(createStatisticInput.getAgeOfUser());
+    Optional<User> user = userRepository.findById(createStatisticInput.getIdUser());
+    statistic.setUser(user.get());
+    Optional<Product> product = productRepository.findById(createStatisticInput.getIdProduct());
+    statistic.setProduct(product.get());
 
     return statisticRepository.save(statistic);
-  }
-
-  @Override
-  public Statistic updateStatistic(UpdateStatisticInput updateStatisticInput) {
-    Optional<Statistic> statistic = statisticRepository.findById(updateStatisticInput.getId());
-    checkStatisticExists(statistic);
-
-    modelMapper.map(updateStatisticInput, statistic.get());
-
-    return statisticRepository.save(statistic.get());
   }
 
   @Override
@@ -58,13 +64,14 @@ public class StatisticServiceImpl implements IStatisticService {
     Optional<Statistic> statistic = statisticRepository.findById(id);
     checkStatisticExists(statistic);
 
-    statistic.get().setDeleteFlag(true);
-    statisticRepository.save(statistic.get());
+    statisticRepository.delete(statistic.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
-  private void checkStatisticExists(Optional<Statistic> Statistic) {
-
+  private void checkStatisticExists(Optional<Statistic> statistic) {
+    if (statistic.isEmpty()) {
+      throw new VsException(MessageConstant.STATISTIC_NOT_EXISTS);
+    }
   }
 }

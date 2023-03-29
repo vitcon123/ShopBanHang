@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Setter
@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Table(name = TableNameConstant.TBL_STATISTIC)
 public class Statistic extends AbstractAuditingEntity {
 
-  private Timestamp time = getCreatedDate();
+  private String timeView = LocalDate.now().toString();
 
   private Integer ageOfUser;
 
