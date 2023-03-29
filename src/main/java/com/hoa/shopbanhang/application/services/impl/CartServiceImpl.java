@@ -65,7 +65,7 @@ public class CartServiceImpl implements ICartService {
   @Override
   public Cart createCart(Long idUser) {
     Optional<User> user = userRepository.findById(idUser);
-    UserServiceImpl.checkUserExists(user, idUser);
+    UserServiceImpl.checkUserExists(user);
     Cart cart = new Cart();
     cart.setUser(user.get());
     return cartRepository.save(cart);

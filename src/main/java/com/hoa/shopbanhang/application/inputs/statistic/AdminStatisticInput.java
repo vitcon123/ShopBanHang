@@ -9,11 +9,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateStatisticInput {
+public class AdminStatisticInput {
 
-  private Long id;
+  private Integer ageMin;
 
-  private String name;
+  private Integer ageMax;
 
-  private String description;
+  private String timeStart;
+
+  private String timeEnd;
+
 }

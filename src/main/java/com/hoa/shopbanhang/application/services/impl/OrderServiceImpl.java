@@ -52,7 +52,7 @@ public class OrderServiceImpl implements IOrderService {
   @Override
   public List<Order> getOrderByUser(Long idUser) {
     Optional<User> user = userRepository.findById(idUser);
-    UserServiceImpl.checkUserExists(user, idUser);
+    UserServiceImpl.checkUserExists(user);
     return user.get().getOrders();
   }
 
@@ -60,7 +60,7 @@ public class OrderServiceImpl implements IOrderService {
   @Override
   public OrderDetailOutput createOrder(CreateOrderInput createOrderInput) {
     Optional<User> user = userRepository.findById(createOrderInput.getIdUser());
-    UserServiceImpl.checkUserExists(user, createOrderInput.getIdUser());
+    UserServiceImpl.checkUserExists(user);
     Order order = modelMapper.map(createOrderInput, Order.class);
     order.setUser(user.get());
     order.setDeliveryStatus(DeliveryStatus.ORDER_PLACED);

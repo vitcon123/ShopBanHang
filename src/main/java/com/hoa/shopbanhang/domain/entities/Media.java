@@ -1,6 +1,5 @@
 package com.hoa.shopbanhang.domain.entities;
 
-import com.hoa.shopbanhang.application.constants.MediaType;
 import com.hoa.shopbanhang.application.constants.TableNameConstant;
 import com.shop.shopbanhang.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;

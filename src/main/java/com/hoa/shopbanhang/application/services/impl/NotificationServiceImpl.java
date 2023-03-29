@@ -42,7 +42,7 @@ public class NotificationServiceImpl implements INotificationService {
   @Override
   public List<Notification> findNotificationByUser(Long id) {
     Optional<User> user = userRepository.findById(id);
-    UserServiceImpl.checkUserExists(user, id);
+    UserServiceImpl.checkUserExists(user);
     List<Notification> notifications = user.get().getNotifications();
 
     return notifications;
@@ -53,7 +53,7 @@ public class NotificationServiceImpl implements INotificationService {
     Notification notification = modelMapper.map(input, Notification.class);
     if (input.getUserId() != null) {
       Optional<User> user = userRepository.findById(input.getUserId());
-      UserServiceImpl.checkUserExists(user, input.getUserId());
+      UserServiceImpl.checkUserExists(user);
       notification.setUsers(List.of(user.get()));
     }
     notificationRepository.save(notification);
@@ -97,7 +97,7 @@ public class NotificationServiceImpl implements INotificationService {
   @Override
   public RequestResponse readAllNotification(Long id) {
     Optional<User> user = userRepository.findById(id);
-    UserServiceImpl.checkUserExists(user, id);
+    UserServiceImpl.checkUserExists(user);
     List<Notification> notifications = user.get().getNotifications();
     for (Notification notification : notifications) {
       if (notification.getIsRead() == Boolean.FALSE) {

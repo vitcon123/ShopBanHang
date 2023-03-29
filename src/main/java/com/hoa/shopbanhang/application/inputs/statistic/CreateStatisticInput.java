@@ -11,7 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateStatisticInput {
 
-  private String name;
+  private Integer ageOfUser;
 
-  private String description;
+  private Long idUser;
+
+  private Long idProduct;
+
 }

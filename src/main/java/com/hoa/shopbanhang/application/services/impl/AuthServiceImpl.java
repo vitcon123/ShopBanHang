@@ -74,7 +74,7 @@ public class AuthServiceImpl implements IAuthService {
   @Override
   public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
     Optional<User> oldUser = userRepository.findByEmail(authenticationRequest.getEmail());
-    checkUserExists(oldUser);
+    UserServiceImpl.checkUserExists(oldUser);
 
     // check user authentication
     if (!oldUser.get().getStatus()) {
@@ -142,7 +142,7 @@ public class AuthServiceImpl implements IAuthService {
   @Override
   public RequestResponse forgotPassword(String email, String applicationUrl) {
     Optional<User> user = userRepository.findByEmail(email);
-    checkUserExists(user);
+    UserServiceImpl.checkUserExists(user);
 
     String sixNum = RandomStringUtils.randomNumeric(6);
     tokenService.createTokenVerify(sixNum, user.get(), 60);
@@ -154,7 +154,7 @@ public class AuthServiceImpl implements IAuthService {
   @Override
   public RequestResponse refreshPassword(RefreshPasswordRequest request) {
     Optional<User> user = userRepository.findByEmail(request.getEmail());
-    checkUserExists(user);
+    UserServiceImpl.checkUserExists(user);
 
     user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
     userRepository.save(user.get());
@@ -164,7 +164,7 @@ public class AuthServiceImpl implements IAuthService {
   @Override
   public RequestResponse changePassword(ChangePasswordRequest request) {
     Optional<User> user = userRepository.findByEmail(request.getEmail());
-    checkUserExists(user);
+    UserServiceImpl.checkUserExists(user);
 
     String oldPasswordInput = passwordEncoder.encode(request.getOldPassword());
     if (!user.get().getPassword().equals(oldPasswordInput)) {
@@ -183,12 +183,6 @@ public class AuthServiceImpl implements IAuthService {
       return authorizationHeader.substring(7);
     }
     return null;
-  }
-
-  private void checkUserExists(Optional<User> user) {
-    if (user.isEmpty()) {
-      throw new VsException("User not found");
-    }
   }
 
   private String applicationUrl(HttpServletRequest request) {
