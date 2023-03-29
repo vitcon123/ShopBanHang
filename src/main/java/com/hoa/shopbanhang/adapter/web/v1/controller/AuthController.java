@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping(UrlConstant.Auth.LOGIN)
-    public ResponseEntity<?> login(@Valid @ModelAttribute AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         return VsResponseUtil.ok(authService.login(authenticationRequest));
     }
 

@@ -8,19 +8,26 @@ import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
 import com.hoa.shopbanhang.application.inputs.product.SearchProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
+import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.repositories.ICategoryRepository;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
+import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IMediaService;
 import com.hoa.shopbanhang.application.services.IProductService;
+import com.hoa.shopbanhang.application.services.IStatisticService;
+import com.hoa.shopbanhang.application.utils.SecurityUtil;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Category;
 import com.hoa.shopbanhang.domain.entities.Product;
+import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +35,18 @@ import java.util.Optional;
 public class ProductServiceImpl implements IProductService {
   private final IProductRepository productRepository;
   private final ICategoryRepository categoryRepository;
+  private final IUserRepository userRepository;
+  private final IStatisticService statisticService;
   private final IMediaService mediaService;
   private final ModelMapper modelMapper;
 
   public ProductServiceImpl(IProductRepository productRepository, ICategoryRepository categoryRepository,
+                            IUserRepository userRepository, IStatisticService statisticService,
                             IMediaService mediaService, ModelMapper modelMapper) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
+    this.userRepository = userRepository;
+    this.statisticService = statisticService;
     this.mediaService = mediaService;
     this.modelMapper = modelMapper;
   }
@@ -54,6 +66,20 @@ public class ProductServiceImpl implements IProductService {
   public Product getProductById(Long id) {
     Optional<Product> product = productRepository.findById(id);
     checkProductExists(product);
+    String emailUserCurrent = SecurityUtil.getCurrentUserLogin();
+    if (emailUserCurrent.compareTo("anonymousUser") != 0) {
+      Optional<User> userCurrent = userRepository.findByEmail(emailUserCurrent);
+      UserServiceImpl.checkUserExists(userCurrent);
+      CreateStatisticInput createStatisticInput;
+      if (userCurrent.get().getBirthday().compareTo("") != 0) {
+        Integer ageOfUser =
+            Period.between(LocalDate.parse(userCurrent.get().getBirthday()), LocalDate.now()).getYears();
+        createStatisticInput = new CreateStatisticInput(ageOfUser, userCurrent.get().getId(), id);
+      } else {
+        createStatisticInput = new CreateStatisticInput(null, userCurrent.get().getId(), id);
+      }
+      statisticService.createStatistic(createStatisticInput);
+    }
 
     return product.get();
   }

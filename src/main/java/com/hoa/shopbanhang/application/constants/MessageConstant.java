@@ -8,6 +8,8 @@ public class MessageConstant {
   public static final String NOTIFICATION_NOT_EXISTS = "Notification not exists";
   public static final String ORDER_NOT_EXISTS = "Order not exists";
   public static final String PRODUCT_NOT_EXISTS = "Product not exists";
+  public static final String USER_NOT_EXISTS = "User not exists";
+  public static final String STATISTIC_NOT_EXISTS = "Product not exists";
   public static final String ROLE_NOT_EXISTS = "Role not exists";
 
   public static final String NOT_ACCESS = "You do not have permission";
