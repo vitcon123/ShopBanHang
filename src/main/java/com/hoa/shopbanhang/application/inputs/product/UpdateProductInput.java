@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,5 +18,13 @@ public class UpdateProductInput {
 
   private String name;
 
+  private Double price;
+
+  private Integer stock;
+
   private String description;
+
+  private String brand;
+
+  private List<MultipartFile> multipartFiles;
 }
