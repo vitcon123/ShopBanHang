@@ -133,6 +133,23 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
+  public void updateStockProduct(Long productId, Long amount, Boolean isBuy) {
+    Optional<Product> product = productRepository.findById(productId);
+    checkProductExists(product);
+    if(isBuy) {
+      if(product.get().getStock() > amount) {
+        product.get().setStock(product.get().getStock() - amount);
+      } else {
+        throw new VsException(MessageConstant.PRODUCT_OUT_OF_STOCK);
+      }
+
+    } else {
+      product.get().setStock(product.get().getStock() + amount);
+    }
+    productRepository.save(product.get());
+  }
+
+  @Override
   public RequestResponse deleteById(Long id) {
     Optional<Product> oldProduct = productRepository.findById(id);
     checkProductExists(oldProduct);

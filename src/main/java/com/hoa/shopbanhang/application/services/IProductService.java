@@ -20,5 +20,7 @@ public interface IProductService {
 
   Product updateProduct(UpdateProductInput updateProductInput);
 
+  void updateStockProduct(Long productId, Long amount, Boolean isBuy);
+
   RequestResponse deleteById(Long id);
 }
