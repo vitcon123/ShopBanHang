@@ -11,6 +11,7 @@ import com.hoa.shopbanhang.application.repositories.IItemDetailRepository;
 import com.hoa.shopbanhang.application.repositories.IOrderRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IOrderService;
+import com.hoa.shopbanhang.application.services.IProductService;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.ItemDetail;
 import com.hoa.shopbanhang.domain.entities.Order;
@@ -26,12 +27,14 @@ public class OrderServiceImpl implements IOrderService {
   private final IOrderRepository orderRepository;
   private final IItemDetailRepository itemDetailRepository;
   private final IUserRepository userRepository;
+  private final IProductService productService;
   private final ModelMapper modelMapper;
 
-  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, ModelMapper modelMapper) {
+  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, IProductService productService, ModelMapper modelMapper) {
     this.orderRepository = orderRepository;
     this.itemDetailRepository = itemDetailRepository;
     this.userRepository = userRepository;
+    this.productService = productService;
     this.modelMapper = modelMapper;
   }
 
@@ -92,6 +95,11 @@ public class OrderServiceImpl implements IOrderService {
     Optional<Order> order = orderRepository.findById(idOrder);
     checkOrderExists(order);
     order.get().setDeliveryStatus(DeliveryStatus.ORDER_PLACED);
+
+//    Reduce the number of products when ordering
+    for (ItemDetail itemDetail : order.get().getItemDetails()) {
+      productService.updateStockProduct(itemDetail.getProduct().getId(), itemDetail.getAmount(), true);
+    }
     orderRepository.save(order.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);

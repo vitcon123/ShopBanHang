@@ -30,6 +30,10 @@ public class Order extends AbstractAuditingEntity {
 
   private PaymentMethod paymentMethod;
 
+  private String address;
+
+  private String phone;
+
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private User user;

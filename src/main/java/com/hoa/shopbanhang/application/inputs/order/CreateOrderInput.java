@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -20,6 +19,10 @@ public class CreateOrderInput {
   private String deliveredDate;
 
   private PaymentMethod paymentMethod;
+
+  private String address;
+
+  private String phone;
 
   private List<Long> idItemDetails;
 
