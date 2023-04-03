@@ -42,7 +42,7 @@ public class ItemDetailServiceImpl implements IItemDetailService {
   }
 
   @Override
-  public void addProductToCartById(Long idCart, Long idProduct, Long amount) {
+  public void addProductToCartById(Long idCart, Long idProduct, Integer amount) {
     Optional<Cart> cart = cartRepository.findById(idCart);
     CartServiceImpl.checkCartExists(cart);
 
@@ -70,7 +70,7 @@ public class ItemDetailServiceImpl implements IItemDetailService {
   }
 
   @Override
-  public void editItemDetailById(Long iditemDetail, Long amount) {
+  public void editItemDetailById(Long iditemDetail, Integer amount) {
     Optional<ItemDetail> cartDetail = itemDetailRepository.findById(iditemDetail);
     checkItemDetailExists(cartDetail);
 

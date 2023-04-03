@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Table(name = TableNameConstant.TBL_ITEM_DETAIL)
 public class ItemDetail extends AbstractAuditingEntity {
 
-  private Long amount;
+  private Integer amount;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "cart_id")

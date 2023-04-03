@@ -133,7 +133,7 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public void updateStockProduct(Long productId, Long amount, Boolean isBuy) {
+  public void updateStockProduct(Long productId, Integer amount, Boolean isBuy) {
     Optional<Product> product = productRepository.findById(productId);
     checkProductExists(product);
     if(isBuy) {

@@ -47,14 +47,14 @@ public class CartController {
   @PostMapping(UrlConstant.Cart.ADD_PRODUCT_TO_CART)
   public ResponseEntity<?> addProductToCartById(@PathVariable(name = "idCart") Long idCart,
                                          @PathVariable(name = "idProduct") Long idProduct,
-                                         @RequestParam(name = "amount") Long amount) {
+                                         @RequestParam(name = "amount") Integer amount) {
     itemDetailService.addProductToCartById(idCart, idProduct, amount);
     return VsResponseUtil.ok("Add Successfully");
   }
 
   @PatchMapping(UrlConstant.Cart.EDIT_AMOUNT_OF_CART_DETAIL)
   public ResponseEntity<?> editItemDetailById(@PathVariable(name = "idItemDetail") Long idItemDetail,
-                                                  @RequestParam(name = "amount") Long amount) {
+                                                  @RequestParam(name = "amount") Integer amount) {
     itemDetailService.editItemDetailById(idItemDetail, amount);
     return VsResponseUtil.ok("Edit Amount of ItemDetail " + idItemDetail + "successfully");
   }

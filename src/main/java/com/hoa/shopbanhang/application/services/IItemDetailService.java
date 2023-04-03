@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IItemDetailService {
   List<ItemDetail> getAllItemDetailInCart(Long idCart);
-  void addProductToCartById(Long idCart, Long idProduct, Long amount);
-  void editItemDetailById(Long idItemDetail, Long amount);
+  void addProductToCartById(Long idCart, Long idProduct, Integer amount);
+  void editItemDetailById(Long idItemDetail, Integer amount);
   void deleteItemDetailById(Long idItemDetail);
   void deleteAllItemDetailInCart(Long idCart);
 
