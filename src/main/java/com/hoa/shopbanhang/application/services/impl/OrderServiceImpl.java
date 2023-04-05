@@ -91,6 +91,18 @@ public class OrderServiceImpl implements IOrderService {
   }
 
   @Override
+  public RequestResponse cancelOrder(Long idOrder) {
+    Optional<Order> order = orderRepository.findById(idOrder);
+    checkOrderExists(order);
+
+    if(order.get().getDeliveryStatus().compareTo(DeliveryStatus.ORDER_PLACED) != 0) {
+      throw new VsException(MessageConstant.CANNOT_CANCEL_ORDER);
+    }
+    orderRepository.delete(order.get());
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
   public RequestResponse setOrderOrderPlaced(Long idOrder) {
     Optional<Order> order = orderRepository.findById(idOrder);
     checkOrderExists(order);
@@ -131,17 +143,6 @@ public class OrderServiceImpl implements IOrderService {
     checkOrderExists(order);
     order.get().setDeliveryStatus(DeliveryStatus.DELIVERED);
     orderRepository.save(order.get());
-
-    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  @Override
-  public RequestResponse deleteById(Long id) {
-    Optional<Order> oldOrder = orderRepository.findById(id);
-    checkOrderExists(oldOrder);
-
-    oldOrder.get().setDeleteFlag(true);
-    orderRepository.save(oldOrder.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }

@@ -15,10 +15,10 @@ public interface IOrderService {
   List<Order> getOrderByUser(Long idUser);
 
   OrderDetailOutput createOrder(CreateOrderInput createOrderInput);
+  RequestResponse cancelOrder(Long idOrder);
 
   RequestResponse setOrderOrderPlaced(Long idOrder);
   RequestResponse setOrderPreparingToShip(Long idOrder);
   RequestResponse setOrderInTransit(Long idOrder);
   RequestResponse setOrderDelivered(Long idOrder);
-  RequestResponse deleteById(Long id);
 }
