@@ -37,6 +37,11 @@ public class OrderController {
     return VsResponseUtil.ok(orderService.createOrder(createOrderInput));
   }
 
+  @DeleteMapping(UrlConstant.Order.CANCEL)
+  public ResponseEntity<?> createOrder(@PathVariable("idOrder") Long idOrder) {
+    return VsResponseUtil.ok(orderService.cancelOrder(idOrder));
+  }
+
   @PatchMapping(UrlConstant.Order.ORDER_PLACED)
   public ResponseEntity<?> setOrderOrderPlaced(@PathVariable("idOrder") Long idOrder) {
     return VsResponseUtil.ok(orderService.setOrderOrderPlaced(idOrder));
@@ -57,8 +62,4 @@ public class OrderController {
     return VsResponseUtil.ok(orderService.setOrderDelivered(idOrder));
   }
 
-  @DeleteMapping(UrlConstant.Order.DELETE)
-  public ResponseEntity<?> deleteOrder(@PathVariable("idOrder") Long idOrder) {
-    return VsResponseUtil.ok(orderService.deleteById(idOrder));
-  }
 }

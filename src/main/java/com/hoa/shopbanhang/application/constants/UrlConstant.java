@@ -90,6 +90,7 @@ public class UrlConstant {
     private static final String PREFIX = "/orders";
     public static final String LIST = PREFIX;
     public static final String CREATE = PREFIX;
+    public static final String CANCEL = PREFIX+ "/{idOrder}";
     public static final String GET = PREFIX + "/{idOrder}";
     public static final String GET_BY_USER = PREFIX + "/user/{idUser}";
     public static final String ORDER_PLACED = PREFIX + "/{idOrder}/order-placed";
