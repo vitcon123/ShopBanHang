@@ -46,7 +46,6 @@ public class AuthServiceImpl implements IAuthService {
   private final IUserRepository userRepository;
   private final JwtUtil jwtUtil;
   private final ModelMapper modelMapper;
-  private final ITokenService tokenService;
   private final ITokenRepository tokenRepository;
   private final ICartService cartService;
   private final PasswordEncoder passwordEncoder;
@@ -62,13 +61,12 @@ public class AuthServiceImpl implements IAuthService {
 
 
   public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper,
-                         ITokenService tokenService, ITokenRepository tokenRepository, ICartService cartService, PasswordEncoder passwordEncoder,
+                         ITokenRepository tokenRepository, ICartService cartService, PasswordEncoder passwordEncoder,
                          IRoleRepository roleRepository, AuthenticationManager authenticationManager,
                          ApplicationEventPublisher publisher, HttpServletRequest request) {
     this.userRepository = userRepository;
     this.jwtUtil = jwtUtil;
     this.modelMapper = modelMapper;
-    this.tokenService = tokenService;
     this.tokenRepository = tokenRepository;
     this.cartService = cartService;
     this.passwordEncoder = passwordEncoder;

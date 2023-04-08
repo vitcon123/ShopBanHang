@@ -2,9 +2,7 @@ package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.DevMessageConstant;
 import com.hoa.shopbanhang.application.constants.MessageConstant;
-import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.inputs.user.ChangeAvatarInput;
 import com.hoa.shopbanhang.application.inputs.user.UpdateUserInput;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;

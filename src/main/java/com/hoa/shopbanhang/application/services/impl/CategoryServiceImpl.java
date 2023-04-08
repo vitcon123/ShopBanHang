@@ -67,8 +67,7 @@ public class CategoryServiceImpl implements ICategoryService {
     Optional<Category> category = categoryRepository.findById(id);
     checkCategoryExists(category);
 
-    category.get().setDeleteFlag(true);
-    categoryRepository.save(category.get());
+    categoryRepository.delete(category.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }

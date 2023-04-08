@@ -8,7 +8,8 @@ public class MessageConstant {
   public static final String ORDER_NOT_EXISTS = "Order not exists";
   public static final String PRODUCT_NOT_EXISTS = "Product not exists";
   public static final String USER_NOT_EXISTS = "User not exists";
-  public static final String STATISTIC_NOT_EXISTS = "Product not exists";
+  public static final String STATISTIC_NOT_EXISTS = "Statistic not exists";
+  public static final String RATE_NOT_EXISTS = "Rate not exists";
   public static final String PRODUCT_OUT_OF_STOCK = "Product is out of stock";
   public static final String CANNOT_CANCEL_ORDER = "Can't cancel order";
 

@@ -38,14 +38,6 @@ public class TokenServiceImpl implements ITokenService {
   }
 
   @Override
-  public Token getTokenById(Long id) {
-    Optional<Token> oldToken = tokenRepository.findById(id);
-    checkTokenExists(oldToken);
-
-    return oldToken.get();
-  }
-
-  @Override
   public RequestResponse verify(String token) {
     try {
       Token oldToken = validateToken(token);
@@ -82,12 +74,6 @@ public class TokenServiceImpl implements ITokenService {
   @Override
   public void createTokenVerify(String token, User user) {
     Token newToken = new Token(token, user);
-    tokenRepository.save(newToken);
-  }
-
-  @Override
-  public void createTokenVerify(String token, User user, int expirationTime) {
-    Token newToken = new Token(token, user, expirationTime);
     tokenRepository.save(newToken);
   }
 

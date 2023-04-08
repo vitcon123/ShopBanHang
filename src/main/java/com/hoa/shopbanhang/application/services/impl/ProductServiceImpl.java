@@ -1,18 +1,17 @@
 package com.hoa.shopbanhang.application.services.impl;
 
 import com.github.slugify.Slugify;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ListProductOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ProductOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.MessageConstant;
-import com.hoa.shopbanhang.application.inputs.media.CreateMediaInput;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
 import com.hoa.shopbanhang.application.inputs.product.SearchProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.repositories.ICategoryRepository;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
+import com.hoa.shopbanhang.application.repositories.IRateRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IProductService;
 import com.hoa.shopbanhang.application.services.IStatisticService;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -40,14 +38,16 @@ public class ProductServiceImpl implements IProductService {
   private final ICategoryRepository categoryRepository;
   private final IUserRepository userRepository;
   private final IStatisticService statisticService;
+  private final IRateRepository rateRepository;
   private final ModelMapper modelMapper;
 
   public ProductServiceImpl(IProductRepository productRepository, ICategoryRepository categoryRepository,
-                            IUserRepository userRepository, IStatisticService statisticService, ModelMapper modelMapper) {
+                            IUserRepository userRepository, IStatisticService statisticService, IRateRepository rateRepository, ModelMapper modelMapper) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.userRepository = userRepository;
     this.statisticService = statisticService;
+    this.rateRepository = rateRepository;
     this.modelMapper = modelMapper;
   }
 
@@ -58,16 +58,13 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public ListProductOutput getAll() {
+  public List<ProductOutput> getAll() {
     List<Product> products = productRepository.findAll();
     List<ProductOutput> productOutputs = new ArrayList<>();
-    ProductOutput productOutput;
     for(Product product: products) {
-      productOutput = modelMapper.map(product, ProductOutput.class);
-      productOutput.setCategory(product.getCategory().getName());
-      productOutputs.add(productOutput);
+      productOutputs.add(convertProductToProductOutput(product));
     }
-    return new ListProductOutput(productOutputs);
+    return productOutputs;
   }
 
   @Override
@@ -91,15 +88,18 @@ public class ProductServiceImpl implements IProductService {
       statisticService.createStatistic(createStatisticInput);
     }
 
-    ProductOutput productOutput = modelMapper.map(product.get(), ProductOutput.class);
-    productOutput.setCategory(product.get().getCategory().getName());
-
-    return productOutput;
+    return convertProductToProductOutput(product.get());
   }
 
   @Override
-  public List<Product> findProducts(SearchProductInput searchProductInput) {
-    return productRepository.searchProducts(searchProductInput);
+  public List<ProductOutput> findProducts(SearchProductInput searchProductInput) {
+    List<Product> products = productRepository.searchProducts(searchProductInput);
+    List<ProductOutput> productOutputs = new ArrayList<>();
+
+    for(Product product : products) {
+      productOutputs.add(convertProductToProductOutput(product));
+    }
+    return productOutputs;
   }
 
   @Transactional
@@ -120,19 +120,6 @@ public class ProductServiceImpl implements IProductService {
     newProduct.setImages(images);
     return productRepository.save(newProduct);
   }
-
-//  private void setMediasProduct(List<MultipartFile> multipartFiles, Long idProduct) {
-//    multipartFiles.forEach(multipartFile -> {
-//      CreateMediaInput createMediaInput = new CreateMediaInput();
-//      createMediaInput.setFile(multipartFile);
-//      createMediaInput.setIdProduct(idProduct);
-//      try {
-//        mediaService.createMedia(createMediaInput);
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//      }
-//    });
-//  }
 
   @Override
   public Product updateProduct(UpdateProductInput updateProductInput) {
@@ -169,10 +156,20 @@ public class ProductServiceImpl implements IProductService {
     Optional<Product> oldProduct = productRepository.findById(id);
     checkProductExists(oldProduct);
 
-    oldProduct.get().setDeleteFlag(true);
-    productRepository.save(oldProduct.get());
+    productRepository.delete(oldProduct.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  ProductOutput convertProductToProductOutput(Product product) {
+    ProductOutput productOutput = modelMapper.map(product, ProductOutput.class);
+
+    productOutput.setCategory(product.getCategory().getName());
+    Double rating = rateRepository.getAvgOfProduct(product);
+    productOutput.setRating(rating);
+    productOutput.setThumbnail(product.getImages().get(0));
+
+    return productOutput;
   }
 
 }
