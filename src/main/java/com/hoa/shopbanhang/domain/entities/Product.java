@@ -31,6 +31,9 @@ public class Product extends AbstractAuditingEntity {
 
   private String brand;
 
+  @ElementCollection
+  private List<String> images;
+
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
   private Category category;
@@ -47,7 +50,5 @@ public class Product extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Statistic> statistics;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
-  private List<Media> medias;
 
 }

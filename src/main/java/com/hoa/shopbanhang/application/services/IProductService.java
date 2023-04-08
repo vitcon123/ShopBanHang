@@ -1,5 +1,7 @@
 package com.hoa.shopbanhang.application.services;
 
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ListProductOutput;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ProductOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
 import com.hoa.shopbanhang.application.inputs.product.SearchProductInput;
@@ -10,9 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface IProductService {
-  List<Product> getAll();
+  ListProductOutput getAll();
 
-  Product getProductById(Long id);
+  ProductOutput getProductById(Long id);
 
   List<Product> findProducts(SearchProductInput searchProductInput);
 

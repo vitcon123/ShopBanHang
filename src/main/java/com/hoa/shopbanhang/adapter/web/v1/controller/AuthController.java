@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping(UrlConstant.Auth.LOGIN)
-    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
         return VsResponseUtil.ok(authService.login(authenticationRequest));
     }
 
@@ -49,12 +49,12 @@ public class AuthController {
     }
 
     @PostMapping(UrlConstant.Auth.REFRESH_PASSWORD)
-    public ResponseEntity<?> refreshPassword(@Valid @ModelAttribute RefreshPasswordRequest request) {
+    public ResponseEntity<?> refreshPassword(@RequestBody RefreshPasswordRequest request) {
         return VsResponseUtil.ok(authService.refreshPassword(request));
     }
 
     @PostMapping(UrlConstant.Auth.CHANGE_PASSWORD)
-    public ResponseEntity<?> changePassword(@Valid @ModelAttribute ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         return VsResponseUtil.ok(authService.changePassword(changePasswordRequest));
     }
 
