@@ -1,28 +1,28 @@
 package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.AuthenticationRequest;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.ChangePasswordRequest;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.RefreshPasswordRequest;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.AuthenticationResponse;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
-import com.hoa.shopbanhang.application.constants.AuthenticationProvider;
-import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.RoleConstant;
+import com.hoa.shopbanhang.application.constants.*;
 import com.hoa.shopbanhang.application.events.SignUpEvent;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
 import com.hoa.shopbanhang.application.repositories.IRoleRepository;
+import com.hoa.shopbanhang.application.repositories.ITokenRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IAuthService;
 import com.hoa.shopbanhang.application.services.ICartService;
 import com.hoa.shopbanhang.application.services.ITokenService;
 import com.hoa.shopbanhang.application.utils.JwtUtil;
 import com.hoa.shopbanhang.application.utils.SendMailUtil;
+import com.hoa.shopbanhang.application.utils.UrlUtil;
+import com.hoa.shopbanhang.configs.exceptions.NotFoundException;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Role;
+import com.hoa.shopbanhang.domain.entities.Token;
 import com.hoa.shopbanhang.domain.entities.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -35,8 +35,10 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
@@ -45,11 +47,14 @@ public class AuthServiceImpl implements IAuthService {
   private final JwtUtil jwtUtil;
   private final ModelMapper modelMapper;
   private final ITokenService tokenService;
+  private final ITokenRepository tokenRepository;
   private final ICartService cartService;
   private final PasswordEncoder passwordEncoder;
   private final IRoleRepository roleRepository;
   private final AuthenticationManager authenticationManager;
   private final ApplicationEventPublisher publisher;
+  private final HttpServletRequest request;
+
   @Value("${jwt.secret_key}")
   private String SECRET_KEY;
   @Value("${jwt.time_token_expiration}")
@@ -57,18 +62,20 @@ public class AuthServiceImpl implements IAuthService {
 
 
   public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper,
-                         ITokenService tokenService, ICartService cartService, PasswordEncoder passwordEncoder,
+                         ITokenService tokenService, ITokenRepository tokenRepository, ICartService cartService, PasswordEncoder passwordEncoder,
                          IRoleRepository roleRepository, AuthenticationManager authenticationManager,
-                         ApplicationEventPublisher publisher) {
+                         ApplicationEventPublisher publisher, HttpServletRequest request) {
     this.userRepository = userRepository;
     this.jwtUtil = jwtUtil;
     this.modelMapper = modelMapper;
     this.tokenService = tokenService;
+    this.tokenRepository = tokenRepository;
     this.cartService = cartService;
     this.passwordEncoder = passwordEncoder;
     this.roleRepository = roleRepository;
     this.authenticationManager = authenticationManager;
     this.publisher = publisher;
+    this.request = request;
   }
 
   @Override
@@ -139,42 +146,71 @@ public class AuthServiceImpl implements IAuthService {
     return null;
   }
 
+
   @Override
-  public RequestResponse forgotPassword(String email, String applicationUrl) {
+  public RequestResponse createPasswordResetTokenForAccount(String email) {
     Optional<User> user = userRepository.findByEmail(email);
     UserServiceImpl.checkUserExists(user);
 
-    String sixNum = RandomStringUtils.randomNumeric(6);
-    tokenService.createTokenVerify(sixNum, user.get(), 60);
-    SendMailUtil.sendMailSimple(user.get().getEmail(), "Mã khôi phục mật khẩu: " + sixNum, "Yêu cầu khôi phục mật " +
-        "khẩu Vit Web");
-    return new RequestResponse(CommonConstant.TRUE, "");
-  }
+    String token = UUID.randomUUID().toString();
 
-  @Override
-  public RequestResponse refreshPassword(RefreshPasswordRequest request) {
-    Optional<User> user = userRepository.findByEmail(request.getEmail());
-    UserServiceImpl.checkUserExists(user);
+    saveVerificationTokenResetPassword(user.get(), token);
 
-    user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
-    userRepository.save(user.get());
-    return new RequestResponse(CommonConstant.TRUE, "Refresh password successfully !");
-  }
+    // Send Mail to Account
+    String url =
+        UrlUtil.applicationUrl(request)
+            + "/api/v1"
+            + UrlConstant.Auth.VERIFY_RESET_PASSWORD
+            + "?token=" + token;
 
-  @Override
-  public RequestResponse changePassword(ChangePasswordRequest request) {
-    Optional<User> user = userRepository.findByEmail(request.getEmail());
-    UserServiceImpl.checkUserExists(user);
+    //sendVericationPasswordEmail
+    String contentAccount =
+        "Chúng tôi đã nhận được yêu cầu đổi mật khẩu của bạn"
+            + ".\n\nĐể xác nhận thay đổi mật khẩu, vui lòng nhấn vào link sau: " + url
+            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
 
-    String oldPasswordInput = passwordEncoder.encode(request.getOldPassword());
-    if (!user.get().getPassword().equals(oldPasswordInput)) {
-      throw new VsException("The current password entered is incorrect");
+    try {
+      SendMailUtil.sendMailSimple(user.get().getEmail(), contentAccount, EmailConstant.SUBJECT_RESET_PASSWORD);
+    } catch (Exception e) {
+      throw new NotFoundException(EmailConstant.SEND_FAILED);
     }
 
-    user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
-    userRepository.save(user.get());
-    return new RequestResponse(CommonConstant.TRUE, "Change password successfully");
+    return new RequestResponse(CommonConstant.TRUE, EmailConstant.SENT_SUCCESSFULLY);
   }
+
+  @Override
+  public void saveVerificationTokenResetPassword(User user, String token) {
+    Token passwordResetToken
+        = new Token(token, user);
+    tokenRepository.save(passwordResetToken);
+  }
+
+  @Override
+  public RequestResponse verificationTokenResetPassword(String token) {
+    Optional<Token> passwordResetToken
+        = tokenRepository.findByToken(token);
+    if (passwordResetToken == null) {
+      throw new NotFoundException(MessageConstant.INVALID_TOKEN);
+    }
+    Calendar cal = Calendar.getInstance();
+    if ((passwordResetToken.get().getExpirationTime().getTime()
+        - cal.getTime().getTime()) <= 0) {
+      tokenRepository.delete(passwordResetToken.get());
+      throw new NotFoundException(MessageConstant.EXPIRED_TOKEN);
+    }
+    return new RequestResponse(CommonConstant.TRUE, UserMessageConstant.CONFIRMED_TOKEN_RESET_PASSWORD);
+  }
+
+  @Override
+  public RequestResponse updatePassword(UpdatePasswordInput input) {
+    Optional<User> user = userRepository.findByEmail(input.getEmail());
+    UserServiceImpl.checkUserExists(user);
+    user.get().setPassword(passwordEncoder.encode(input.getNewPassword()));
+    tokenRepository.delete(tokenRepository.findByToken(input.getToken()).get());
+    userRepository.save(user.get());
+    return new RequestResponse(CommonConstant.TRUE, UserMessageConstant.RESET_PASSWORD_SUCCESS);
+  }
+
 
   private String getTokenFromRequest(HttpServletRequest request) {
     String authorizationHeader = request.getHeader("Authorization");

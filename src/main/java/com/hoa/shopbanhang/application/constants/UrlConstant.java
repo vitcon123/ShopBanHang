@@ -184,10 +184,9 @@ public class UrlConstant {
     public static final String LOGIN = PRE_FIX + "/login";
     public static final String SIGNUP = PRE_FIX + "/signup";
     public static final String REFRESH_TOKEN = PRE_FIX + "/refresh-token";
-    public static final String REFRESH_PASSWORD = PRE_FIX + "/refresh-password/{email}";
-    public static final String FORGOT_PASSWORD = PRE_FIX + "/forgot-password/{email}";
-    public static final String CHANGE_PASSWORD = PRE_FIX + "/change-password/{email}";
-    public static final String RESET_PASSWORD = PRE_FIX + "/reset-password/{email}";
+    public static final String FORGOT_PASSWORD = PRE_FIX + "/forgot-password";
+    public static final String VERIFY_RESET_PASSWORD = FORGOT_PASSWORD + "/verify";
+    public static final String UPDATE_PASSWORD = PRE_FIX + "/update-password";
     public static final String VALIDATE = PRE_FIX + "/validate";
     public static final String LOGOUT = PRE_FIX + "/logout/{id}";
   }
