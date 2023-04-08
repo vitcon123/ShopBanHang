@@ -14,6 +14,12 @@ public class NotFoundException extends RuntimeException {
     private String devMessage;
     private String[] params;
 
+    public NotFoundException(String userMessage) {
+        super(userMessage);
+        this.status = HttpStatus.NOT_FOUND;
+        this.userMessage = userMessage;
+    }
+
     public NotFoundException(String userMessage, String devMessage) {
         super(userMessage);
         this.status = HttpStatus.NOT_FOUND;

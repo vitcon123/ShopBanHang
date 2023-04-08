@@ -5,14 +5,12 @@ import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.AuthenticationRequest;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.ChangePasswordRequest;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.RefreshPasswordRequest;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
 import com.hoa.shopbanhang.application.services.IAuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,18 +42,18 @@ public class AuthController {
     }
 
     @PostMapping(UrlConstant.Auth.FORGOT_PASSWORD)
-    public ResponseEntity<?> forgotPassword(@Valid @PathVariable("email") String email, HttpServletRequest request) {
-        return VsResponseUtil.ok(authService.forgotPassword(email, applicationUrl(request)));
+    public ResponseEntity<?> resetPassword(@RequestParam("email") String email) {
+        return VsResponseUtil.ok(authService.createPasswordResetTokenForAccount(email));
     }
 
-    @PostMapping(UrlConstant.Auth.REFRESH_PASSWORD)
-    public ResponseEntity<?> refreshPassword(@RequestBody RefreshPasswordRequest request) {
-        return VsResponseUtil.ok(authService.refreshPassword(request));
+    @GetMapping(UrlConstant.Auth.VERIFY_RESET_PASSWORD)
+    public ResponseEntity<?> verificationTokenResetPassword(@RequestParam(name = "token") String token) {
+        return VsResponseUtil.ok(authService.verificationTokenResetPassword(token));
     }
 
-    @PostMapping(UrlConstant.Auth.CHANGE_PASSWORD)
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        return VsResponseUtil.ok(authService.changePassword(changePasswordRequest));
+    @PostMapping(UrlConstant.Auth.UPDATE_PASSWORD)
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordInput input) {
+        return VsResponseUtil.ok(authService.updatePassword(input));
     }
 
     private String applicationUrl(HttpServletRequest request) {

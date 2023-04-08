@@ -3,6 +3,7 @@ package com.hoa.shopbanhang.application.services;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.AuthenticationRequest;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.ChangePasswordRequest;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.RefreshPasswordRequest;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.AuthenticationResponse;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
@@ -20,10 +21,12 @@ public interface IAuthService {
 
   AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
 
-  RequestResponse refreshPassword(RefreshPasswordRequest request);
+  RequestResponse createPasswordResetTokenForAccount(String email);
 
-  RequestResponse forgotPassword(String email, String applicationUrl);
+  void saveVerificationTokenResetPassword(User account, String token);
 
-  RequestResponse changePassword(ChangePasswordRequest request);
+  RequestResponse verificationTokenResetPassword(String token);
+
+  RequestResponse updatePassword(UpdatePasswordInput input);
 
 }

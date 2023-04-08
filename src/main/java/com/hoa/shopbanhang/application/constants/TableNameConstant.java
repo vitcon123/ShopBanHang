@@ -4,7 +4,6 @@ public class TableNameConstant {
   public static final String TBL_CART = "carts";
   public static final String TBL_ITEM_DETAIL = "item_details";
   public static final String TBL_CATEGORY = "categories";
-  public static final String TBL_MEDIA = "medias";
   public static final String TBL_NOTIFICATION = "notifications";
   public static final String TBL_ORDER = "orders";
   public static final String TBL_PRODUCT = "products";
