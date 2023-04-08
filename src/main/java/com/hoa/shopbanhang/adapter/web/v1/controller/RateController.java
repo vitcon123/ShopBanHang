@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.adapter.web.v1.controller;
 
+import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.inputs.rate.CreateRateInput;
@@ -8,6 +9,7 @@ import com.hoa.shopbanhang.application.services.IRateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RestApiV1
 public class RateController {
 
   private final IRateService rateService;

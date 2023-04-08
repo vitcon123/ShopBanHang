@@ -7,11 +7,9 @@ import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.repositories.ICartRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.ICartService;
-import com.hoa.shopbanhang.application.services.IItemDetailService;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Cart;
 import com.hoa.shopbanhang.domain.entities.User;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,16 +18,11 @@ import java.util.Optional;
 @Service
 public class CartServiceImpl implements ICartService {
   private final ICartRepository cartRepository;
-  private final IItemDetailService itemDetailService;
   private final IUserRepository userRepository;
-  private final ModelMapper modelMapper;
 
-  public CartServiceImpl(ICartRepository cartRepository, IItemDetailService itemDetailService,
-                         IUserRepository userRepository, ModelMapper modelMapper) {
+  public CartServiceImpl(ICartRepository cartRepository, IUserRepository userRepository) {
     this.cartRepository = cartRepository;
-    this.itemDetailService = itemDetailService;
     this.userRepository = userRepository;
-    this.modelMapper = modelMapper;
   }
 
   @Override
@@ -70,8 +63,7 @@ public class CartServiceImpl implements ICartService {
     Optional<Cart> cart = cartRepository.findById(id);
     checkCartExists(cart);
 
-    cart.get().setDeleteFlag(true);
-    cartRepository.save(cart.get());
+    cartRepository.delete(cart.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
