@@ -6,9 +6,11 @@ import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
-import com.hoa.shopbanhang.application.inputs.product.SearchProductInput;
+import com.hoa.shopbanhang.application.inputs.product.FindProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
+import com.hoa.shopbanhang.application.outputs.common.PagingMeta;
+import com.hoa.shopbanhang.application.outputs.product.GetListProductOutput;
 import com.hoa.shopbanhang.application.repositories.ICategoryRepository;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
 import com.hoa.shopbanhang.application.repositories.IRateRepository;
@@ -22,6 +24,8 @@ import com.hoa.shopbanhang.domain.entities.Category;
 import com.hoa.shopbanhang.domain.entities.Product;
 import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,7 +46,8 @@ public class ProductServiceImpl implements IProductService {
   private final ModelMapper modelMapper;
 
   public ProductServiceImpl(IProductRepository productRepository, ICategoryRepository categoryRepository,
-                            IUserRepository userRepository, IStatisticService statisticService, IRateRepository rateRepository, ModelMapper modelMapper) {
+                            IUserRepository userRepository, IStatisticService statisticService,
+                            IRateRepository rateRepository, ModelMapper modelMapper) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.userRepository = userRepository;
@@ -58,12 +63,19 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public List<ProductOutput> getAll() {
-    List<Product> products = productRepository.findAll();
+  public List<ProductOutput> getAll(Long page, Integer size) {
+    List<Product> products;
+    if (page != null) {
+      products = productRepository.findAll(PageRequest.of(page.intValue() - 1, size)).getContent();
+    } else {
+      products = productRepository.findAll();
+    }
+
     List<ProductOutput> productOutputs = new ArrayList<>();
-    for(Product product: products) {
+    for (Product product : products) {
       productOutputs.add(convertProductToProductOutput(product));
     }
+
     return productOutputs;
   }
 
@@ -92,14 +104,32 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public List<ProductOutput> findProducts(SearchProductInput searchProductInput) {
-    List<Product> products = productRepository.searchProducts(searchProductInput);
-    List<ProductOutput> productOutputs = new ArrayList<>();
+  public GetListProductOutput findProducts(FindProductInput findProductInput) {
+    Long total = productRepository.countProduct(findProductInput);
 
-    for(Product product : products) {
+    PagingMeta meta = new PagingMeta(total, findProductInput.getPageNum(), findProductInput.getPageSize(),
+        findProductInput.getSortBy(), findProductInput.getSortType());
+
+    List<Product> products = productRepository.searchProduct(findProductInput,
+        PageRequest.of(findProductInput.getPageNum(),
+            findProductInput.getPageSize()), Sort.by(Sort.Direction.valueOf(findProductInput.getSortType()),
+            findProductInput.getSortBy()));
+
+    List<ProductOutput> productOutputs = new ArrayList<>();
+    for (Product product : products) {
       productOutputs.add(convertProductToProductOutput(product));
     }
-    return productOutputs;
+
+    return new GetListProductOutput(productOutputs, meta);
+
+
+//    List<Product> products = productRepository.searchProducts(searchProductInput);
+//    List<ProductOutput> productOutputs = new ArrayList<>();
+//
+//    for(Product product : products) {
+//      productOutputs.add(convertProductToProductOutput(product));
+//    }
+//    return productOutputs;
   }
 
   @Transactional
@@ -138,8 +168,8 @@ public class ProductServiceImpl implements IProductService {
   public void updateStockProduct(Long productId, Integer amount, Boolean isBuy) {
     Optional<Product> product = productRepository.findById(productId);
     checkProductExists(product);
-    if(isBuy) {
-      if(product.get().getStock() > amount) {
+    if (isBuy) {
+      if (product.get().getStock() > amount) {
         product.get().setStock(product.get().getStock() - amount);
       } else {
         throw new VsException(MessageConstant.PRODUCT_OUT_OF_STOCK);

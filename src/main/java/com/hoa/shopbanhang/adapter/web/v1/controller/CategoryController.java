@@ -7,9 +7,8 @@ import com.hoa.shopbanhang.application.inputs.category.CreateCategoryInput;
 import com.hoa.shopbanhang.application.inputs.category.UpdateCategoryInput;
 import com.hoa.shopbanhang.application.services.ICategoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestApiV1
 public class CategoryController {
@@ -30,16 +29,19 @@ public class CategoryController {
     return VsResponseUtil.ok(categoryService.getCategoryById(id));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping(UrlConstant.Category.CREATE)
-  public ResponseEntity<?> createCategory(@ModelAttribute CreateCategoryInput createCategoryInput) {
+  public ResponseEntity<?> createCategory(@RequestBody CreateCategoryInput createCategoryInput) {
     return VsResponseUtil.ok(categoryService.createCategory(createCategoryInput));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PatchMapping(UrlConstant.Category.UPDATE)
-  public ResponseEntity<?> updateCategory(@Valid @ModelAttribute UpdateCategoryInput updateCategoryInput) {
+  public ResponseEntity<?> updateCategory(@RequestBody UpdateCategoryInput updateCategoryInput) {
     return VsResponseUtil.ok(categoryService.updateCategory(updateCategoryInput));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping(UrlConstant.Category.DELETE)
   public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(categoryService.deleteById(id));

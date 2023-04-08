@@ -56,11 +56,4 @@ public class AuthController {
         return VsResponseUtil.ok(authService.updatePassword(input));
     }
 
-    private String applicationUrl(HttpServletRequest request) {
-        return "https://" +
-                request.getServerName() +
-                ":" +
-                request.getServerPort() +
-                request.getContextPath();
-    }
 }

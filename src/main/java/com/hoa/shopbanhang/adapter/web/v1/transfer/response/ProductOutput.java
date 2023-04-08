@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.ElementCollection;
 import java.util.List;
 
 @Getter
@@ -22,7 +21,7 @@ public class ProductOutput {
 
   private Double price;
 
-  private Double rating;
+  private Double rating = 0.0;
 
   private Integer stock;
 
@@ -34,8 +33,6 @@ public class ProductOutput {
 
   private String slug;
 
-  @ElementCollection
   private List<String> images;
-
 
 }

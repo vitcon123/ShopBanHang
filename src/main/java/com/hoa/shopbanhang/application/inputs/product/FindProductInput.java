@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.application.inputs.product;
 
+import com.hoa.shopbanhang.application.inputs.common.PageMetaInput;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,9 +8,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class SearchProductInput {
+@AllArgsConstructor
+public class FindProductInput extends PageMetaInput {
 
   private Long idCategory;
 
@@ -20,4 +21,5 @@ public class SearchProductInput {
   private Integer stock;
 
   private String brand;
+
 }

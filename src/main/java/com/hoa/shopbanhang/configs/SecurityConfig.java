@@ -18,12 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
     prePostEnabled = true,
     securedEnabled = true,
     jsr250Enabled = true)
-@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final MyUserDetailsService myUserDetailsService;
@@ -38,35 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     this.customAuthorizationFilter = customAuthorizationFilter;
   }
 
-  private static final String[] COMMON_LIST_URLS = {
-      "/api/v1/auth/signup/**",
-      "/api/v1/tokens/verify/**",
-      "/api/v1/tokens/resend/**",
-      "/api/v1/auth/login/**",
-      "/api/v1/auth/refresh-token/**"
-  };
-
-  private static final String[] ADMIN_LIST_URLS = {
-      "/api/v1/categories/**",
-      "/api/v1/courses/**",
-      "/api/v1/users/**",
-      "/api/v1/lessons/**"
-  };
-
-  private static final String[] MENTOR_LIST_URLS = {
-      "/api/v1/categories/*",
-      "/api/v1/courses/*",
-      "/api/v1/users/*",
-      "/api/v1/lessons/*"
-  };
-
-  private static final String[] STUDENT_LIST_URLS = {
-      "/api/v1/categories/*",
-      "/api/v1/courses/*",
-      "/api/v1/users/*",
-      "/api/v1/lessons/*"
-  };
-
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -77,16 +48,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
   }
 
-//  @Override
+  @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().configurationSource(request -> corsConfiguration())
         .and().csrf().disable()
 //        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)  // handle các lỗi xác thực
-//        .and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
         .authorizeRequests()
-        .anyRequest().permitAll();
+        .anyRequest().permitAll()
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        .antMatchers(COMMON_LIST_URLS).permitAll()
 //        .antMatchers(STUDENT_LIST_URLS).hasAnyAuthority("ROLE_STUDENT")
 //        .antMatchers(ADMIN_LIST_URLS).hasAnyAuthority("ROLE_ADMIN")
