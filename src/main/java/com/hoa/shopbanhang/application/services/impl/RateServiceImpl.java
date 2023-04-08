@@ -4,6 +4,7 @@ import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.inputs.rate.CreateRateInput;
 import com.hoa.shopbanhang.application.inputs.rate.UpdateRateInput;
+import com.hoa.shopbanhang.application.repositories.IProductRepository;
 import com.hoa.shopbanhang.application.repositories.IRateRepository;
 import com.hoa.shopbanhang.application.services.IProductService;
 import com.hoa.shopbanhang.application.services.IRateService;
@@ -22,12 +23,14 @@ import java.util.Optional;
 public class RateServiceImpl implements IRateService {
   private final IRateRepository rateRepository;
   private final IProductService productService;
+  private final IProductRepository productRepository;
   private final IUserService userService;
   private final ModelMapper modelMapper;
 
-  public RateServiceImpl(IRateRepository rateRepository, IProductService productService, IUserService userService, ModelMapper modelMapper) {
+  public RateServiceImpl(IRateRepository rateRepository, IProductService productService, IProductRepository productRepository, IUserService userService, ModelMapper modelMapper) {
     this.rateRepository = rateRepository;
     this.productService = productService;
+    this.productRepository = productRepository;
     this.userService = userService;
     this.modelMapper = modelMapper;
   }
@@ -48,11 +51,11 @@ public class RateServiceImpl implements IRateService {
   @Override
   public Rate createRate(CreateRateInput createRateInput) {
     User oldUser = userService.getUserById(createRateInput.getIdUser());
-    Product oldProduct = productService.getProductById(createRateInput.getIdProduct());
+    Optional<Product> oldProduct = productRepository.findById(createRateInput.getIdProduct());
 
     Rate newRate = modelMapper.map(createRateInput, Rate.class);
     newRate.setUser(oldUser);
-    newRate.setProduct(oldProduct);
+    newRate.setProduct(oldProduct.get());
 
     return rateRepository.save(newRate);
   }

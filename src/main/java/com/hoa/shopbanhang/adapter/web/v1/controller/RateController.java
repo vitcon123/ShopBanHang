@@ -27,12 +27,12 @@ public class RateController {
   }
 
   @PostMapping(UrlConstant.Rate.CREATE)
-  public ResponseEntity<?> createRate(@ModelAttribute CreateRateInput createRateInput) {
+  public ResponseEntity<?> createRate(@RequestBody CreateRateInput createRateInput) {
     return VsResponseUtil.ok(rateService.createRate(createRateInput));
   }
 
   @PatchMapping(UrlConstant.Rate.UPDATE)
-  public ResponseEntity<?> updateRate(@ModelAttribute UpdateRateInput updateRateInput) {
+  public ResponseEntity<?> updateRate(@RequestBody UpdateRateInput updateRateInput) {
     return VsResponseUtil.ok(rateService.updateRate(updateRateInput));
   }
 

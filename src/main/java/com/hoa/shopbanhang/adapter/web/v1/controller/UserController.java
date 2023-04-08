@@ -29,7 +29,7 @@ public class UserController {
   }
 
   @PatchMapping(UrlConstant.User.UPDATE)
-  public ResponseEntity<?> updateUser(@ModelAttribute UpdateUserInput updateUserInput) {
+  public ResponseEntity<?> updateUser(@RequestBody UpdateUserInput updateUserInput) {
     return VsResponseUtil.ok(userService.updateUser(updateUserInput));
   }
 

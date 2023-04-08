@@ -1,6 +1,8 @@
 package com.hoa.shopbanhang.application.services.impl;
 
 import com.github.slugify.Slugify;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ListProductOutput;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ProductOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.MessageConstant;
@@ -12,9 +14,9 @@ import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.repositories.ICategoryRepository;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
-import com.hoa.shopbanhang.application.services.IMediaService;
 import com.hoa.shopbanhang.application.services.IProductService;
 import com.hoa.shopbanhang.application.services.IStatisticService;
+import com.hoa.shopbanhang.application.utils.CloudinaryUtil;
 import com.hoa.shopbanhang.application.utils.SecurityUtil;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Category;
@@ -28,6 +30,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,17 +40,14 @@ public class ProductServiceImpl implements IProductService {
   private final ICategoryRepository categoryRepository;
   private final IUserRepository userRepository;
   private final IStatisticService statisticService;
-  private final IMediaService mediaService;
   private final ModelMapper modelMapper;
 
   public ProductServiceImpl(IProductRepository productRepository, ICategoryRepository categoryRepository,
-                            IUserRepository userRepository, IStatisticService statisticService,
-                            IMediaService mediaService, ModelMapper modelMapper) {
+                            IUserRepository userRepository, IStatisticService statisticService, ModelMapper modelMapper) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.userRepository = userRepository;
     this.statisticService = statisticService;
-    this.mediaService = mediaService;
     this.modelMapper = modelMapper;
   }
 
@@ -58,14 +58,24 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public List<Product> getAll() {
-    return productRepository.findAll();
+  public ListProductOutput getAll() {
+    List<Product> products = productRepository.findAll();
+    List<ProductOutput> productOutputs = new ArrayList<>();
+    ProductOutput productOutput;
+    for(Product product: products) {
+      productOutput = modelMapper.map(product, ProductOutput.class);
+      productOutput.setCategory(product.getCategory().getName());
+      productOutputs.add(productOutput);
+    }
+    return new ListProductOutput(productOutputs);
   }
 
   @Override
-  public Product getProductById(Long id) {
+  public ProductOutput getProductById(Long id) {
     Optional<Product> product = productRepository.findById(id);
     checkProductExists(product);
+
+    // Tạo bản ghi thống kê lượt xem sản phẩm
     String emailUserCurrent = SecurityUtil.getCurrentUserLogin();
     if (emailUserCurrent.compareTo("anonymousUser") != 0) {
       Optional<User> userCurrent = userRepository.findByEmail(emailUserCurrent);
@@ -81,7 +91,10 @@ public class ProductServiceImpl implements IProductService {
       statisticService.createStatistic(createStatisticInput);
     }
 
-    return product.get();
+    ProductOutput productOutput = modelMapper.map(product.get(), ProductOutput.class);
+    productOutput.setCategory(product.get().getCategory().getName());
+
+    return productOutput;
   }
 
   @Override
@@ -100,24 +113,26 @@ public class ProductServiceImpl implements IProductService {
     String slug = slugify.slugify(createProductInput.getName());
     newProduct.setSlug(slug);
     newProduct.setCategory(category.get());
-    Long idProduct = productRepository.save(newProduct).getId();
-
-    setMediasProduct(createProductInput.getMultipartFiles(), idProduct);
-    return newProduct;
+    List<String> images = new ArrayList<>();
+    for (MultipartFile multipartFile : createProductInput.getMultipartFiles()) {
+      images.add(CloudinaryUtil.getUrlFromFile(multipartFile));
+    }
+    newProduct.setImages(images);
+    return productRepository.save(newProduct);
   }
 
-  private void setMediasProduct(List<MultipartFile> multipartFiles, Long idProduct) {
-    multipartFiles.forEach(multipartFile -> {
-      CreateMediaInput createMediaInput = new CreateMediaInput();
-      createMediaInput.setFile(multipartFile);
-      createMediaInput.setIdProduct(idProduct);
-      try {
-        mediaService.createMedia(createMediaInput);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    });
-  }
+//  private void setMediasProduct(List<MultipartFile> multipartFiles, Long idProduct) {
+//    multipartFiles.forEach(multipartFile -> {
+//      CreateMediaInput createMediaInput = new CreateMediaInput();
+//      createMediaInput.setFile(multipartFile);
+//      createMediaInput.setIdProduct(idProduct);
+//      try {
+//        mediaService.createMedia(createMediaInput);
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      }
+//    });
+//  }
 
   @Override
   public Product updateProduct(UpdateProductInput updateProductInput) {
