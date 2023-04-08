@@ -7,6 +7,7 @@ import com.hoa.shopbanhang.application.inputs.user.ChangeAvatarInput;
 import com.hoa.shopbanhang.application.inputs.user.UpdateUserInput;
 import com.hoa.shopbanhang.application.services.IUserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestApiV1
@@ -28,16 +29,19 @@ public class UserController {
     return VsResponseUtil.ok(userService.getUserById(id));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PatchMapping(UrlConstant.User.UPDATE)
   public ResponseEntity<?> updateUser(@RequestBody UpdateUserInput updateUserInput) {
     return VsResponseUtil.ok(userService.updateUser(updateUserInput));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PostMapping(UrlConstant.User.CHANGE_AVATAR)
   public ResponseEntity<?> changeAvatarUser(@ModelAttribute ChangeAvatarInput changeAvatarInput) {
     return VsResponseUtil.ok(userService.changeAvatar(changeAvatarInput));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @DeleteMapping(UrlConstant.User.DELETE)
   public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(userService.deleteById(id));

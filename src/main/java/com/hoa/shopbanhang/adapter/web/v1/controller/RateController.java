@@ -7,6 +7,7 @@ import com.hoa.shopbanhang.application.inputs.rate.CreateRateInput;
 import com.hoa.shopbanhang.application.inputs.rate.UpdateRateInput;
 import com.hoa.shopbanhang.application.services.IRateService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestApiV1
@@ -28,16 +29,19 @@ public class RateController {
     return VsResponseUtil.ok(rateService.getRateById(id));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PostMapping(UrlConstant.Rate.CREATE)
   public ResponseEntity<?> createRate(@RequestBody CreateRateInput createRateInput) {
     return VsResponseUtil.ok(rateService.createRate(createRateInput));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PatchMapping(UrlConstant.Rate.UPDATE)
   public ResponseEntity<?> updateRate(@RequestBody UpdateRateInput updateRateInput) {
     return VsResponseUtil.ok(rateService.updateRate(updateRateInput));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @DeleteMapping(UrlConstant.Rate.DELETE)
   public ResponseEntity<?> deleteRate(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(rateService.deleteById(id));

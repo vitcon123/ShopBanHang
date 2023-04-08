@@ -20,7 +20,8 @@ public class CommonConstant {
 
   public static final String APPLICATION_JSON_TYPE = "application/json";
 
-  public static final int PAGE_SIZE_DEFAULT = 50;
+  public static final int PAGE_SIZE_DEFAULT = 20;
+  public static final String SORT_BY_DEFAULT = "id";
   public static final String SORT_TYPE_ASC = "ASC";
   public static final String SORT_TYPE_DESC = "DESC";
 

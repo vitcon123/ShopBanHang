@@ -7,6 +7,7 @@ import com.hoa.shopbanhang.application.inputs.statistic.AdminStatisticInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.services.IStatisticService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,21 +21,25 @@ public class StatisticController {
     this.statisticService = statisticService;
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @GetMapping(UrlConstant.Statistic.LIST)
   public ResponseEntity<?> getAll(@RequestBody(required = false) AdminStatisticInput input) {
     return VsResponseUtil.ok(statisticService.getAll(input));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @GetMapping(UrlConstant.Statistic.GET)
   public ResponseEntity<?> getStatisticById(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(statisticService.getStatisticById(id));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping(UrlConstant.Statistic.CREATE)
   public ResponseEntity<?> createStatistic(@RequestBody CreateStatisticInput createStatisticInput) {
     return VsResponseUtil.ok(statisticService.createStatistic(createStatisticInput));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping(UrlConstant.Statistic.DELETE)
   public ResponseEntity<?> deleteStatistic(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(statisticService.deleteById(id));

@@ -28,7 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
     UserServiceImpl.checkUserExists(user);
 
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-    grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().toString()));
+    grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().getName()));
 
     return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(),
         grantedAuthorities);

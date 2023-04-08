@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
 		<netty-socketio.version>1.7.19</netty-socketio.version>
 		<start-class>com.hoa.shopbanhang.ShopBanHangApplication</start-class>
+		<open-api.version>1.6.5</open-api.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -126,16 +127,21 @@
 		</dependency>
 
 		<!--    Swagger    -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.springfox</groupId>-->
+<!--			<artifactId>springfox-swagger2</artifactId>-->
+<!--			<version>2.9.2</version>-->
+<!--		</dependency>-->
 
+<!--		<dependency>-->
+<!--			<groupId>io.springfox</groupId>-->
+<!--			<artifactId>springfox-swagger-ui</artifactId>-->
+<!--			<version>2.9.2</version>-->
+<!--		</dependency>-->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${open-api.version}</version>
 		</dependency>
 
 		<!--    Cloudinary    -->
