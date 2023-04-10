@@ -36,6 +36,7 @@ public class Product extends AbstractAuditingEntity {
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
+  @JsonIgnore
   private Category category;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")

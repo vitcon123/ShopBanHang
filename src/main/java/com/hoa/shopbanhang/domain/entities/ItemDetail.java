@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoa.shopbanhang.application.constants.TableNameConstant;
 import com.hoa.shopbanhang.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class ItemDetail extends AbstractAuditingEntity {
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "order_id")
+  @JsonIgnore
   private Order order;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

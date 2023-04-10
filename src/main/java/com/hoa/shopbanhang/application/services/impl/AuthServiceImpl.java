@@ -161,7 +161,6 @@ public class AuthServiceImpl implements IAuthService {
             + UrlConstant.Auth.VERIFY_RESET_PASSWORD
             + "?token=" + token;
 
-    //sendVericationPasswordEmail
     String contentAccount =
         "Chúng tôi đã nhận được yêu cầu đổi mật khẩu của bạn"
             + ".\n\nĐể xác nhận thay đổi mật khẩu, vui lòng nhấn vào link sau: " + url
