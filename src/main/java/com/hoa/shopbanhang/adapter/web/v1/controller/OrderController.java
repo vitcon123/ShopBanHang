@@ -18,6 +18,7 @@ public class OrderController {
     this.orderService = orderService;
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @GetMapping(UrlConstant.Order.LIST)
   public ResponseEntity<?> getAll() {
     return VsResponseUtil.ok(orderService.getAll());

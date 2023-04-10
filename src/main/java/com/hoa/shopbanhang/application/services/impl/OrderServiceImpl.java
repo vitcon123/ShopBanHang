@@ -2,16 +2,16 @@ package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.OrderDetailOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
-import com.hoa.shopbanhang.application.constants.CommonConstant;
-import com.hoa.shopbanhang.application.constants.DeliveryStatus;
-import com.hoa.shopbanhang.application.constants.MessageConstant;
-import com.hoa.shopbanhang.application.constants.PaymentMethod;
+import com.hoa.shopbanhang.application.constants.*;
 import com.hoa.shopbanhang.application.inputs.order.CreateOrderInput;
 import com.hoa.shopbanhang.application.repositories.IItemDetailRepository;
 import com.hoa.shopbanhang.application.repositories.IOrderRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IOrderService;
 import com.hoa.shopbanhang.application.services.IProductService;
+import com.hoa.shopbanhang.application.utils.SendMailUtil;
+import com.hoa.shopbanhang.application.utils.UrlUtil;
+import com.hoa.shopbanhang.configs.exceptions.NotFoundException;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.ItemDetail;
 import com.hoa.shopbanhang.domain.entities.Order;
@@ -19,6 +19,7 @@ import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +30,16 @@ public class OrderServiceImpl implements IOrderService {
   private final IUserRepository userRepository;
   private final IProductService productService;
   private final ModelMapper modelMapper;
+  private final HttpServletRequest request;
 
-  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, IProductService productService, ModelMapper modelMapper) {
+
+  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, IProductService productService, ModelMapper modelMapper, HttpServletRequest request) {
     this.orderRepository = orderRepository;
     this.itemDetailRepository = itemDetailRepository;
     this.userRepository = userRepository;
     this.productService = productService;
     this.modelMapper = modelMapper;
+    this.request = request;
   }
 
   @Override
@@ -86,6 +90,21 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     OrderDetailOutput output = new OrderDetailOutput(newOrder, itemDetailRepository.getAllByOrder(newOrder));
+
+    String url =
+        UrlUtil.applicationUrl(request)
+            + "/order/" + newOrder.getId();
+
+    String contentOrder =
+        "Bạn đã đặt hàng thành công"
+            + ".\n\nXem chi tiết đơn hàng: " + url
+            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
+
+    try {
+      SendMailUtil.sendMailSimple(user.get().getEmail(), contentOrder, EmailConstant.SUBJECT_ORDERED);
+    } catch (Exception e) {
+      throw new NotFoundException(EmailConstant.SEND_FAILED);
+    }
 
     return output;
   }
@@ -143,6 +162,21 @@ public class OrderServiceImpl implements IOrderService {
     checkOrderExists(order);
     order.get().setDeliveryStatus(DeliveryStatus.DELIVERED);
     orderRepository.save(order.get());
+
+    String url =
+        UrlUtil.applicationUrl(request)
+            + "/order/" + order.get().getId();
+
+    String contentOrder =
+        "Đã giao hàng thành công đơn hàng: " + order.get().getId()
+            + ".\n\nXem chi tiết đơn hàng: " + url
+            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
+
+    try {
+      SendMailUtil.sendMailSimple(order.get().getUser().getEmail(), contentOrder, EmailConstant.SUBJECT_DELIVERED);
+    } catch (Exception e) {
+      throw new NotFoundException(EmailConstant.SEND_FAILED);
+    }
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
