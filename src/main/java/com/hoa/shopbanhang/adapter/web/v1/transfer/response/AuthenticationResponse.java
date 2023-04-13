@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.adapter.web.v1.transfer.response;
 
+import com.hoa.shopbanhang.domain.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,7 @@ public class AuthenticationResponse {
   private String tokenType;
 
   private String refreshToken;
+
+  private User user;
 
 }
