@@ -22,8 +22,9 @@ public class ProductController {
   }
 
   @GetMapping(UrlConstant.Product.LIST)
-  public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false) Long page) {
-    return VsResponseUtil.ok(productService.getAll(page, CommonConstant.PAGE_SIZE_DEFAULT));
+  public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false) Long page,
+                                  @RequestParam(name = "size", required = false) Integer size) {
+    return VsResponseUtil.ok(productService.getAll(page, size));
   }
 
   @GetMapping(UrlConstant.Product.GET)

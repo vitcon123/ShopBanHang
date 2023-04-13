@@ -96,7 +96,7 @@ public class AuthServiceImpl implements IAuthService {
 
     return new AuthenticationResponse(jwtUtil.generateToken(oldUser.get(), CommonConstant.FALSE),
         CommonConstant.BEARER_TOKEN,
-        jwtUtil.generateToken(oldUser.get(), CommonConstant.TRUE));
+        jwtUtil.generateToken(oldUser.get(), CommonConstant.TRUE), oldUser.get());
   }
 
   @Override
@@ -136,7 +136,10 @@ public class AuthServiceImpl implements IAuthService {
             .setExpiration(new Date(System.currentTimeMillis() + TIME_TOKEN_EXPIRATION))
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
             .compact();
-        return new AuthenticationResponse(accessToken, CommonConstant.BEARER_TOKEN, refreshToken);
+        Optional<User> user = userRepository.findByEmail(email);
+        UserServiceImpl.checkUserExists(user);
+
+        return new AuthenticationResponse(accessToken, CommonConstant.BEARER_TOKEN, refreshToken, user.get());
       }
     } catch (Exception ex) {
       response.setHeader("error", ex.getMessage());

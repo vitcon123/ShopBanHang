@@ -4,11 +4,13 @@ import com.hoa.shopbanhang.application.constants.MessageConstant;
 import com.hoa.shopbanhang.application.repositories.ICartRepository;
 import com.hoa.shopbanhang.application.repositories.IItemDetailRepository;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
+import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IItemDetailService;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Cart;
 import com.hoa.shopbanhang.domain.entities.ItemDetail;
 import com.hoa.shopbanhang.domain.entities.Product;
+import com.hoa.shopbanhang.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +20,14 @@ import java.util.Optional;
 public class ItemDetailServiceImpl implements IItemDetailService {
   private final IItemDetailRepository itemDetailRepository;
   private final ICartRepository cartRepository;
+  private final IUserRepository userRepository;
   private final IProductRepository productRepository;
 
   public ItemDetailServiceImpl(IItemDetailRepository itemDetailRepository, ICartRepository cartRepository,
-                               IProductRepository productRepository) {
+                               IUserRepository userRepository, IProductRepository productRepository) {
     this.itemDetailRepository = itemDetailRepository;
     this.cartRepository = cartRepository;
+    this.userRepository = userRepository;
     this.productRepository = productRepository;
   }
 
@@ -42,14 +46,16 @@ public class ItemDetailServiceImpl implements IItemDetailService {
   }
 
   @Override
-  public void addProductToCartById(Long idCart, Long idProduct, Integer amount) {
-    Optional<Cart> cart = cartRepository.findById(idCart);
-    CartServiceImpl.checkCartExists(cart);
+  public void addProductToCartById(Long idUser, Long idProduct, Integer amount) {
+    Optional<User> user = userRepository.findById(idUser);
+    UserServiceImpl.checkUserExists(user);
+
+    Cart cart = user.get().getCart();
 
     Optional<Product> product = productRepository.findById(idProduct);
     ProductServiceImpl.checkProductExists(product);
 
-    List<ItemDetail> productAdded = cart.get().getItemDetails();
+    List<ItemDetail> productAdded = cart.getItemDetails();
 
     boolean isExist = false;
     for (ItemDetail itemDetail : productAdded) {
@@ -62,7 +68,7 @@ public class ItemDetailServiceImpl implements IItemDetailService {
     }
     if (!isExist) {
       ItemDetail itemDetail = new ItemDetail();
-      itemDetail.setCart(cart.get());
+      itemDetail.setCart(cart);
       itemDetail.setProduct(product.get());
       itemDetail.setAmount(amount);
       itemDetailRepository.save(itemDetail);
@@ -79,8 +85,8 @@ public class ItemDetailServiceImpl implements IItemDetailService {
   }
 
   @Override
-  public void deleteItemDetailById(Long iditemDetail) {
-    Optional<ItemDetail> cartDetail = itemDetailRepository.findById(iditemDetail);
+  public void deleteItemDetailById(Long idItemDetail) {
+    Optional<ItemDetail> cartDetail = itemDetailRepository.findById(idItemDetail);
     checkItemDetailExists(cartDetail);
     itemDetailRepository.delete(cartDetail.get());
   }
