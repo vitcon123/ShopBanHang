@@ -21,10 +21,17 @@ public class StatisticController {
     this.statisticService = statisticService;
   }
 
+
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PostMapping(UrlConstant.Statistic.VIEW)
+  public ResponseEntity<?> createStatistic(@RequestBody(required = false) AdminStatisticInput input) {
+    return VsResponseUtil.ok(statisticService.getStatistic(input));
+  }
+
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @GetMapping(UrlConstant.Statistic.LIST)
-  public ResponseEntity<?> getAll(@RequestBody(required = false) AdminStatisticInput input) {
-    return VsResponseUtil.ok(statisticService.getAll(input));
+  public ResponseEntity<?> getAll() {
+    return VsResponseUtil.ok(statisticService.getAll());
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")

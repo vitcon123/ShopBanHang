@@ -2,10 +2,8 @@ package com.hoa.shopbanhang.adapter.web.v1.controller;
 
 import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
-import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
-import com.hoa.shopbanhang.application.inputs.product.FindProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.services.IProductService;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,7 @@ public class ProductController {
   }
 
   @GetMapping(UrlConstant.Product.LIST)
-  public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false) Long page,
+  public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false) Integer page,
                                   @RequestParam(name = "size", required = false) Integer size) {
     return VsResponseUtil.ok(productService.getAll(page, size));
   }
@@ -33,8 +31,10 @@ public class ProductController {
   }
 
   @PostMapping(UrlConstant.Product.SEARCH)
-  public ResponseEntity<?> findProducts(@RequestBody(required = false) FindProductInput findProductInput) {
-    return VsResponseUtil.ok(productService.findProducts(findProductInput));
+  public ResponseEntity<?> findProducts(@RequestParam(name = "name", required = false) String name,
+                                        @RequestParam(name = "page", required = false) Integer page,
+                                        @RequestParam(name = "size", required = false) Integer size) {
+    return VsResponseUtil.ok(productService.findProducts(name, page, size));
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")

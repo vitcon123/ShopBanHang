@@ -10,8 +10,8 @@ import java.util.List;
 public interface ICartService {
   List<Cart> getAll();
 
-  CartDetailOutput getCartById(Long id);
-  CartDetailOutput getCartByIdUser(Long idUser);
+  Cart getCartById(Long id);
+  Cart getCartByIdUser(Long idUser);
 
   Cart createCart(Long idUser);
 

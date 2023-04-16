@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface ICategoryService {
-  List<Category> getAll();
+  List<String> getAll();
 
   Category getCategoryById(Long id);
+  Category getCategoryByName(String name);
 
   Category createCategory(CreateCategoryInput createCategoryInput);
 

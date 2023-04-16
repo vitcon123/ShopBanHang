@@ -34,9 +34,14 @@ public class StatisticServiceImpl implements IStatisticService {
   }
 
   @Override
-  public List<AdminStatisticOutput> getAll(AdminStatisticInput input) {
+  public List<AdminStatisticOutput> getStatistic(AdminStatisticInput input) {
     List<AdminStatisticOutput> adminStatisticOutputs = statisticRepository.adminStatistic(input);
     return adminStatisticOutputs;
+  }
+
+  @Override
+  public List<Statistic> getAll() {
+    return statisticRepository.findAll();
   }
 
   @Override
@@ -51,10 +56,8 @@ public class StatisticServiceImpl implements IStatisticService {
   public Statistic createStatistic(CreateStatisticInput createStatisticInput) {
     Statistic statistic = new Statistic();
     statistic.setAgeOfUser(createStatisticInput.getAgeOfUser());
-    Optional<User> user = userRepository.findById(createStatisticInput.getIdUser());
-    statistic.setUser(user.get());
-    Optional<Product> product = productRepository.findById(createStatisticInput.getIdProduct());
-    statistic.setProduct(product.get());
+    statistic.setUser(createStatisticInput.getUser());
+    statistic.setProduct(createStatisticInput.getProduct());
 
     return statisticRepository.save(statistic);
   }

@@ -22,6 +22,7 @@ public class ItemDetail extends AbstractAuditingEntity {
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "cart_id")
+  @JsonIgnore
   private Cart cart;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

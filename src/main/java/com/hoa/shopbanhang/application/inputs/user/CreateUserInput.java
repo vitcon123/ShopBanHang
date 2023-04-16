@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 public class CreateUserInput {
 
   @NotBlank(message = MessageConstant.INVALID_SOME_THING_FIELD_IS_REQUIRED)
-  private String name;
+  private String fullName;
 
   @NotBlank(message = MessageConstant.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private String email;

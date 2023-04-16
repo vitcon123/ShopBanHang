@@ -21,12 +21,6 @@ public interface IAuthService {
 
   AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
 
-  RequestResponse createPasswordResetTokenForAccount(String email);
-
-  void saveVerificationTokenResetPassword(User account, String token);
-
-  RequestResponse verificationTokenResetPassword(String token);
-
-  RequestResponse updatePassword(UpdatePasswordInput input);
+  RequestResponse resetPassword(String email);
 
 }
