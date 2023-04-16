@@ -48,4 +48,9 @@ public class ExceptionHandlerConfig {
     return VsResponseUtil.error(HttpStatus.BAD_REQUEST, message);
   }
 
+  @ExceptionHandler(value = BadRequestException.class)
+  public ResponseEntity<RestData<?>> handleBadRequestException(BadRequestException ex) {
+    return VsResponseUtil.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+  }
+
 }
