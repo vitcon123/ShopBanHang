@@ -36,8 +36,6 @@ public class User extends AbstractAuditingEntity {
 
   private String avatar;
 
-  private Double coin = 0.0;
-
   @Enumerated(EnumType.STRING)
   private AuthenticationProvider authProvider;
 

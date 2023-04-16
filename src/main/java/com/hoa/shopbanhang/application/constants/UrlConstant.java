@@ -54,6 +54,7 @@ public class UrlConstant {
     public static final String LIST = PREFIX;
     public static final String CREATE = PREFIX;
     public static final String GET = PREFIX + "/{id}";
+    public static final String GET_BY_NAME = PREFIX + "/{name}";
     public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
   }
@@ -89,6 +90,7 @@ public class UrlConstant {
 
     private static final String PREFIX = "/orders";
     public static final String LIST = PREFIX;
+    public static final String SEARCH = PREFIX + "/search";
     public static final String CREATE = PREFIX;
     public static final String CANCEL = PREFIX+ "/{idOrder}";
     public static final String GET = PREFIX + "/{idOrder}";
@@ -130,10 +132,10 @@ public class UrlConstant {
     }
 
     private static final String PREFIX = "/statistics";
+    public static final String VIEW = PREFIX + "/view";
     public static final String LIST = PREFIX;
     public static final String CREATE = PREFIX;
     public static final String GET = PREFIX + "/{id}";
-    public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
   }
 
@@ -184,9 +186,7 @@ public class UrlConstant {
     public static final String LOGIN = PRE_FIX + "/login";
     public static final String SIGNUP = PRE_FIX + "/signup";
     public static final String REFRESH_TOKEN = PRE_FIX + "/refresh-token";
-    public static final String FORGOT_PASSWORD = PRE_FIX + "/forgot-password";
-    public static final String VERIFY_RESET_PASSWORD = FORGOT_PASSWORD + "/verify";
-    public static final String UPDATE_PASSWORD = PRE_FIX + "/update-password";
+    public static final String RESET_PASSWORD = PRE_FIX + "/reset-password";
     public static final String VALIDATE = PRE_FIX + "/validate";
     public static final String LOGOUT = PRE_FIX + "/logout/{id}";
   }

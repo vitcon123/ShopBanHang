@@ -24,9 +24,14 @@ public class CategoryController {
     return VsResponseUtil.ok(categoryService.getAll());
   }
 
-  @GetMapping(UrlConstant.Category.GET)
-  public ResponseEntity<?> getCategoryById(@PathVariable("id") Long id) {
-    return VsResponseUtil.ok(categoryService.getCategoryById(id));
+//  @GetMapping(UrlConstant.Category.GET)
+//  public ResponseEntity<?> getCategoryById(@PathVariable("id") Long id) {
+//    return VsResponseUtil.ok(categoryService.getCategoryById(id));
+//  }
+
+  @GetMapping(UrlConstant.Category.GET_BY_NAME)
+  public ResponseEntity<?> getCategoryByName(@PathVariable("name") String name) {
+    return VsResponseUtil.ok(categoryService.getCategoryByName(name));
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")

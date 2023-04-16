@@ -41,19 +41,10 @@ public class AuthController {
         return ResponseEntity.ok().body(authService.refreshToken(request, response));
     }
 
-    @PostMapping(UrlConstant.Auth.FORGOT_PASSWORD)
+    @PostMapping(UrlConstant.Auth.RESET_PASSWORD)
     public ResponseEntity<?> resetPassword(@RequestParam("email") String email) {
-        return VsResponseUtil.ok(authService.createPasswordResetTokenForAccount(email));
+        return VsResponseUtil.ok(authService.resetPassword(email));
     }
 
-    @GetMapping(UrlConstant.Auth.VERIFY_RESET_PASSWORD)
-    public ResponseEntity<?> verificationTokenResetPassword(@RequestParam(name = "token") String token) {
-        return VsResponseUtil.ok(authService.verificationTokenResetPassword(token));
-    }
-
-    @PostMapping(UrlConstant.Auth.UPDATE_PASSWORD)
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordInput input) {
-        return VsResponseUtil.ok(authService.updatePassword(input));
-    }
 
 }

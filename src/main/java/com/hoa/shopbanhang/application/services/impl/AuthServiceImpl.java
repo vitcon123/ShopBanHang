@@ -149,68 +149,30 @@ public class AuthServiceImpl implements IAuthService {
 
 
   @Override
-  public RequestResponse createPasswordResetTokenForAccount(String email) {
+  public RequestResponse resetPassword(String email) {
     Optional<User> user = userRepository.findByEmail(email);
     UserServiceImpl.checkUserExists(user);
 
-    String token = UUID.randomUUID().toString();
+    UUID uuid = UUID.randomUUID();
+    String uuidString = uuid.toString();
 
-    saveVerificationTokenResetPassword(user.get(), token);
+    String newPassword = uuidString.substring(uuidString.length() - 8);
 
-    // Send Mail to Account
-    String url =
-        UrlUtil.applicationUrl(request)
-            + "/api/v1"
-            + UrlConstant.Auth.VERIFY_RESET_PASSWORD
-            + "?token=" + token;
+    user.get().setPassword(passwordEncoder.encode(newPassword));
+    userRepository.save(user.get());
 
     String contentAccount =
-        "Chúng tôi đã nhận được yêu cầu đổi mật khẩu của bạn"
-            + ".\n\nĐể xác nhận thay đổi mật khẩu, vui lòng nhấn vào link sau: " + url
-            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
+        "We have received your request to reset your password"
+        + ".\nYour new password is: " + newPassword
+        + "\n\nThanks for using our service.";
 
     try {
       SendMailUtil.sendMailSimple(user.get().getEmail(), contentAccount, EmailConstant.SUBJECT_RESET_PASSWORD);
     } catch (Exception e) {
       throw new NotFoundException(EmailConstant.SEND_FAILED);
     }
-
-    return new RequestResponse(CommonConstant.TRUE, EmailConstant.SENT_SUCCESSFULLY);
+    return new RequestResponse(CommonConstant.TRUE, MessageConstant.CHECK_YOUR_EMAIL);
   }
-
-  @Override
-  public void saveVerificationTokenResetPassword(User user, String token) {
-    Token passwordResetToken
-        = new Token(token, user);
-    tokenRepository.save(passwordResetToken);
-  }
-
-  @Override
-  public RequestResponse verificationTokenResetPassword(String token) {
-    Optional<Token> passwordResetToken
-        = tokenRepository.findByToken(token);
-    if (passwordResetToken == null) {
-      throw new NotFoundException(MessageConstant.INVALID_TOKEN);
-    }
-    Calendar cal = Calendar.getInstance();
-    if ((passwordResetToken.get().getExpirationTime().getTime()
-        - cal.getTime().getTime()) <= 0) {
-      tokenRepository.delete(passwordResetToken.get());
-      throw new NotFoundException(MessageConstant.EXPIRED_TOKEN);
-    }
-    return new RequestResponse(CommonConstant.TRUE, UserMessageConstant.CONFIRMED_TOKEN_RESET_PASSWORD);
-  }
-
-  @Override
-  public RequestResponse updatePassword(UpdatePasswordInput input) {
-    Optional<User> user = userRepository.findByEmail(input.getEmail());
-    UserServiceImpl.checkUserExists(user);
-    user.get().setPassword(passwordEncoder.encode(input.getNewPassword()));
-    tokenRepository.delete(tokenRepository.findByToken(input.getToken()).get());
-    userRepository.save(user.get());
-    return new RequestResponse(CommonConstant.TRUE, UserMessageConstant.RESET_PASSWORD_SUCCESS);
-  }
-
 
   private String getTokenFromRequest(HttpServletRequest request) {
     String authorizationHeader = request.getHeader("Authorization");

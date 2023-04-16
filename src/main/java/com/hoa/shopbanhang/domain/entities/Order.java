@@ -22,12 +22,14 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_ORDER)
 public class Order extends AbstractAuditingEntity {
 
+  @Enumerated(EnumType.STRING)
   private DeliveryStatus deliveryStatus;
 
   private Timestamp orderedDate = getCreatedDate();
 
   private String deliveredDate;
 
+  @Enumerated(EnumType.STRING)
   private PaymentMethod paymentMethod;
 
   private String address;
@@ -39,7 +41,7 @@ public class Order extends AbstractAuditingEntity {
   private User user;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-  @JsonIgnore
+//  @JsonIgnore
   private List<ItemDetail> itemDetails;
 
 }

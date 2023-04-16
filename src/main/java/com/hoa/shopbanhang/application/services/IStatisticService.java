@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface IStatisticService {
 
-  List<AdminStatisticOutput> getAll(AdminStatisticInput input);
+  List<AdminStatisticOutput> getStatistic(AdminStatisticInput input);
+  List<Statistic> getAll();
 
   Statistic getStatisticById(Long id);
 
