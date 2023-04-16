@@ -22,7 +22,6 @@ public class NotificationController {
     this.notificationService = notificationService;
   }
 
-
   @GetMapping(UrlConstant.Notification.GET)
   public ResponseEntity<?> getNotificationById(@PathVariable("id") Long idNotification) {
     return VsResponseUtil.ok(notificationService.findNotificationById(idNotification));
