@@ -2,7 +2,6 @@ package com.hoa.shopbanhang.adapter.web.v1.controller;
 
 import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.VerifyForgotPasswordRequest;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.services.ITokenService;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +27,10 @@ public class TokenController {
     return VsResponseUtil.ok(tokenService.verify(token));
   }
 
-  @PostMapping(UrlConstant.Token.VERIFY_FORGOT_PASSWORD)
-  public ResponseEntity<?> verifyForgotPassword(@Valid @ModelAttribute VerifyForgotPasswordRequest request) {
-    return VsResponseUtil.ok(tokenService.verifyForgotPassword(request));
-  }
+//  @PostMapping(UrlConstant.Token.VERIFY_FORGOT_PASSWORD)
+//  public ResponseEntity<?> verifyForgotPassword(@Valid @ModelAttribute VerifyForgotPasswordRequest request) {
+//    return VsResponseUtil.ok(tokenService.verifyForgotPassword(request));
+//  }
 
   @PostMapping(UrlConstant.Token.RESEND)
   public ResponseEntity<?> resendToken(@PathVariable("token") String token, HttpServletRequest request) {

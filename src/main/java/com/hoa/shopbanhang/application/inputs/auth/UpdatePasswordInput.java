@@ -1,4 +1,4 @@
-package com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth;
+package com.hoa.shopbanhang.application.inputs.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VerifyForgotPasswordRequest {
+public class UpdatePasswordInput {
 
-  private String email;
+  private Long id;
 
-  private String token;
+  private String oldPassword;
+
+  private String newPassword;
+
 }

@@ -35,7 +35,9 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
   @Query("select p from Product p")
   List<Product> findAll(PageRequest pageRequest);
 
-  @Query("select p from Product p where p.name like %?1%")
-  List<Product> findByName(String name, PageRequest pageRequest);
+  @Query("select p from Product p " +
+      "where (:category is null or p.category.name like %:category%) " +
+      "and (:name is null or p.name like %:name%)")
+  List<Product> findByName(String category, String name, PageRequest pageRequest);
 
 }

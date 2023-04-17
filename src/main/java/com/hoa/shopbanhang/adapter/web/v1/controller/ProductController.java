@@ -3,7 +3,9 @@ package com.hoa.shopbanhang.adapter.web.v1.controller;
 import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
+import com.hoa.shopbanhang.application.inputs.product.AddImagesProductInput;
 import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
+import com.hoa.shopbanhang.application.inputs.product.RemoveImagesProductInput;
 import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
 import com.hoa.shopbanhang.application.services.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,10 +37,11 @@ public class ProductController {
 
   @Operation(summary = "Search Product")
   @PostMapping(UrlConstant.Product.SEARCH)
-  public ResponseEntity<?> findProducts(@RequestParam(name = "name", required = false) String name,
+  public ResponseEntity<?> findProducts(@RequestParam(name = "category", required = false) String category,
+                                        @RequestParam(name = "name", required = false) String name,
                                         @RequestParam(name = "page", required = false) Integer page,
                                         @RequestParam(name = "size", required = false) Integer size) {
-    return VsResponseUtil.ok(productService.findProducts(name, page, size));
+    return VsResponseUtil.ok(productService.findProducts(category, name, page, size));
   }
 
   @Operation(summary = "Create Product - ADMIN")
@@ -55,7 +58,21 @@ public class ProductController {
     return VsResponseUtil.ok(productService.updateProduct(updateProductInput));
   }
 
-  @Operation(summary = "Update Product - ADMIN")
+  @Operation(summary = "Add Image Of Product - ADMIN")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PatchMapping(UrlConstant.Product.ADD_IMAGES)
+  public ResponseEntity<?> addImagesProduct(@ModelAttribute AddImagesProductInput input) {
+    return VsResponseUtil.ok(productService.addImagesProduct(input));
+  }
+
+  @Operation(summary = "Remove Image Of Product - ADMIN")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PatchMapping(UrlConstant.Product.REMOVE_IMAGES)
+  public ResponseEntity<?> removeImagesProduct(@RequestBody RemoveImagesProductInput input) {
+    return VsResponseUtil.ok(productService.removeImagesProduct(input));
+  }
+
+  @Operation(summary = "Delete Product - ADMIN")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping(UrlConstant.Product.DELETE)
   public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
