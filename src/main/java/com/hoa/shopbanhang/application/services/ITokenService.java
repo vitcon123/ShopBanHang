@@ -1,6 +1,5 @@
 package com.hoa.shopbanhang.application.services;
 
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.VerifyForgotPasswordRequest;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.domain.entities.Token;
 import com.hoa.shopbanhang.domain.entities.User;
@@ -17,5 +16,5 @@ public interface ITokenService {
 
   void createTokenVerify(String token, User user);
 
-  RequestResponse verifyForgotPassword(VerifyForgotPasswordRequest request);
+//  RequestResponse verifyForgotPassword(VerifyForgotPasswordRequest request);
 }

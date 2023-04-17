@@ -12,6 +12,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,7 +27,7 @@ public class Order extends AbstractAuditingEntity {
   @Enumerated(EnumType.STRING)
   private DeliveryStatus deliveryStatus;
 
-  private Timestamp orderedDate = getCreatedDate();
+  private LocalDateTime orderedDate;
 
   private String deliveredDate;
 

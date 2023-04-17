@@ -1,6 +1,5 @@
 package com.hoa.shopbanhang.application.services.impl;
 
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.VerifyForgotPasswordRequest;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.DevMessageConstant;
@@ -77,20 +76,20 @@ public class TokenServiceImpl implements ITokenService {
     tokenRepository.save(newToken);
   }
 
-  @Override
-  public RequestResponse verifyForgotPassword(VerifyForgotPasswordRequest request) {
-    try {
-      Token oldToken = validateToken(request.getToken());
-      User user = oldToken.getUser();
-      if(!user.getEmail().equals(request.getEmail())) {
-        throw new VsException("Token is not correct !");
-      }
-    } catch (Exception ex) {
-      throw new VsException(ex.getMessage());
-    }
-
-    return new RequestResponse(CommonConstant.TRUE, "Verify forgot password successfully !");
-  }
+//  @Override
+//  public RequestResponse verifyForgotPassword(VerifyForgotPasswordRequest request) {
+//    try {
+//      Token oldToken = validateToken(request.getToken());
+//      User user = oldToken.getUser();
+//      if(!user.getEmail().equals(request.getEmail())) {
+//        throw new VsException("Token is not correct !");
+//      }
+//    } catch (Exception ex) {
+//      throw new VsException(ex.getMessage());
+//    }
+//
+//    return new RequestResponse(CommonConstant.TRUE, "Verify forgot password successfully !");
+//  }
 
   private Token validateToken(String token){
     Optional<Token> oldToken = tokenRepository.findByToken(token);

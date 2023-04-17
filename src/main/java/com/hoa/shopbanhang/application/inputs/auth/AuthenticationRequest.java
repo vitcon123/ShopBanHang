@@ -1,4 +1,4 @@
-package com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth;
+package com.hoa.shopbanhang.application.inputs.auth;
 
 import com.hoa.shopbanhang.application.constants.MessageConstant;
 import lombok.AllArgsConstructor;

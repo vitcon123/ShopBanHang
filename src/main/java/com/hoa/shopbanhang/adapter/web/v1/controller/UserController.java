@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestApiV1
 public class UserController {
 
@@ -43,7 +45,7 @@ public class UserController {
   @Operation(summary = "Change Avatar User - ADMIN, USER")
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PostMapping(UrlConstant.User.CHANGE_AVATAR)
-  public ResponseEntity<?> changeAvatarUser(@ModelAttribute ChangeAvatarInput changeAvatarInput) {
+  public ResponseEntity<?> changeAvatarUser(@Valid @ModelAttribute ChangeAvatarInput changeAvatarInput) {
     return VsResponseUtil.ok(userService.changeAvatar(changeAvatarInput));
   }
 

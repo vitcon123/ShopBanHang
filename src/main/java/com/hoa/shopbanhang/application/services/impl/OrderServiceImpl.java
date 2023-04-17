@@ -119,9 +119,9 @@ public class OrderServiceImpl implements IOrderService {
             + "/order/" + newOrder.getId();
 
     String contentOrder =
-        "Bạn đã đặt hàng thành công"
-            + ".\n\nXem chi tiết đơn hàng: " + url
-            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
+        "You have successfully placed your order"
+            + ".\n\nView order details: " + url
+            + ".\n\nThank you for using our service.";
 
     try {
       SendMailUtil.sendMailSimple(user.get().getEmail(), contentOrder, EmailConstant.SUBJECT_ORDERED);
@@ -191,9 +191,9 @@ public class OrderServiceImpl implements IOrderService {
             + "/order/" + order.get().getId();
 
     String contentOrder =
-        "Đã giao hàng thành công đơn hàng: " + order.get().getId()
-            + ".\n\nXem chi tiết đơn hàng: " + url
-            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
+        "Order has been successfully delivered: " + order.get().getId()
+            + ".\n\nView order details: " + url
+            + ".\n\nThank you for using our service.";
 
     try {
       SendMailUtil.sendMailSimple(order.get().getUser().getEmail(), contentOrder, EmailConstant.SUBJECT_DELIVERED);

@@ -1,25 +1,22 @@
 package com.hoa.shopbanhang.application.services.impl;
 
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.AuthenticationRequest;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.AuthenticationResponse;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.*;
 import com.hoa.shopbanhang.application.events.SignUpEvent;
+import com.hoa.shopbanhang.application.inputs.auth.AuthenticationRequest;
+import com.hoa.shopbanhang.application.inputs.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
 import com.hoa.shopbanhang.application.repositories.IRoleRepository;
 import com.hoa.shopbanhang.application.repositories.ITokenRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IAuthService;
 import com.hoa.shopbanhang.application.services.ICartService;
-import com.hoa.shopbanhang.application.services.ITokenService;
 import com.hoa.shopbanhang.application.utils.JwtUtil;
 import com.hoa.shopbanhang.application.utils.SendMailUtil;
-import com.hoa.shopbanhang.application.utils.UrlUtil;
 import com.hoa.shopbanhang.configs.exceptions.NotFoundException;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Role;
-import com.hoa.shopbanhang.domain.entities.Token;
 import com.hoa.shopbanhang.domain.entities.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,13 +26,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -172,6 +169,23 @@ public class AuthServiceImpl implements IAuthService {
       throw new NotFoundException(EmailConstant.SEND_FAILED);
     }
     return new RequestResponse(CommonConstant.TRUE, MessageConstant.CHECK_YOUR_EMAIL);
+  }
+
+  @Override
+  public RequestResponse updatePassword(UpdatePasswordInput updatePasswordInput) {
+    Optional<User> user = userRepository.findById(updatePasswordInput.getId());
+    UserServiceImpl.checkUserExists(user);
+
+    if(passwordEncoder.matches(updatePasswordInput.getOldPassword(), user.get().getPassword())) {
+      user.get().setPassword(passwordEncoder.encode(updatePasswordInput.getNewPassword()));
+      userRepository.save(user.get());
+    }
+    else {
+      throw new VsException(MessageConstant.INCORRECT_PASSWORD);
+    }
+
+    return new RequestResponse(CommonConstant.TRUE, MessageConstant.UPDATE_PASSWORD_SUCCESSFUL);
+
   }
 
   private String getTokenFromRequest(HttpServletRequest request) {
