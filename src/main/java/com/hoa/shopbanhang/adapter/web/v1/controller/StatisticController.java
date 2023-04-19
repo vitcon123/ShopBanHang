@@ -47,7 +47,7 @@ public class StatisticController {
   @Operation(summary = "Create Statistic - ADMIN")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping(UrlConstant.Statistic.CREATE)
-  public ResponseEntity<?> createStatistic(@RequestBody CreateStatisticInput createStatisticInput) {
+  public ResponseEntity<?> createStatistic(@ModelAttribute CreateStatisticInput createStatisticInput) {
     return VsResponseUtil.ok(statisticService.createStatistic(createStatisticInput));
   }
 

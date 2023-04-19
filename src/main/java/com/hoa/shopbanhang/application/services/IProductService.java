@@ -23,7 +23,7 @@ public interface IProductService {
   Product addImagesProduct(AddImagesProductInput addImagesProductInput);
   Product removeImagesProduct(RemoveImagesProductInput removeImagesProductInput);
 
-  void updateStockProduct(Long productId, Integer amount, Boolean isBuy);
+  Boolean updateStockProduct(Long productId, Integer amount, Boolean isBuy);
 
   RequestResponse deleteById(Long id);
 }

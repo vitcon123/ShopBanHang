@@ -38,7 +38,7 @@ public class UserController {
   @Operation(summary = "Update User - ADMIN, USER")
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PatchMapping(UrlConstant.User.UPDATE)
-  public ResponseEntity<?> updateUser(@RequestBody UpdateUserInput updateUserInput) {
+  public ResponseEntity<?> updateUser(@RequestBody(required = false) UpdateUserInput updateUserInput) {
     return VsResponseUtil.ok(userService.updateUser(updateUserInput));
   }
 

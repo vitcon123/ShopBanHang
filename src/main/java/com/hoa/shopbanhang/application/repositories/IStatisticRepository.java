@@ -10,10 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IStatisticRepository extends JpaRepository<Statistic, Long> {
-//  select product_id, count(*) as 'times'
-//  from shop_ban_hang.statistic
-//  where '2023-03-09' < time_view
-//  group by product_id
+
   @Query("select s.product as product, count(s) as times " +
       "from Statistic s " +
       "where (:#{#adminStatisticInput.ageMin} is null or s.ageOfUser >= :#{#adminStatisticInput.ageMin}) " +

@@ -102,6 +102,7 @@ public class UrlConstant {
     public static final String ADD_IMAGES = PREFIX + "/add-images";
     public static final String REMOVE_IMAGES = PREFIX + "/remove-images";
     public static final String DELETE = PREFIX + "/{id}";
+    public static final String REPORT = PREFIX + "/report";
   }
 
   public static class Statistic {

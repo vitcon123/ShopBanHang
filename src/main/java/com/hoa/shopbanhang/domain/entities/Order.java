@@ -27,7 +27,7 @@ public class Order extends AbstractAuditingEntity {
   @Enumerated(EnumType.STRING)
   private DeliveryStatus deliveryStatus;
 
-  private LocalDateTime orderedDate;
+  private String orderedDate = LocalDate.now().toString();
 
   private String deliveredDate;
 
