@@ -179,11 +179,13 @@ public class ProductServiceImpl implements IProductService {
     String slug = slugify.slugify(updateProductInput.getName());
     product.get().setSlug(slug);
 
-    List<String> images = new ArrayList<>();
-    for (MultipartFile image : updateProductInput.getImages()) {
-      images.add(CloudinaryUtil.getUrlFromFile(image));
+    if(updateProductInput.getImages() != null) {
+      List<String> images = new ArrayList<>();
+      for (MultipartFile image : updateProductInput.getImages()) {
+        images.add(CloudinaryUtil.getUrlFromFile(image));
+      }
+      product.get().setImages(images);
     }
-    product.get().setImages(images);
 
     return productRepository.save(product.get());
   }
@@ -217,20 +219,21 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public void updateStockProduct(Long productId, Integer amount, Boolean isBuy) {
+  public Boolean updateStockProduct(Long productId, Integer amount, Boolean isBuy) {
     Optional<Product> product = productRepository.findById(productId);
     checkProductExists(product);
     if (isBuy) {
       if (product.get().getStock() > amount) {
         product.get().setStock(product.get().getStock() - amount);
       } else {
-        throw new VsException(MessageConstant.PRODUCT_OUT_OF_STOCK);
+        return Boolean.FALSE;
       }
 
     } else {
       product.get().setStock(product.get().getStock() + amount);
     }
     productRepository.save(product.get());
+    return Boolean.TRUE;
   }
 
   @Override

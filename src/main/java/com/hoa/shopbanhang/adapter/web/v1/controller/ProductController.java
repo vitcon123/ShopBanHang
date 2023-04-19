@@ -3,11 +3,10 @@ package com.hoa.shopbanhang.adapter.web.v1.controller;
 import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
-import com.hoa.shopbanhang.application.inputs.product.AddImagesProductInput;
-import com.hoa.shopbanhang.application.inputs.product.CreateProductInput;
-import com.hoa.shopbanhang.application.inputs.product.RemoveImagesProductInput;
-import com.hoa.shopbanhang.application.inputs.product.UpdateProductInput;
+import com.hoa.shopbanhang.application.inputs.product.*;
+import com.hoa.shopbanhang.application.inputs.statistic.AdminStatisticInput;
 import com.hoa.shopbanhang.application.services.IProductService;
+import com.hoa.shopbanhang.application.services.impl.ItemDetailServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final IProductService productService;
+  private final ItemDetailServiceImpl itemDetailService;
 
-  public ProductController(IProductService productService) {
+  public ProductController(IProductService productService, ItemDetailServiceImpl itemDetailService) {
     this.productService = productService;
+    this.itemDetailService = itemDetailService;
   }
 
   @Operation(summary = "Get All Product")
@@ -68,7 +69,7 @@ public class ProductController {
   @Operation(summary = "Remove Image Of Product - ADMIN")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PatchMapping(UrlConstant.Product.REMOVE_IMAGES)
-  public ResponseEntity<?> removeImagesProduct(@RequestBody RemoveImagesProductInput input) {
+  public ResponseEntity<?> removeImagesProduct(@ModelAttribute RemoveImagesProductInput input) {
     return VsResponseUtil.ok(productService.removeImagesProduct(input));
   }
 
@@ -78,4 +79,12 @@ public class ProductController {
   public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(productService.deleteById(id));
   }
+
+  @Operation(summary = "Report Product - ADMIN")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PostMapping(UrlConstant.Product.REPORT)
+  public ResponseEntity<?> reportProduct(@RequestBody(required = false) ReportProductInput input) {
+    return VsResponseUtil.ok(itemDetailService.reportProduct(input));
+  }
+
 }

@@ -107,10 +107,15 @@ public class OrderServiceImpl implements IOrderService {
       for (Long idItemDetail : createOrderInput.getIdItemDetails()) {
         Optional<ItemDetail> itemDetail = itemDetailRepository.findById(idItemDetail);
         ItemDetailServiceImpl.checkItemDetailExists(itemDetail);
+        if(!productService.updateStockProduct(itemDetail.get().getProduct().getId(), itemDetail.get().getAmount(), true)) {
+          itemDetail.get().setOrder(null);
+          itemDetailRepository.save(itemDetail.get());
+          orderRepository.delete(newOrder);
+          throw new VsException(MessageConstant.PRODUCT_OUT_OF_STOCK);
+        }
         itemDetail.get().setOrder(newOrder);
         itemDetail.get().setCart(null);
         itemDetailRepository.save(itemDetail.get());
-        productService.updateStockProduct(itemDetail.get().getProduct().getId(), itemDetail.get().getAmount(), true);
       }
     }
 

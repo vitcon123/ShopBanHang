@@ -1,0 +1,29 @@
+[
+  {
+    "name": "iPhone X 64GB",
+    "description": "iPhone X 64GB",
+    "price": 208.96,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 3,
+    "slug": "iphone-x-64gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917943/enih3t2wydftlzwkl93h.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917945/ununyj6j1rartnhnnuqf.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 11 128GB",
+    "description": "iPhone 11 128GB",
+    "price": 443.19,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 3,
+    "slug": "iphone-11-128gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917977/kzqyz6f7hjejmfplzgbw.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917979/soz9f8dg9x7lcprs4vtr.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917980/llovtspbcndp1gmulnml.jpg"
+    ]
+  }
+]
