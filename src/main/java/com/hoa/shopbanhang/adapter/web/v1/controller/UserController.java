@@ -44,8 +44,8 @@ public class UserController {
 
   @Operation(summary = "Change Avatar User - ADMIN, USER")
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-  @PostMapping(UrlConstant.User.CHANGE_AVATAR)
-  public ResponseEntity<?> changeAvatarUser(@Valid @ModelAttribute ChangeAvatarInput changeAvatarInput) {
+  @PatchMapping(UrlConstant.User.CHANGE_AVATAR)
+  public ResponseEntity<?> changeAvatarUser(@ModelAttribute ChangeAvatarInput changeAvatarInput) {
     return VsResponseUtil.ok(userService.changeAvatar(changeAvatarInput));
   }
 

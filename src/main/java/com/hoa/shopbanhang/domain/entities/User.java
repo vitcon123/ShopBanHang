@@ -53,10 +53,6 @@ public class User extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Order> orders;
 
-  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "users")
-  @JsonIgnore
-  private List<Notification> notifications;
-
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore
   private List<Rate> rates;

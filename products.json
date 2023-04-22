@@ -5,7 +5,7 @@
     "price": 208.96,
     "stock": 100,
     "brand": "Iphone",
-    "category": 3,
+    "category": 2,
     "slug": "iphone-x-64gb",
     "images": [
       "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917943/enih3t2wydftlzwkl93h.jpg",
@@ -18,12 +18,419 @@
     "price": 443.19,
     "stock": 100,
     "brand": "Iphone",
-    "category": 3,
+    "category": 2,
     "slug": "iphone-11-128gb",
     "images": [
       "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917977/kzqyz6f7hjejmfplzgbw.jpg",
       "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917979/soz9f8dg9x7lcprs4vtr.jpg",
       "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681917980/llovtspbcndp1gmulnml.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 11 Pro Max 128GB",
+    "description": "iPhone 11 Pro Max 128GB",
+    "price": 479.85,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 2,
+    "slug": "iphone-11-pro-max-128gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918012/dixe7trpevrcuirgfliw.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918014/pniidaxt2tmvfpf6wjre.png"
+    ]
+  },
+  {
+    "name": "iPhone Xs Max 256GB",
+    "description": "iPhone Xs Max 256GB",
+    "price": 351.89,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 2,
+    "slug": "iphone-xs-max-256gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918043/oac7x3zqzlumids2mylw.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918046/oj1vnweemf2cuqe3cydt.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 12 Pro Max 256GB",
+    "description": "iPhone 12 Pro Max 256GB",
+    "price": 647.9,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 2,
+    "slug": "iphone-12-pro-max-256gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918071/zdu3j1vovl6eyehlualc.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918073/ygkmvdacmzcx8ahpqoq1.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 13 Pro Max 256GB",
+    "description": "iPhone 13 Pro Max 256GB",
+    "price": 852.63,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 2,
+    "slug": "iphone-13-pro-max-256gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918104/fdhrcs86z2bejbbykkrl.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918106/mo2gy9irir9hfttvbemc.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 14 128GB",
+    "description": "iPhone 14 128GB",
+    "price": 792.63,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 2,
+    "slug": "iphone-14-128gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918146/iyyxmonknn4hkjiqyphz.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918148/oupdxpbzwofnvzfok8tp.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918149/regc7l2gzuoigvzd80op.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 14 Pro Max 128GB ",
+    "description": "iPhone 14 Pro Max 128GB",
+    "price": 832.63,
+    "stock": 100,
+    "brand": "Iphone",
+    "category": 2,
+    "slug": "iphone-14-pro-max-128gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918193/lhwoktd7daxhdrhrrez2.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918195/gtlrve8qlgynoa3qoijk.jpg"
+    ]
+  },
+  {
+    "name": "RAM Laptop Kingston 1.2V 8GB 3200MHz",
+    "description": "RAM Laptop Kingston 1.2V 8GB 3200MHz",
+    "price": 26.44,
+    "stock": 100,
+    "brand": "Kingston",
+    "category": 4,
+    "slug": "ram-laptop-kingston-1-2v-8gb-3200mhz",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918313/xlgjuazrepblzogconq2.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918316/fnc2e0laanyi7mnashyr.jpg"
+    ]
+  },
+  {
+    "name": "RAM Laptop Samsung 8GB DDR4 3200MHz",
+    "description": "RAM Laptop Samsung 8GB DDR4 3200MHz",
+    "price": 28.46,
+    "stock": 100,
+    "brand": "Samsung ",
+    "category": 4,
+    "slug": "ram-laptop-samsung-8gb-ddr4-3200mhz",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918338/phjsfxwyfmu6v2zpjh4g.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918341/xkdea9jonbffkkems5jr.jpg"
+    ]
+  },
+  {
+    "name": "RAM PC Kingston Fury 8GB 3200MHz",
+    "description": "RAM PC Kingston Fury 8GB 3200MHz",
+    "price": 26.4,
+    "stock": 100,
+    "brand": "Kingston Fury",
+    "category": 4,
+    "slug": "ram-pc-kingston-fury-8gb-3200mhz",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918357/gws3nnspcaxry4g2rc1u.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918359/mzbef4j2fhydvwobxog6.jpg"
+    ]
+  },
+  {
+    "name": "RAM Laptop G.SKILL Ripjaw 8GB 3200MHz",
+    "description": "RAM Laptop G.SKILL Ripjaw 8GB 3200MHz",
+    "price": 23.25,
+    "stock": 100,
+    "brand": "G.SKILL ",
+    "category": 4,
+    "slug": "ram-laptop-g-skill-ripjaw-8gb-3200mhz",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918376/idch1zotxg0fm3cpsseu.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918378/s5uaixqdzw3sgp5lckl4.jpg"
+    ]
+  },
+  {
+    "name": "Gaming headset Rapoo VH710",
+    "description": "Gaming headset Rapoo VH710",
+    "price": 28.46,
+    "stock": 100,
+    "brand": "Rapoo",
+    "category": 8,
+    "slug": "gaming-headset-rapoo-vh710",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918425/yezignv872jtt3xoiktu.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918428/benklkhjtsyy1ghugoev.jpg"
+    ]
+  },
+  {
+    "name": "Headphone Bluetooth G02-TWS",
+    "description": "Headphone Bluetooth G02-TWS",
+    "price": 38.46,
+    "stock": 100,
+    "brand": "G02-TWS",
+    "category": 8,
+    "slug": "headphone-bluetooth-g02-tws",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918466/hddk0c3r0nfhn0ietjvq.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918468/jbxk8uf1hdhe75n1godz.jpg"
+    ]
+  },
+  {
+    "name": "Headphone Baseus Bluetooth G02-TWS",
+    "description": "Headphone Baseus Bluetooth G02-TWS",
+    "price": 30.12,
+    "stock": 100,
+    "brand": "Baseus",
+    "category": 8,
+    "slug": "headphone-baseus-bluetooth-g02-tws",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918504/hl6h0xojueiktlb4noyy.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918506/xsfnifukbgothqak8gwk.jpg"
+    ]
+  },
+  {
+    "name": "Headphone Bluetooth G02-TWS",
+    "description": "Headphone Bluetooth G02-TWS",
+    "price": 28.46,
+    "stock": 100,
+    "brand": "Rapoo",
+    "category": 8,
+    "slug": "headphone-bluetooth-g02-tws",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918543/ummxrabvl9qdmrqolqbk.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918544/saliolytwl84rouriruc.jpg"
+    ]
+  },
+  {
+    "name": "Laptop Acer Nitro Gaming AN515-45-R6EV R5 5600H/8GB/512GB",
+    "description": "Laptop Acer Nitro Gaming AN515-45-R6EV R5 5600H/8GB/512GB",
+    "price": 746.0,
+    "stock": 100,
+    "brand": "Acer",
+    "category": 5,
+    "slug": "laptop-acer-nitro-gaming-an515-45-r6ev-r5-5600h-8gb-512gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918568/swraomihf07fruqfxxt0.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918571/rb8qysfhnvaftrsibqry.jpg"
+    ]
+  },
+  {
+    "name": "Laptop Asus TUF Gaming FX506LHB-HN188W i5 10300H/8GB/512GB/15.6",
+    "description": "Laptop Asus TUF Gaming FX506LHB-HN188W i5 10300H/8GB/512GB/15.6",
+    "price": 742.0,
+    "stock": 100,
+    "brand": "Asus",
+    "category": 5,
+    "slug": "laptop-asus-tuf-gaming-fx506lhb-hn188w-i5-10300h-8gb-512gb-15-6",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918586/knf10kk389zztfdl4l8j.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918589/xsawgguayg5kajmgiqor.jpg"
+    ]
+  },
+  {
+    "name": "Laptop Lenovo Ideapad 3 15IAU7 i5 1235U/8GB/512GB/15.6",
+    "description": "Laptop Lenovo Ideapad 3 15IAU7 i5 1235U/8GB/512GB/15.6",
+    "price": 618.04,
+    "stock": 100,
+    "brand": "Lenovo",
+    "category": 5,
+    "slug": "laptop-lenovo-ideapad-3-15iau7-i5-1235u-8gb-512gb-15-6",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918607/xldcoecdkjll4zy3sxwz.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918609/nkxkledz6mhzwa4aslyz.jpg"
+    ]
+  },
+  {
+    "name": "MacBook Air 13\" 2020 M1 256GB",
+    "description": "MacBook Air 13\" 2020 M1 256GB",
+    "price": 792.92,
+    "stock": 100,
+    "brand": "Macbook",
+    "category": 5,
+    "slug": "macbook-air-13-2020-m1-256gb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918625/vkh0f3hrur9xquy6jkqc.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918627/lyo6gfaocblmyaadgtt1.jpg"
+    ]
+  },
+  {
+    "name": "CPU Intel Core i5 11400F",
+    "description": "CPU Intel Core i5 11400F",
+    "price": 140.31,
+    "stock": 100,
+    "brand": "Intel",
+    "category": 7,
+    "slug": "cpu-intel-core-i5-11400f",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918670/hshpuk8byqrtkayjftra.png",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918673/hve2hccnewapsxv8krrj.png"
+    ]
+  },
+  {
+    "name": "CPU Intel Core i5 12400F",
+    "description": "CPU Intel Core i5 12400F",
+    "price": 187.23,
+    "stock": 100,
+    "brand": "Intel",
+    "category": 7,
+    "slug": "cpu-intel-core-i5-12400f",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918695/wnkqru0dtmfeqvw6ouhb.png",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918698/qn86bnjdvtkvw3sbigga.png"
+    ]
+  },
+  {
+    "name": "CPU Intel Core i9 13900F",
+    "description": "CPU Intel Core i9 13900F",
+    "price": 639.3,
+    "stock": 100,
+    "brand": "Intel",
+    "category": 7,
+    "slug": "cpu-intel-core-i9-13900f",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918721/clheawyw4j7uawmqajf0.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918723/gdpmtxjon8cfubo0ctux.png"
+    ]
+  },
+  {
+    "name": "CPU Intel Core i7 12700",
+    "description": "CPU Intel Core i7 12700",
+    "price": 411.56,
+    "stock": 100,
+    "brand": "Intel ",
+    "category": 7,
+    "slug": "cpu-intel-core-i7-12700",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918754/rmhqrt6qlsksfc4xptya.png",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681918758/mocnetnubatpjemvghr2.png"
+    ]
+  },
+  {
+    "name": "TUT Vintage & Computer Systems Keycap Sets",
+    "description": "Embark on a thrilling journey down digital highways and open roads with two captivating keyboard themes: TUT Vintage & Computer Systems Keycaps.",
+    "price": 44.99,
+    "stock": 51,
+    "brand": "TUT",
+    "category": 3,
+    "slug": "tut-vintage-computer-systems-keycap-sets",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921870/cpaskvx0jhnho0gstvsd.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921872/xjficl8uiwycsae5tlkh.webp"
+    ]
+  },
+  {
+    "name": "ePBT Warrior MK II Keycap Set R2 by ALOHAKB",
+    "description": "Jump into the fray with the ePBT Warrior MK II Keycap set. From its rugged PBT keycaps to its dye-sub legends, this set is built to withstand the heat of battle.",
+    "price": 29.99,
+    "stock": 32,
+    "brand": "ALOHAKB",
+    "category": 3,
+    "slug": "epbt-warrior-mk-ii-keycap-set-r2-by-alohakb",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921895/jidtkxgm2odox8sqlwuq.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921897/mwa6g8keyddz9pu4bu8h.webp"
+    ]
+  },
+  {
+    "name": "Discord Go Nitro Mechanical Keyboard",
+    "description": "Strap rocket boosters to your setup with the Official Discord Go Nitro Keyboard. ",
+    "price": 39.99,
+    "stock": 38,
+    "brand": "Kono",
+    "category": 3,
+    "slug": "discord-go-nitro-mechanical-keyboard",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921914/vfegde8qun2srhbgwaat.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921916/pfpgvslwjlhjfsvk7jm9.webp"
+    ]
+  },
+  {
+    "name": "Kira Mechanical Keyboard",
+    "description": "Kira is our finest full sized mechanical keyboard design.",
+    "price": 89.99,
+    "stock": 68,
+    "brand": "Kira",
+    "category": 3,
+    "slug": "kira-mechanical-keyboard",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921933/o7geq3bmqupftt7vao8r.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921935/zsynoswjtcreskqq929j.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921936/o7abtce1acwqijgrrybx.webp"
+    ]
+  },
+  {
+    "name": "SA Espresso",
+    "description": "Keycaps and Espresso have a lot in common. Both form under pressure. Expensive machinery is required.",
+    "price": 64.99,
+    "stock": 69,
+    "brand": "SA",
+    "category": 3,
+    "slug": "sa-espresso",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921973/auunxutpvahb3zd6fbht.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681921975/wrssog13rdqosnnzcgut.webp"
+    ]
+  },
+  {
+    "name": "Razer Basilisk V3 Pro + Mouse Dock Pro Bundle",
+    "description": "FORM FACTOR: Right-handed\nCONNECTIVITY: Razer™ HyperSpeed Wireless, Bluetooth, Wired – Speedflex Cable USB Type C",
+    "price": 44.49,
+    "stock": 72,
+    "brand": "Razer",
+    "category": 6,
+    "slug": "razer-basilisk-v3-pro-mouse-dock-pro-bundle",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922000/igvlghu9gzzn4yxhnewi.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922003/velmq6c7j6ynzvbmphau.jpg"
+    ]
+  },
+  {
+    "name": "G502 X LIGHTSPEED WIRELESS GAMING MOUSE",
+    "description": "G502 X LIGHTSPEED is the latest addition to legendary G502 lineage. Featuring our first-ever LIGHTFORCE hybrid optical-mechanical switches and updated LIGHTSPEED wireless protocol with 68% faster response rate than the previous generation.",
+    "price": 129.99,
+    "stock": 65,
+    "brand": "Logitech",
+    "category": 6,
+    "slug": "g502-x-lightspeed-wireless-gaming-mouse",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922015/qnpaxdq3jslbo0ts6wpn.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922018/y49bl3gzccymgsbyxo7s.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922021/njrcnyofvan6zzjff6y8.png"
+    ]
+  },
+  {
+    "name": "Razer DeathAdder V2 Pro - Genshin Impact Edition",
+    "description": "FORM FACTOR: Right-handed\nCONNECTIVITY: Razer™ HyperSpeed Wireless, Bluetooth, Wired – Speedflex Cable USB Type C",
+    "price": 129.99,
+    "stock": 26,
+    "brand": "Razer",
+    "category": 6,
+    "slug": "razer-deathadder-v2-pro-genshin-impact-edition",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922039/k7jz6pjwk4o5ldafko6n.jpg",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922041/fovkl3s4k1gjjodr6yi7.jpg"
+    ]
+  },
+  {
+    "name": "PRO WIRELESS MOUSE",
+    "description": "Our hit PRO mouse with iconic League of Legends design.",
+    "price": 99.99,
+    "stock": 34,
+    "brand": "Logitech",
+    "category": 6,
+    "slug": "pro-wireless-mouse",
+    "images": [
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922057/lqctcsblxumbrncqsis2.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922059/jvzz9ahvufc1gnes1c19.webp",
+      "https://res.cloudinary.com/dw8sk6rvo/image/upload/v1681922061/zxlcsws03kz5gpkqsmzg.webp"
     ]
   }
 ]

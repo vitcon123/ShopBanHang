@@ -56,7 +56,7 @@ public class CartController {
 
 
   @Operation(summary = "Add Product To Cart - ADMIN, USER")
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+//  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PostMapping(UrlConstant.Cart.ADD_PRODUCT_TO_CART)
   public ResponseEntity<?> addProductToCartById(@PathVariable(name = "idCart") Long idCart,
                                          @PathVariable(name = "idProduct") Long idProduct,
