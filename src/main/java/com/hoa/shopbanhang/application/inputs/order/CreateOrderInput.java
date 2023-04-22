@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.application.inputs.order;
 
+import com.hoa.shopbanhang.application.constants.DeliveryMethod;
 import com.hoa.shopbanhang.application.constants.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,15 +19,19 @@ public class CreateOrderInput {
 
   private Long idUser;
 
-  private LocalDateTime orderedDate = LocalDateTime.now();
-
-  private String deliveredDate;
-
-  private PaymentMethod paymentMethod;
+  private String fullName;
 
   private String address;
 
   private String phone;
+
+  private LocalDateTime orderedDate = LocalDateTime.now();
+
+  private String deliveredDate;
+
+  private DeliveryMethod deliveryMethod;
+
+  private PaymentMethod paymentMethod;
 
   private List<Long> idItemDetails;
 

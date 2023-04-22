@@ -1,0 +1,42 @@
+[
+  {
+    "name": "GPU",
+    "slug": "gpu",
+    "description": "GPU description"
+  },
+  {
+    "name": "Smartphone",
+    "slug": "smartphone",
+    "description": "Smartphone description"
+  },
+  {
+    "name": "Keyboard",
+    "slug": "keyboard",
+    "description": "Keyboard description"
+  },
+  {
+    "name": "Ram",
+    "slug": "ram",
+    "description": "Ram description"
+  },
+  {
+    "name": "Laptop",
+    "slug": "laptop",
+    "description": "Laptop description"
+  },
+  {
+    "name": "Mouse",
+    "slug": "mouse",
+    "description": "Mouse description"
+  },
+  {
+    "name": "CPU",
+    "slug": "cpu",
+      "description": "CPU description"
+  },
+  {
+    "name": "Headphone",
+    "slug": "headphone",
+    "description": "Headphone description"
+  }
+]

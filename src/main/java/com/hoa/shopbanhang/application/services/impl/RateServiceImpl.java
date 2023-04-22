@@ -10,9 +10,7 @@ import com.hoa.shopbanhang.application.repositories.IRateRepository;
 import com.hoa.shopbanhang.application.services.IRateService;
 import com.hoa.shopbanhang.application.services.IUserService;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
-import com.hoa.shopbanhang.domain.entities.Product;
-import com.hoa.shopbanhang.domain.entities.Rate;
-import com.hoa.shopbanhang.domain.entities.User;
+import com.hoa.shopbanhang.domain.entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

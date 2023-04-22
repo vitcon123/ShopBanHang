@@ -11,22 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductInitJSON {
+public class CategoryInitJSON {
 
   private String name;
 
-  private String description;
-
-  private Double price;
-
-  private Integer stock;
-
-  private String brand;
-
-  private Long category;
-
   private String slug;
 
-  private List<String> images;
+  private String description;
 
 }

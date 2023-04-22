@@ -35,14 +35,14 @@ public class RateController {
   @Operation(summary = "Create Rate - ADMIN, USER")
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PostMapping(UrlConstant.Rate.CREATE)
-  public ResponseEntity<?> createRate(@ModelAttribute CreateRateInput createRateInput) {
+  public ResponseEntity<?> createRate(@RequestBody CreateRateInput createRateInput) {
     return VsResponseUtil.ok(rateService.createRate(createRateInput));
   }
 
   @Operation(summary = "Update Rate - ADMIN, USER")
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PatchMapping(UrlConstant.Rate.UPDATE)
-  public ResponseEntity<?> updateRate(@ModelAttribute UpdateRateInput updateRateInput) {
+  public ResponseEntity<?> updateRate(@RequestBody UpdateRateInput updateRateInput) {
     return VsResponseUtil.ok(rateService.updateRate(updateRateInput));
   }
 

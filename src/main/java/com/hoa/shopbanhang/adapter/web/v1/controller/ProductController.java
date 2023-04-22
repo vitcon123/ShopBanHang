@@ -4,7 +4,6 @@ import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
 import com.hoa.shopbanhang.application.inputs.product.*;
-import com.hoa.shopbanhang.application.inputs.statistic.AdminStatisticInput;
 import com.hoa.shopbanhang.application.services.IProductService;
 import com.hoa.shopbanhang.application.services.impl.ItemDetailServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -69,7 +68,7 @@ public class ProductController {
   @Operation(summary = "Remove Image Of Product - ADMIN")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PatchMapping(UrlConstant.Product.REMOVE_IMAGES)
-  public ResponseEntity<?> removeImagesProduct(@ModelAttribute RemoveImagesProductInput input) {
+  public ResponseEntity<?> removeImagesProduct(@RequestBody RemoveImagesProductInput input) {
     return VsResponseUtil.ok(productService.removeImagesProduct(input));
   }
 

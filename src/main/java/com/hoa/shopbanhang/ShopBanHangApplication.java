@@ -9,6 +9,7 @@ import com.hoa.shopbanhang.application.repositories.IProductRepository;
 import com.hoa.shopbanhang.application.repositories.IRoleRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.impl.CategoryServiceImpl;
+import com.hoa.shopbanhang.configs.CategoryInitJSON;
 import com.hoa.shopbanhang.configs.ProductInitJSON;
 import com.hoa.shopbanhang.domain.entities.Category;
 import com.hoa.shopbanhang.domain.entities.Product;
@@ -47,7 +48,6 @@ public class ShopBanHangApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShopBanHangApplication.class, args);
-
 	}
 
 	@Bean
@@ -63,6 +63,21 @@ public class ShopBanHangApplication {
 			if (userRepository.count() == 0) {
 				User user = new User("admin", passwordEncoder.encode("admin"), "Admin", roleRepository.findByName(RoleConstant.ROLE_ADMIN), AuthenticationProvider.LOCAL, true);
 				userRepository.save(user);
+			}
+
+			if(categoryRepository.count() == 0) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				File file = new File("categories.json");
+				try {
+					List<CategoryInitJSON> categories = objectMapper.readValue(file, new TypeReference<List<CategoryInitJSON>>() {});
+
+					for (CategoryInitJSON categoryInit : categories) {
+						Category category = modelMapper.map(categoryInit, Category.class);
+						categoryRepository.save(category);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 
 			if(productRepository.count() == 0) {
