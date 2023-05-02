@@ -48,11 +48,11 @@
 			<version>${netty-socketio.version}</version>
 		</dependency>
 
-		<!--    Send mail    -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
+			<!--    Send mail    -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-mail</artifactId>
+			</dependency>
 
 		<!--    Oauth2    -->
 		<dependency>
@@ -156,6 +156,12 @@
 			<groupId>com.github.slugify</groupId>
 			<artifactId>slugify</artifactId>
 			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10.1</version>
 		</dependency>
 
 		<!--   Model Mapper     -->
