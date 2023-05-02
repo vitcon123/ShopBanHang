@@ -12,19 +12,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProductInput {
+public class AddImagesProductInput {
 
   private Long id;
 
-  private String name;
-
-  private Double price;
-
-  private Integer stock;
-
-  private String description;
-
-  private String brand;
-
   private List<MultipartFile> images;
+
 }

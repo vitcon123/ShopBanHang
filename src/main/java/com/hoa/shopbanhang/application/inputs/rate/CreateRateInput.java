@@ -18,4 +18,5 @@ public class CreateRateInput {
   private Integer star;
 
   private String review;
+
 }

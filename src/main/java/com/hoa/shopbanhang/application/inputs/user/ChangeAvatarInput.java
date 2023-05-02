@@ -14,5 +14,5 @@ public class ChangeAvatarInput {
 
   private Long id;
 
-  private MultipartFile file;
+  private MultipartFile avatar;
 }

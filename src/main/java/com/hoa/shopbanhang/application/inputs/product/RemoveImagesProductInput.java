@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,19 +11,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProductInput {
+public class RemoveImagesProductInput {
 
   private Long id;
 
-  private String name;
+  private List<String> images;
 
-  private Double price;
-
-  private Integer stock;
-
-  private String description;
-
-  private String brand;
-
-  private List<MultipartFile> images;
 }

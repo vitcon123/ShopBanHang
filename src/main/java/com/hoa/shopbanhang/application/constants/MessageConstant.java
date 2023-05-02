@@ -1,7 +1,7 @@
 package com.hoa.shopbanhang.application.constants;
 
 public class MessageConstant {
-  public static final String CART_NOT_EXISTS = "Account not exists";
+  public static final String CART_NOT_EXISTS = "Cart not exists";
   public static final String CATEGORY_NOT_EXISTS = "Category not exists";
   public static final String ITEM_DETAIL_NOT_EXISTS = "Item detail not exists";
   public static final String NOTIFICATION_NOT_EXISTS = "Notification not exists";
@@ -12,16 +12,9 @@ public class MessageConstant {
   public static final String RATE_NOT_EXISTS = "Rate not exists";
   public static final String PRODUCT_OUT_OF_STOCK = "Product is out of stock";
   public static final String CANNOT_CANCEL_ORDER = "Can't cancel order";
-
-  public static final String ROLE_NOT_EXISTS = "Role not exists";
-
-  public static final String NOT_ACCESS = "You do not have permission";
-
-  public static final String INVALID_TOKEN = "Invalid token";
-  public static final String EXPIRED_TOKEN = "Expired token";
+  public static final String CHECK_YOUR_EMAIL = "Please check your email";
+  public static final String UPDATE_PASSWORD_SUCCESSFUL = "Update password successful";
+  public static final String INCORRECT_PASSWORD = "Incorrect password";
   public static final String INVALID_SOME_THING_FIELD_IS_REQUIRED = "Something field is required";
-  public static final String DATA_WAS_DELETE = "Data was delete";
-  public static final String EMAIL_ALREADY_EXISTS = "Email has already exists";
-  public static final String ACCOUNT_TYPE_NOT_EXIST = "Account type does not exist";
 
 }

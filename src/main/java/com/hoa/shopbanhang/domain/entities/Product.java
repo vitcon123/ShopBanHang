@@ -51,5 +51,4 @@ public class Product extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Statistic> statistics;
 
-
 }

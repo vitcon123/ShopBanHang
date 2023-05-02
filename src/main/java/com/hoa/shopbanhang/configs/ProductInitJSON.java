@@ -1,30 +1,32 @@
-package com.hoa.shopbanhang.application.inputs.product;
+package com.hoa.shopbanhang.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProductInput {
-
-  private Long id;
+@Getter
+@Setter
+public class ProductInitJSON {
 
   private String name;
+
+  private String description;
 
   private Double price;
 
   private Integer stock;
 
-  private String description;
-
   private String brand;
 
-  private List<MultipartFile> images;
+  private Long category;
+
+  private String slug;
+
+  private List<String> images;
+
 }

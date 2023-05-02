@@ -4,15 +4,9 @@ public class UrlConstant {
 
   public static final class Token {
     public static final String PREFIX = "/tokens";
-    public static final String LIST = PREFIX;
-    public static final String GET = PREFIX + "/{token}";
     public static final String VERIFY = PREFIX + "/verify/{token}";
     public static final String VERIFY_FORGOT_PASSWORD = PREFIX + "/verify-forgot-password/{token}";
     public static final String RESEND = PREFIX + "/resend/{token}";
-    public static final String FORGOT_PASSWORD = PREFIX + "/forgot-password/{token}";
-    public static final String CREATE = PREFIX;
-    public static final String UPDATE = PREFIX + "/{id}";
-    public static final String DELETE = PREFIX + "/{id}";
 
     public Token() {
 
@@ -23,13 +17,8 @@ public class UrlConstant {
     public static final String PREFIX = "/users";
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
-    public static final String GET_FOLLOWING = PREFIX + "/{id}/following";
-    public static final String GET_FOLLOWERS = PREFIX + "/{id}/followers";
-    public static final String GET_ID_NAME = PREFIX + "/{idName}";
-    public static final String CHANGE_AVATAR = PREFIX + "/change-avatar/{id}";
-    public static final String FOLLOW = PREFIX + "/follow/{idFollow}";
-    public static final String UNFOLLOW = PREFIX + "/unfollow/{idFollow}";
-    public static final String UPDATE = PREFIX + "/{id}";
+    public static final String CHANGE_AVATAR = PREFIX + "/change-avatar";
+    public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
 
     public User() {
@@ -42,8 +31,6 @@ public class UrlConstant {
     }
 
     private static final String PRE_FIX = "/roles";
-    public static final String DATA_ROLE = PRE_FIX;
-    public static final String DATA_ROLE_ID = PRE_FIX + "/{id}";
   }
 
   public static class Category {
@@ -53,7 +40,7 @@ public class UrlConstant {
     private static final String PREFIX = "/categories";
     public static final String LIST = PREFIX;
     public static final String CREATE = PREFIX;
-    public static final String GET = PREFIX + "/{id}";
+    public static final String GET_BY_NAME = PREFIX + "/{name}";
     public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
   }
@@ -76,11 +63,6 @@ public class UrlConstant {
     }
 
     private static final String PREFIX = "/medias";
-    public static final String LIST = PREFIX;
-    public static final String CREATE = PREFIX;
-    public static final String GET = PREFIX + "/{id}";
-    public static final String UPDATE = PREFIX;
-    public static final String DELETE = PREFIX + "/{id}";
   }
 
   public static class Order {
@@ -89,6 +71,7 @@ public class UrlConstant {
 
     private static final String PREFIX = "/orders";
     public static final String LIST = PREFIX;
+    public static final String SEARCH = PREFIX + "/search";
     public static final String CREATE = PREFIX;
     public static final String CANCEL = PREFIX+ "/{idOrder}";
     public static final String GET = PREFIX + "/{idOrder}";
@@ -97,7 +80,6 @@ public class UrlConstant {
     public static final String PREPARING_TO_SHIP = PREFIX + "/{idOrder}/preparing-to-ship";
     public static final String IN_TRANSIT = PREFIX + "/{idOrder}/in-transit";
     public static final String DELIVERED = PREFIX + "/{idOrder}/delivered";
-    public static final String DELETE = PREFIX + "/{idOrder}";
   }
 
   public static class OrderDetail {
@@ -105,11 +87,6 @@ public class UrlConstant {
     }
 
     private static final String PREFIX = "/order-details";
-    public static final String LIST = PREFIX;
-    public static final String CREATE = PREFIX;
-    public static final String GET = PREFIX + "/{id}";
-    public static final String UPDATE = PREFIX;
-    public static final String DELETE = PREFIX + "/{id}";
   }
 
   public static class Product {
@@ -122,7 +99,10 @@ public class UrlConstant {
     public static final String GET = PREFIX + "/{id}";
     public static final String SEARCH = PREFIX + "/search";
     public static final String UPDATE = PREFIX;
+    public static final String ADD_IMAGES = PREFIX + "/add-images";
+    public static final String REMOVE_IMAGES = PREFIX + "/remove-images";
     public static final String DELETE = PREFIX + "/{id}";
+    public static final String REPORT = PREFIX + "/report";
   }
 
   public static class Statistic {
@@ -130,10 +110,10 @@ public class UrlConstant {
     }
 
     private static final String PREFIX = "/statistics";
+    public static final String VIEW = PREFIX + "/view";
     public static final String LIST = PREFIX;
     public static final String CREATE = PREFIX;
     public static final String GET = PREFIX + "/{id}";
-    public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
   }
 
@@ -141,7 +121,6 @@ public class UrlConstant {
     private static final String PREFIX = "/notifications";
     public static final String GET = PREFIX + "/{id}";
     public static final String GET_BY_ACCOUNT = PREFIX + "/account/{idAccount}";
-    public static final String LIST = PREFIX;
     public static final String SEND = PREFIX + "/send";
     public static final String CREATE = PREFIX;
     public static final String UPDATE = PREFIX;
@@ -152,16 +131,6 @@ public class UrlConstant {
     private Notification() {
     }
 
-  }
-
-  public static class Timer {
-    private Timer() {
-    }
-
-    private static final String PRE_FIX = "/timer";
-    public static final String DATA_TIMER = PRE_FIX;
-    public static final String DATA_TIMER_NOW = PRE_FIX + "/{id}/now";
-    public static final String DATA_TIMER_MONTH = PRE_FIX + "/{id}/{month}";
   }
 
   public static class Rate {
@@ -184,10 +153,7 @@ public class UrlConstant {
     public static final String LOGIN = PRE_FIX + "/login";
     public static final String SIGNUP = PRE_FIX + "/signup";
     public static final String REFRESH_TOKEN = PRE_FIX + "/refresh-token";
-    public static final String FORGOT_PASSWORD = PRE_FIX + "/forgot-password";
-    public static final String VERIFY_RESET_PASSWORD = FORGOT_PASSWORD + "/verify";
+    public static final String RESET_PASSWORD = PRE_FIX + "/reset-password";
     public static final String UPDATE_PASSWORD = PRE_FIX + "/update-password";
-    public static final String VALIDATE = PRE_FIX + "/validate";
-    public static final String LOGOUT = PRE_FIX + "/logout/{id}";
   }
 }

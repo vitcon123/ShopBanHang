@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -26,9 +27,19 @@ public class CategoryServiceImpl implements ICategoryService {
     this.modelMapper = modelMapper;
   }
 
+  public static void checkCategoryExists(Optional<Category> Category) {
+    if (Category.isEmpty()) {
+      throw new VsException(MessageConstant.CATEGORY_NOT_EXISTS);
+    }
+  }
+
   @Override
-  public List<Category> getAll() {
-    return categoryRepository.findAll();
+  public List<String> getAll() {
+    List<String> categories = categoryRepository.findAll()
+        .stream().map(Category::getName)
+        .collect(Collectors.toList());
+
+    return categories;
   }
 
   @Override
@@ -37,6 +48,14 @@ public class CategoryServiceImpl implements ICategoryService {
     checkCategoryExists(oldCategory);
 
     return oldCategory.get();
+  }
+
+  @Override
+  public Category getCategoryByName(String name) {
+    Category category = categoryRepository.findByName(name);
+    checkCategoryExists(Optional.ofNullable(category));
+
+    return category;
   }
 
   @Override
@@ -70,11 +89,5 @@ public class CategoryServiceImpl implements ICategoryService {
     categoryRepository.delete(category.get());
 
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  public static void checkCategoryExists(Optional<Category> Category) {
-    if (Category.isEmpty()) {
-      throw new VsException(MessageConstant.CATEGORY_NOT_EXISTS);
-    }
   }
 }

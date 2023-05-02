@@ -26,6 +26,6 @@ public class CreateProductInput {
 
   private String brand;
 
-  private List<MultipartFile> multipartFiles;
+  private List<MultipartFile> images;
 
 }

@@ -24,7 +24,7 @@ public class Cart extends AbstractAuditingEntity {
   private User user;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cart")
-  @JsonIgnore
+//  @JsonIgnore
   private List<ItemDetail> itemDetails;
 
 }

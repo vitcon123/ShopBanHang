@@ -1,25 +1,22 @@
 package com.hoa.shopbanhang.application.services.impl;
 
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.AuthenticationRequest;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.parameter.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.AuthenticationResponse;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.*;
 import com.hoa.shopbanhang.application.events.SignUpEvent;
+import com.hoa.shopbanhang.application.inputs.auth.AuthenticationRequest;
+import com.hoa.shopbanhang.application.inputs.auth.UpdatePasswordInput;
 import com.hoa.shopbanhang.application.inputs.user.CreateUserInput;
 import com.hoa.shopbanhang.application.repositories.IRoleRepository;
 import com.hoa.shopbanhang.application.repositories.ITokenRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IAuthService;
 import com.hoa.shopbanhang.application.services.ICartService;
-import com.hoa.shopbanhang.application.services.ITokenService;
 import com.hoa.shopbanhang.application.utils.JwtUtil;
 import com.hoa.shopbanhang.application.utils.SendMailUtil;
-import com.hoa.shopbanhang.application.utils.UrlUtil;
 import com.hoa.shopbanhang.configs.exceptions.NotFoundException;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.Role;
-import com.hoa.shopbanhang.domain.entities.Token;
 import com.hoa.shopbanhang.domain.entities.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,13 +26,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -149,68 +146,47 @@ public class AuthServiceImpl implements IAuthService {
 
 
   @Override
-  public RequestResponse createPasswordResetTokenForAccount(String email) {
+  public RequestResponse resetPassword(String email) {
     Optional<User> user = userRepository.findByEmail(email);
     UserServiceImpl.checkUserExists(user);
 
-    String token = UUID.randomUUID().toString();
+    UUID uuid = UUID.randomUUID();
+    String uuidString = uuid.toString();
 
-    saveVerificationTokenResetPassword(user.get(), token);
+    String newPassword = uuidString.substring(uuidString.length() - 8);
 
-    // Send Mail to Account
-    String url =
-        UrlUtil.applicationUrl(request)
-            + "/api/v1"
-            + UrlConstant.Auth.VERIFY_RESET_PASSWORD
-            + "?token=" + token;
+    user.get().setPassword(passwordEncoder.encode(newPassword));
+    userRepository.save(user.get());
 
     String contentAccount =
-        "Chúng tôi đã nhận được yêu cầu đổi mật khẩu của bạn"
-            + ".\n\nĐể xác nhận thay đổi mật khẩu, vui lòng nhấn vào link sau: " + url
-            + ".\n\nCảm ơn vì đã xử dụng dịch vụ của chúng tôi.";
+        "We have received your request to reset your password"
+        + ".\nYour new password is: " + newPassword
+        + "\n\nThanks for using our service.";
 
     try {
       SendMailUtil.sendMailSimple(user.get().getEmail(), contentAccount, EmailConstant.SUBJECT_RESET_PASSWORD);
     } catch (Exception e) {
       throw new NotFoundException(EmailConstant.SEND_FAILED);
     }
-
-    return new RequestResponse(CommonConstant.TRUE, EmailConstant.SENT_SUCCESSFULLY);
+    return new RequestResponse(CommonConstant.TRUE, MessageConstant.CHECK_YOUR_EMAIL);
   }
 
   @Override
-  public void saveVerificationTokenResetPassword(User user, String token) {
-    Token passwordResetToken
-        = new Token(token, user);
-    tokenRepository.save(passwordResetToken);
-  }
-
-  @Override
-  public RequestResponse verificationTokenResetPassword(String token) {
-    Optional<Token> passwordResetToken
-        = tokenRepository.findByToken(token);
-    if (passwordResetToken == null) {
-      throw new NotFoundException(MessageConstant.INVALID_TOKEN);
-    }
-    Calendar cal = Calendar.getInstance();
-    if ((passwordResetToken.get().getExpirationTime().getTime()
-        - cal.getTime().getTime()) <= 0) {
-      tokenRepository.delete(passwordResetToken.get());
-      throw new NotFoundException(MessageConstant.EXPIRED_TOKEN);
-    }
-    return new RequestResponse(CommonConstant.TRUE, UserMessageConstant.CONFIRMED_TOKEN_RESET_PASSWORD);
-  }
-
-  @Override
-  public RequestResponse updatePassword(UpdatePasswordInput input) {
-    Optional<User> user = userRepository.findByEmail(input.getEmail());
+  public RequestResponse updatePassword(UpdatePasswordInput updatePasswordInput) {
+    Optional<User> user = userRepository.findById(updatePasswordInput.getId());
     UserServiceImpl.checkUserExists(user);
-    user.get().setPassword(passwordEncoder.encode(input.getNewPassword()));
-    tokenRepository.delete(tokenRepository.findByToken(input.getToken()).get());
-    userRepository.save(user.get());
-    return new RequestResponse(CommonConstant.TRUE, UserMessageConstant.RESET_PASSWORD_SUCCESS);
-  }
 
+    if(passwordEncoder.matches(updatePasswordInput.getOldPassword(), user.get().getPassword())) {
+      user.get().setPassword(passwordEncoder.encode(updatePasswordInput.getNewPassword()));
+      userRepository.save(user.get());
+    }
+    else {
+      throw new VsException(MessageConstant.INCORRECT_PASSWORD);
+    }
+
+    return new RequestResponse(CommonConstant.TRUE, MessageConstant.UPDATE_PASSWORD_SUCCESSFUL);
+
+  }
 
   private String getTokenFromRequest(HttpServletRequest request) {
     String authorizationHeader = request.getHeader("Authorization");

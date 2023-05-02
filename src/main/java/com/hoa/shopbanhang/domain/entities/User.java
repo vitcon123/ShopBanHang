@@ -36,8 +36,6 @@ public class User extends AbstractAuditingEntity {
 
   private String avatar;
 
-  private Double coin = 0.0;
-
   @Enumerated(EnumType.STRING)
   private AuthenticationProvider authProvider;
 
@@ -54,10 +52,6 @@ public class User extends AbstractAuditingEntity {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore
   private List<Order> orders;
-
-  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "users")
-  @JsonIgnore
-  private List<Notification> notifications;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore

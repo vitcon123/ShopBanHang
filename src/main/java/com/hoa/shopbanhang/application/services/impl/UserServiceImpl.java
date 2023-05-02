@@ -52,7 +52,7 @@ public class UserServiceImpl implements IUserService {
   public RequestResponse changeAvatar(ChangeAvatarInput changeAvatarInput) {
     Optional<User> oldUser = userRepository.findById(changeAvatarInput.getId());
     UserServiceImpl.checkUserExists(oldUser);
-    setAvatarUser(oldUser.get(), changeAvatarInput.getFile());
+    setAvatarUser(oldUser.get(), changeAvatarInput.getAvatar());
     userRepository.save(oldUser.get());
     return new RequestResponse(CommonConstant.TRUE, "Change avatar successfully !");
   }
