@@ -37,6 +37,6 @@ public class PaymentController {
                                                 @RequestParam(name = "vnp_TransactionStatus") Integer vnp_TransactionStatus,
                                                 @RequestParam(name = "vnp_TxnRef") String vpn_TxnRef,
                                                 @RequestParam(name = "vnp_SecureHash") String vnp_SecureHash){
-        return VsResponseUtil.ok("GD thanh cong");
+        return VsResponseUtil.ok("GD thanh cong: " + vnp_Amount / 100);
     }
 }

@@ -35,10 +35,12 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
-        String bank_code = paymentInput.getBankCode();
-        if (bank_code != null && !bank_code.isEmpty()) {
-            vnp_Params.put("vnp_BankCode", bank_code);
-        }
+//        String bank_code = paymentInput.getBankCode();
+//        if (bank_code != null && !bank_code.isEmpty()) {
+//            vnp_Params.put("vnp_BankCode", bank_code);
+//        }
+        vnp_Params.put("vnp_BankCode", "NCB");
+
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
