@@ -49,8 +49,8 @@ public class UserController {
     return VsResponseUtil.ok(userService.changeAvatar(changeAvatarInput));
   }
 
-  @Operation(summary = "Delete User - ADMIN, USER")
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+  @Operation(summary = "Delete User - ADMIN")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping(UrlConstant.User.DELETE)
   public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(userService.deleteById(id));

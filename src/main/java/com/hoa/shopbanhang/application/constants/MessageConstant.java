@@ -16,5 +16,6 @@ public class MessageConstant {
   public static final String UPDATE_PASSWORD_SUCCESSFUL = "Update password successful";
   public static final String INCORRECT_PASSWORD = "Incorrect password";
   public static final String INVALID_SOME_THING_FIELD_IS_REQUIRED = "Something field is required";
+  public static final String CANNOT_DELETE_ADMIN_ACCOUNT = "Cannot delete admin account";
 
 }

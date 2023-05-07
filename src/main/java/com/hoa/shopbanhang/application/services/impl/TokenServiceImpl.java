@@ -76,21 +76,6 @@ public class TokenServiceImpl implements ITokenService {
     tokenRepository.save(newToken);
   }
 
-//  @Override
-//  public RequestResponse verifyForgotPassword(VerifyForgotPasswordRequest request) {
-//    try {
-//      Token oldToken = validateToken(request.getToken());
-//      User user = oldToken.getUser();
-//      if(!user.getEmail().equals(request.getEmail())) {
-//        throw new VsException("Token is not correct !");
-//      }
-//    } catch (Exception ex) {
-//      throw new VsException(ex.getMessage());
-//    }
-//
-//    return new RequestResponse(CommonConstant.TRUE, "Verify forgot password successfully !");
-//  }
-
   private Token validateToken(String token){
     Optional<Token> oldToken = tokenRepository.findByToken(token);
     checkTokenExists(oldToken);
@@ -100,7 +85,6 @@ public class TokenServiceImpl implements ITokenService {
       tokenRepository.delete(oldToken.get());
       throw new VsException("Token expired !");
     }
-
     return oldToken.get();
   }
 

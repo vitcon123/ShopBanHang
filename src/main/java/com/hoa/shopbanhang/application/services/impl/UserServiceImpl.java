@@ -59,6 +59,9 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public RequestResponse deleteById(Long id) {
+    if(id == 1) {
+      throw new VsException(MessageConstant.CANNOT_DELETE_ADMIN_ACCOUNT);
+    }
     Optional<User> user = userRepository.findById(id);
     UserServiceImpl.checkUserExists(user);
     userRepository.deleteById(id);

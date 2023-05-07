@@ -61,6 +61,9 @@ public class User extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Statistic> statistics;
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private Token token;
+
   public User(String email, String password, String fullName,
               Role role, AuthenticationProvider authProvider, Boolean status) {
     this.email = email;
