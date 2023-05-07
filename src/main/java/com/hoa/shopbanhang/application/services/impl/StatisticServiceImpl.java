@@ -1,9 +1,11 @@
 package com.hoa.shopbanhang.application.services.impl;
 
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.AdminStatisticOutput;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.CheckSpamStatisticOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.CommonConstant;
 import com.hoa.shopbanhang.application.constants.MessageConstant;
+import com.hoa.shopbanhang.application.constants.UserMessageConstant;
 import com.hoa.shopbanhang.application.inputs.statistic.AdminStatisticInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.repositories.IProductRepository;
@@ -53,13 +55,18 @@ public class StatisticServiceImpl implements IStatisticService {
   }
 
   @Override
-  public Statistic createStatistic(CreateStatisticInput createStatisticInput) {
+  public RequestResponse createStatistic(CreateStatisticInput input) {
+    CheckSpamStatisticOutput output = statisticRepository.checkSpamStatisticOutput(input.getUser().getId(), input.getProduct().getId());
+    if(output != null && output.getTimes() >= 3) {
+      return new RequestResponse(CommonConstant.FALSE, CommonConstant.EMPTY_STRING);
+    }
     Statistic statistic = new Statistic();
-    statistic.setAgeOfUser(createStatisticInput.getAgeOfUser());
-    statistic.setUser(createStatisticInput.getUser());
-    statistic.setProduct(createStatisticInput.getProduct());
+    statistic.setAgeOfUser(input.getAgeOfUser());
+    statistic.setUser(input.getUser());
+    statistic.setProduct(input.getProduct());
 
-    return statisticRepository.save(statistic);
+    statisticRepository.save(statistic);
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
   @Override

@@ -66,7 +66,7 @@ public class TokenServiceImpl implements ITokenService {
     String url = applicationUrl
         + "/api/v1/tokens/verify/"
         + newToken;
-    SendMailUtil.sendMailSimple(user.getEmail(), url, "Verify sign up Vit Web");
+    SendMailUtil.sendMailSimple(user.getEmail(), url, "Verify sign up Shop Cua Hoa");
     return new RequestResponse(CommonConstant.TRUE, "");
   }
 

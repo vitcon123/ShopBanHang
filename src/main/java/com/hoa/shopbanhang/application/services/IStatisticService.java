@@ -15,7 +15,7 @@ public interface IStatisticService {
 
   Statistic getStatisticById(Long id);
 
-  Statistic createStatistic(CreateStatisticInput createStatisticInput);
+  RequestResponse createStatistic(CreateStatisticInput createStatisticInput);
 
   RequestResponse deleteById(Long id);
 
