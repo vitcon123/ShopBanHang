@@ -31,6 +31,6 @@ public class SignUpEventListener implements ApplicationListener<SignUpEvent> {
     String url = event.getApplicationUrl()
         + "/api/v1/tokens/verify/"
         + token;
-    SendMailUtil.sendMailSimple(user.getEmail(), url, "Verify sign up Vit Web");
+    SendMailUtil.sendMailSimple(user.getEmail(), url, "Verify sign up Shop cua Hoa");
   }
 }

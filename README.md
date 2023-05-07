@@ -1,2 +1,2 @@
-# vitweb-api
+# shop-api
 Personal project 

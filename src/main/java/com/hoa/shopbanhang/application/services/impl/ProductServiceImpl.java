@@ -95,13 +95,12 @@ public class ProductServiceImpl implements IProductService {
       Optional<User> userCurrent = userRepository.findByEmail(emailUserCurrent);
       UserServiceImpl.checkUserExists(userCurrent);
       CreateStatisticInput createStatisticInput;
+      Integer ageOfUser = null;
       if (userCurrent.get().getBirthday() != null) {
-        Integer ageOfUser =
+        ageOfUser =
             Period.between(LocalDate.parse(userCurrent.get().getBirthday()), LocalDate.now()).getYears();
-        createStatisticInput = new CreateStatisticInput(ageOfUser, userCurrent.get(), product.get());
-      } else {
-        createStatisticInput = new CreateStatisticInput(null, userCurrent.get(), product.get());
       }
+      createStatisticInput = new CreateStatisticInput(ageOfUser, userCurrent.get(), product.get());
       statisticService.createStatistic(createStatisticInput);
     }
 

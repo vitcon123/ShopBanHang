@@ -1,33 +1,35 @@
 package com.hoa.shopbanhang.application.services.impl;
 
-import com.hoa.shopbanhang.adapter.web.v1.transfer.response.OrderDetailOutput;
-import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ProductOutput;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.RequestResponse;
 import com.hoa.shopbanhang.application.constants.*;
 import com.hoa.shopbanhang.application.inputs.order.CreateOrderInput;
 import com.hoa.shopbanhang.application.inputs.order.FilterOrderInput;
+import com.hoa.shopbanhang.application.inputs.order.UpdateOrderInput;
+import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.outputs.common.PagingMeta;
 import com.hoa.shopbanhang.application.outputs.order.GetListOrderOutput;
-import com.hoa.shopbanhang.application.outputs.product.GetListProductOutput;
 import com.hoa.shopbanhang.application.repositories.IItemDetailRepository;
 import com.hoa.shopbanhang.application.repositories.IOrderRepository;
 import com.hoa.shopbanhang.application.repositories.IUserRepository;
 import com.hoa.shopbanhang.application.services.IOrderService;
 import com.hoa.shopbanhang.application.services.IProductService;
+import com.hoa.shopbanhang.application.services.IStatisticService;
+import com.hoa.shopbanhang.application.utils.SecurityUtil;
 import com.hoa.shopbanhang.application.utils.SendMailUtil;
 import com.hoa.shopbanhang.application.utils.UrlUtil;
 import com.hoa.shopbanhang.configs.exceptions.NotFoundException;
 import com.hoa.shopbanhang.configs.exceptions.VsException;
 import com.hoa.shopbanhang.domain.entities.ItemDetail;
 import com.hoa.shopbanhang.domain.entities.Order;
-import com.hoa.shopbanhang.domain.entities.Product;
 import com.hoa.shopbanhang.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,15 +39,17 @@ public class OrderServiceImpl implements IOrderService {
   private final IItemDetailRepository itemDetailRepository;
   private final IUserRepository userRepository;
   private final IProductService productService;
+  private final IStatisticService statisticService;
   private final ModelMapper modelMapper;
   private final HttpServletRequest request;
 
 
-  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, IProductService productService, ModelMapper modelMapper, HttpServletRequest request) {
+  public OrderServiceImpl(IOrderRepository orderRepository, IItemDetailRepository itemDetailRepository, IUserRepository userRepository, IProductService productService, IStatisticService statisticService, ModelMapper modelMapper, HttpServletRequest request) {
     this.orderRepository = orderRepository;
     this.itemDetailRepository = itemDetailRepository;
     this.userRepository = userRepository;
     this.productService = productService;
+    this.statisticService = statisticService;
     this.modelMapper = modelMapper;
     this.request = request;
   }
@@ -138,6 +142,32 @@ public class OrderServiceImpl implements IOrderService {
   }
 
   @Override
+  public RequestResponse updateOrder(UpdateOrderInput updateOrderInput) {
+    Optional<Order> order = orderRepository.findById(updateOrderInput.getIdOrder());
+    checkOrderExists(order);
+    order.get().setDeliveryStatus(updateOrderInput.getDeliveryStatus());
+    if(updateOrderInput.getDeliveryStatus().equals(DeliveryStatus.DELIVERED)) {
+      order.get().setDeliveredDate(LocalDateTime.now().toString());
+      String url =
+          UrlUtil.applicationUrl(request)
+              + "/order/" + order.get().getId();
+
+      String contentOrder =
+          "Order has been successfully delivered: " + order.get().getId()
+              + ".\n\nView order details: " + url
+              + ".\n\nThank you for using our service.";
+
+      try {
+        SendMailUtil.sendMailSimple(order.get().getUser().getEmail(), contentOrder, EmailConstant.SUBJECT_DELIVERED);
+      } catch (Exception e) {
+        throw new NotFoundException(EmailConstant.SEND_FAILED);
+      }
+    }
+    orderRepository.save(order.get());
+    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
   public RequestResponse cancelOrder(Long idOrder) {
     Optional<Order> order = orderRepository.findById(idOrder);
     checkOrderExists(order);
@@ -150,62 +180,6 @@ public class OrderServiceImpl implements IOrderService {
       productService.updateStockProduct(itemDetail.getProduct().getId(), itemDetail.getAmount(), false);
     }
     orderRepository.delete(order.get());
-    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  @Override
-  public RequestResponse setOrderOrderPlaced(Long idOrder) {
-    Optional<Order> order = orderRepository.findById(idOrder);
-    checkOrderExists(order);
-    order.get().setDeliveryStatus(DeliveryStatus.ORDER_PLACED);
-
-    orderRepository.save(order.get());
-
-    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  @Override
-  public RequestResponse setOrderPreparingToShip(Long idOrder) {
-    Optional<Order> order = orderRepository.findById(idOrder);
-    checkOrderExists(order);
-    order.get().setDeliveryStatus(DeliveryStatus.PREPARING_TO_SHIP);
-    orderRepository.save(order.get());
-
-    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  @Override
-  public RequestResponse setOrderInTransit(Long idOrder) {
-    Optional<Order> order = orderRepository.findById(idOrder);
-    checkOrderExists(order);
-    order.get().setDeliveryStatus(DeliveryStatus.IN_TRANSIT);
-    orderRepository.save(order.get());
-
-    return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  @Override
-  public RequestResponse setOrderDelivered(Long idOrder) {
-    Optional<Order> order = orderRepository.findById(idOrder);
-    checkOrderExists(order);
-    order.get().setDeliveryStatus(DeliveryStatus.DELIVERED);
-    orderRepository.save(order.get());
-
-    String url =
-        UrlUtil.applicationUrl(request)
-            + "/order/" + order.get().getId();
-
-    String contentOrder =
-        "Order has been successfully delivered: " + order.get().getId()
-            + ".\n\nView order details: " + url
-            + ".\n\nThank you for using our service.";
-
-    try {
-      SendMailUtil.sendMailSimple(order.get().getUser().getEmail(), contentOrder, EmailConstant.SUBJECT_DELIVERED);
-    } catch (Exception e) {
-      throw new NotFoundException(EmailConstant.SEND_FAILED);
-    }
-
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
