@@ -18,8 +18,8 @@ public class PaymentConfig {
     public static final String vnp_IpAddr = "127.0.0.1";
     public static final String vnp_Locale = "vn";
     public static final String vnp_OrderType = "150000";
-//    public static final String vnp_ReturnUrl = "https://sandbox.vnpayment.vn/tryitnow/Home/VnPayReturn";
     public static final String vnp_ReturnUrl = "http://localhost:8080/api/v1/payment/info-details";
+//    public static final String vnp_ReturnUrl = "https://sandbox.vnpayment.vn/tryitnow/Home/VnPayReturn";
     public static final String vnp_HashSecret = "CBLXZJCHTBLDAKKHDGIQRIFSTRNQCXEM";
     public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 

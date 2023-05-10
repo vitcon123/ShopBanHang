@@ -3,6 +3,7 @@ package com.hoa.shopbanhang.application.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.PaymentResponse;
+import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ResultPaymentResponse;
 import com.hoa.shopbanhang.application.inputs.payment.PaymentInput;
 import com.hoa.shopbanhang.application.services.PaymentService;
 import com.hoa.shopbanhang.configs.PaymentConfig;
@@ -126,5 +127,18 @@ public class PaymentServiceImpl implements PaymentService {
         paymentResponse.setMessage("success");
         paymentResponse.setData(paymentUrl);
         return paymentResponse;
+    }
+
+    @Override
+    public ResultPaymentResponse resultPaymentOrder(Integer vnp_Amount, String vnp_BankCode, String vnp_BankTranNo,
+                                                    String vnp_CardType, String vnp_OrderInfo, Long vnp_PayDate,
+                                                    Integer vnp_ResponseCode, String vnp_TmnCode,
+                                                    Integer vnp_TransactionNo, Integer vnp_TransactionStatus,
+                                                    String vpn_TxnRef, String vnp_SecureHash) {
+        String message = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
+        if(!vnp_TransactionStatus.equals(00)) {
+            message = "Giao dịch bị lỗi trong quá trình xử lý";
+        }
+        return new ResultPaymentResponse(vnp_OrderInfo, vnp_Amount / 100L, message, vnp_BankCode);
     }
 }
