@@ -1,5 +1,6 @@
 package com.hoa.shopbanhang.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoa.shopbanhang.application.constants.TableNameConstant;
 import com.hoa.shopbanhang.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -15,15 +16,19 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_CART)
-public class Cart extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_COUPON)
+public class Coupon extends AbstractAuditingEntity {
 
-  @OneToOne
-  @JoinColumn(name = "user_id")
-  private User user;
+  private String code;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cart")
-//  @JsonIgnore
-  private List<ItemDetail> itemDetails;
+  private Long amountPlan;
+
+  private Long amountUsed;
+
+  private Double value;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coupon")
+  @JsonIgnore
+  private List<UserCoupon> userCoupons;
 
 }

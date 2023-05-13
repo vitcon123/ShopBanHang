@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface IOrderRepository extends JpaRepository<Order, Long> {
 
-   @Query("select o " +
-        "from Order o " +
-        "where (:#{#filterOrderInput.deliveryStatus} is null  or o.deliveryStatus = :#{#filterOrderInput.deliveryStatus}) " +
-        "and (:#{#filterOrderInput.paymentMethod} is null  or o.paymentMethod = :#{#filterOrderInput.paymentMethod})")
+  @Query("select o " +
+      "from Order o " +
+      "where (:#{#filterOrderInput.deliveryStatus} is null  or o.deliveryStatus = :#{#filterOrderInput.deliveryStatus}) " +
+      "and (:#{#filterOrderInput.paymentMethod} is null  or o.paymentMethod = :#{#filterOrderInput.paymentMethod})")
   List<Order> findOrders(FilterOrderInput filterOrderInput, PageRequest pageRequest);
 
 }

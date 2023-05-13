@@ -52,4 +52,7 @@ public class Order extends AbstractAuditingEntity {
 //  @JsonIgnore
   private List<ItemDetail> itemDetails;
 
+  @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  private UserCoupon userCoupon;
+
 }

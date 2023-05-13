@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -45,7 +47,7 @@ public class User extends AbstractAuditingEntity {
   @JoinColumn(name = "role_id")
   private Role role;
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   private Cart cart;
 
@@ -60,6 +62,10 @@ public class User extends AbstractAuditingEntity {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore
   private List<Statistic> statistics;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  @JsonIgnore
+  private List<UserCoupon> userCoupons;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
   private Token token;

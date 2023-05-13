@@ -3,6 +3,7 @@ package com.hoa.shopbanhang.adapter.web.v1.controller;
 import com.hoa.shopbanhang.adapter.web.base.RestApiV1;
 import com.hoa.shopbanhang.adapter.web.base.VsResponseUtil;
 import com.hoa.shopbanhang.application.constants.UrlConstant;
+import com.hoa.shopbanhang.application.inputs.product.ReportProductInput;
 import com.hoa.shopbanhang.application.inputs.statistic.AdminStatisticInput;
 import com.hoa.shopbanhang.application.inputs.statistic.CreateStatisticInput;
 import com.hoa.shopbanhang.application.services.IStatisticService;
@@ -10,8 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestApiV1
 public class StatisticController {
@@ -35,6 +34,13 @@ public class StatisticController {
   @PostMapping(UrlConstant.Statistic.VIEW)
   public ResponseEntity<?> getStatistic(@RequestBody(required = false) AdminStatisticInput input) {
     return VsResponseUtil.ok(statisticService.getStatistic(input));
+  }
+
+  @Operation(summary = "Report Revenue - ADMIN")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PostMapping(UrlConstant.Statistic.REPORT_REVENUE)
+  public ResponseEntity<?> reportRevenue(@RequestBody(required = false) ReportProductInput input) {
+    return VsResponseUtil.ok(statisticService.reportRevenue(input));
   }
 
   @Operation(summary = "Get Statistic By Id - ADMIN")
