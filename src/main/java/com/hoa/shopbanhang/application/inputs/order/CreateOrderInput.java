@@ -35,4 +35,6 @@ public class CreateOrderInput {
 
   private List<Long> idItemDetails;
 
+  private Long idUserCoupon;
+
 }

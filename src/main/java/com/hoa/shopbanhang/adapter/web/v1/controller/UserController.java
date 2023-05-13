@@ -29,6 +29,12 @@ public class UserController {
     return VsResponseUtil.ok(userService.getAll());
   }
 
+  @Operation(summary = "Get All User Of Coupon")
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+  @GetMapping(UrlConstant.User.GET_ALL_USER_OF_COUPON)
+  public ResponseEntity<?> getAllUserOfCoupon(@PathVariable("couponId") Long couponId) {
+    return VsResponseUtil.ok(userService.getAllUserOfCoupon(couponId));
+  }
   @Operation(summary = "Get User By Id")
   @GetMapping(UrlConstant.User.GET)
   public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {

@@ -16,6 +16,7 @@ public class UrlConstant {
   public static final class User {
     public static final String PREFIX = "/users";
     public static final String LIST = PREFIX;
+    public static final String GET_ALL_USER_OF_COUPON = PREFIX + "/coupon/{couponId}";
     public static final String GET = PREFIX + "/{id}";
     public static final String CHANGE_AVATAR = PREFIX + "/change-avatar";
     public static final String UPDATE = PREFIX;
@@ -58,11 +59,26 @@ public class UrlConstant {
     public static final String DELETE = PREFIX + "/{idCart}";
   }
 
-  public static class Media {
-    private Media() {
+  public static class Coupon {
+    private Coupon() {
     }
 
-    private static final String PREFIX = "/medias";
+    private static final String PRE_FIX = "/coupons";
+    public static final String LIST = PRE_FIX;
+    public static final String CREATE = PRE_FIX;
+    public static final String GET_ALL_COUPON_OF_USER = PRE_FIX + "/user/{userId}";
+    public static final String GET = PRE_FIX + "/{id}";
+    public static final String UPDATE = PRE_FIX;
+    public static final String DELETE = PRE_FIX + "/{id}";
+  }
+
+  public static class UserCoupon {
+    private UserCoupon() {
+    }
+
+    private static final String PRE_FIX = "/user-coupon";
+    public static final String ADD_COUPON_TO_USERS = PRE_FIX + "/add-coupon-to-users";
+    public static final String DELETE_COUPON_TO_USERS = PRE_FIX + "/delete-coupon-to-users";
   }
 
   public static class Order {
@@ -77,17 +93,6 @@ public class UrlConstant {
     public static final String GET = PREFIX + "/{idOrder}";
     public static final String GET_BY_USER = PREFIX + "/user/{idUser}";
     public static final String UPDATE = PREFIX;
-    public static final String ORDER_PLACED = PREFIX + "/{idOrder}/order-placed";
-    public static final String PREPARING_TO_SHIP = PREFIX + "/{idOrder}/preparing-to-ship";
-    public static final String IN_TRANSIT = PREFIX + "/{idOrder}/in-transit";
-    public static final String DELIVERED = PREFIX + "/{idOrder}/delivered";
-  }
-
-  public static class OrderDetail {
-    private OrderDetail() {
-    }
-
-    private static final String PREFIX = "/order-details";
   }
 
   public static class Product {
@@ -112,26 +117,12 @@ public class UrlConstant {
 
     private static final String PREFIX = "/statistics";
     public static final String VIEW = PREFIX + "/view";
+    public static final String REPORT_REVENUE = PREFIX + "/report-revenue";
+
     public static final String LIST = PREFIX;
     public static final String CREATE = PREFIX;
     public static final String GET = PREFIX + "/{id}";
     public static final String DELETE = PREFIX + "/{id}";
-  }
-
-  public static class Notification {
-    private static final String PREFIX = "/notifications";
-    public static final String GET = PREFIX + "/{id}";
-    public static final String GET_BY_ACCOUNT = PREFIX + "/account/{idAccount}";
-    public static final String SEND = PREFIX + "/send";
-    public static final String CREATE = PREFIX;
-    public static final String UPDATE = PREFIX;
-    public static final String READ = PREFIX + "/{id}";
-    public static final String READ_ALL = PREFIX + "/read/{idAccount}";
-    public static final String DELETE = PREFIX + "/{id}";
-
-    private Notification() {
-    }
-
   }
 
   public static class Rate {
@@ -145,6 +136,7 @@ public class UrlConstant {
     public static final String UPDATE = PRE_FIX;
     public static final String DELETE = PRE_FIX + "/{id}";
   }
+
 
   public static class Auth {
     private Auth() {

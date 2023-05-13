@@ -15,25 +15,25 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_ITEM_DETAIL)
-public class ItemDetail extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_USER_COUPON)
+public class UserCoupon extends AbstractAuditingEntity {
 
-  private Integer amount;
+  private String timeExpired;
 
-  private Double price;
+  private Boolean isUsed = Boolean.FALSE;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-  @JoinColumn(name = "cart_id")
+  @JoinColumn(name = "user_id")
   @JsonIgnore
-  private Cart cart;
+  private User user;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "coupon_id")
+  private Coupon coupon;
+
+  @OneToOne
   @JoinColumn(name = "order_id")
   @JsonIgnore
   private Order order;
-
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-  @JoinColumn(name = "product_id")
-  private Product product;
 
 }
