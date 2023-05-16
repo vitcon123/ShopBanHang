@@ -68,6 +68,7 @@ public class User extends AbstractAuditingEntity {
   private List<UserCoupon> userCoupons;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @JsonIgnore
   private Token token;
 
   public User(String email, String password, String fullName,

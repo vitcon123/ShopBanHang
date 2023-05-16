@@ -6,10 +6,12 @@ import com.hoa.shopbanhang.adapter.web.v1.transfer.response.PaymentResponse;
 import com.hoa.shopbanhang.adapter.web.v1.transfer.response.ResultPaymentResponse;
 import com.hoa.shopbanhang.application.inputs.payment.PaymentInput;
 import com.hoa.shopbanhang.application.services.PaymentService;
+import com.hoa.shopbanhang.application.utils.UrlUtil;
 import com.hoa.shopbanhang.configs.PaymentConfig;
 import com.hoa.shopbanhang.configs.exceptions.BadRequestException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +20,12 @@ import java.util.*;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
+
+    private final HttpServletRequest request;
+
+    public PaymentServiceImpl(HttpServletRequest request) {
+        this.request = request;
+    }
 
     public PaymentResponse paymentOrder(PaymentInput paymentInput, String orderId) {
         String vnp_Version = "2.1.0";
@@ -46,7 +54,8 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", vnp_Locale);
-        vnp_Params.put("vnp_ReturnUrl", PaymentConfig.vnp_ReturnUrl);
+        String returnUrl = UrlUtil.applicationUrl(request) + "/api/v1/payment/info-details";
+        vnp_Params.put("vnp_ReturnUrl", returnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
