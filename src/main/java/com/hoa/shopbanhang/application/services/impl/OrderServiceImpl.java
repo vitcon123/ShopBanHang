@@ -96,13 +96,14 @@ public class OrderServiceImpl implements IOrderService {
     Order order = modelMapper.map(createOrderInput, Order.class);
     order.setUser(user.get());
 
-    UserCoupon userCoupon = userCouponRepository.getUserCouponById(createOrderInput.getIdUserCoupon(), user.get());
-    if(userCoupon == null) {
-      throw new VsException(MessageConstant.INVALID_COUPON);
+    if(createOrderInput.getIdUserCoupon() != null) {
+      UserCoupon userCoupon = userCouponRepository.getUserCouponById(createOrderInput.getIdUserCoupon(), user.get());
+      if(userCoupon == null) {
+        throw new VsException(MessageConstant.INVALID_COUPON);
+      }
+      userCoupon.setOrder(order);
+      userCoupon.setIsUsed(Boolean.TRUE);
     }
-
-    userCoupon.setOrder(order);
-    userCoupon.setIsUsed(Boolean.TRUE);
 
     order.setDeliveryStatus(DeliveryStatus.ORDER_PLACED);
     for (PaymentMethod paymentMethod : PaymentMethod.values()) {

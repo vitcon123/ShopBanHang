@@ -58,10 +58,10 @@ public class CartController {
   @Operation(summary = "Add Product To Cart - ADMIN, USER")
 //  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @PostMapping(UrlConstant.Cart.ADD_PRODUCT_TO_CART)
-  public ResponseEntity<?> addProductToCartById(@PathVariable(name = "idCart") Long idCart,
+  public ResponseEntity<?> addProductToCartById(@PathVariable(name = "idUser") Long idUser,
                                          @PathVariable(name = "idProduct") Long idProduct,
                                          @RequestParam(name = "amount") Integer amount) {
-    itemDetailService.addProductToCartById(idCart, idProduct, amount);
+    itemDetailService.addProductToCartById(idUser, idProduct, amount);
     return VsResponseUtil.ok("Add Successfully");
   }
 

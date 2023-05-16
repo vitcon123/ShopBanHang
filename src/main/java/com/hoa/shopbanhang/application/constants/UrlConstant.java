@@ -52,7 +52,7 @@ public class UrlConstant {
     public static final String GET = PREFIX + "/{idCart}";
     public static final String USER_CART = PREFIX + "/{idUser}/cart-user";
     public static final String CREATE = PREFIX + "/{idUser}";
-    public static final String ADD_PRODUCT_TO_CART = PREFIX + "/{idCart}/{idProduct}/add-cart-detail";
+    public static final String ADD_PRODUCT_TO_CART = PREFIX + "/{idUser}/{idProduct}/add-cart-detail";
     public static final String EDIT_AMOUNT_OF_CART_DETAIL = PREFIX + "/{idItemDetail}/edit-cart-detail";
     public static final String DELETE_CART_DETAIL = PREFIX + "/{idItemDetail}/delete-cart-detail";
     public static final String DELETE_ALL_CART_DETAIL = PREFIX + "/{idCart}/delete-all-cart-detail";
