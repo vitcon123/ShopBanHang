@@ -25,18 +25,19 @@ public class PaymentController {
     }
 
     @GetMapping("/payment/info-details")
-    public ResponseEntity<?> resultPaymentOrder(@RequestParam(name = "vnp_Amount") Integer vnp_Amount,
-                                                @RequestParam(name = "vnp_BankCode") String vnp_BankCode,
-                                                @RequestParam(name = "vnp_BankTranNo") String vnp_BankTranNo,
-                                                @RequestParam(name = "vnp_CardType") String vnp_CardType,
-                                                @RequestParam(name = "vnp_OrderInfo") String vnp_OrderInfo,
-                                                @RequestParam(name = "vnp_PayDate") Long vnp_PayDate,
-                                                @RequestParam(name = "vnp_ResponseCode") Integer vnp_ResponseCode,
-                                                @RequestParam(name = "vnp_TmnCode") String vnp_TmnCode,
-                                                @RequestParam(name = "vnp_TransactionNo") Integer vnp_TransactionNo,
-                                                @RequestParam(name = "vnp_TransactionStatus") Integer vnp_TransactionStatus,
-                                                @RequestParam(name = "vnp_TxnRef") String vpn_TxnRef,
-                                                @RequestParam(name = "vnp_SecureHash") String vnp_SecureHash){
-        return VsResponseUtil.ok("GD thanh cong: " + vnp_Amount / 100);
+    public ResponseEntity<?> resultPaymentOrder(@RequestParam(name = "vnp_Amount", required = false) Integer vnp_Amount,
+                                                @RequestParam(name = "vnp_BankCode", required = false) String vnp_BankCode,
+                                                @RequestParam(name = "vnp_BankTranNo", required = false) String vnp_BankTranNo,
+                                                @RequestParam(name = "vnp_CardType", required = false) String vnp_CardType,
+                                                @RequestParam(name = "vnp_OrderInfo", required = false) String vnp_OrderInfo,
+                                                @RequestParam(name = "vnp_PayDate", required = false) Long vnp_PayDate,
+                                                @RequestParam(name = "vnp_ResponseCode", required = false) Integer vnp_ResponseCode,
+                                                @RequestParam(name = "vnp_TmnCode", required = false) String vnp_TmnCode,
+                                                @RequestParam(name = "vnp_TransactionNo", required = false) Integer vnp_TransactionNo,
+                                                @RequestParam(name = "vnp_TransactionStatus", required = false) Integer vnp_TransactionStatus,
+                                                @RequestParam(name = "vnp_TxnRef", required = false) String vpn_TxnRef,
+                                                @RequestParam(name = "vnp_SecureHash", required = false) String vnp_SecureHash){
+        return VsResponseUtil.ok(paymentService.resultPaymentOrder(vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_OrderInfo,
+            vnp_PayDate, vnp_ResponseCode, vnp_TmnCode, vnp_TransactionNo, vnp_TransactionStatus, vpn_TxnRef, vnp_SecureHash));
     }
 }
